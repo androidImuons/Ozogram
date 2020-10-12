@@ -1,8 +1,10 @@
-package com.example.ozogram;
+package com.example.ozogram.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.ozogram.R;
 
 public class SplashActivity extends AppCompatActivity {
 
