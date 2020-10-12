@@ -2,6 +2,7 @@ package com.example.ozogram.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -29,12 +30,19 @@ public class SplashActivity extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-
+            goToDashboardActivity();
         }
     };
     @Override
     protected void onPause() {
         super.onPause();
         handler.removeCallbacks(runnable);
+    }
+
+    private void goToDashboardActivity() {
+        Intent intent = new Intent(this, OzogramHomeActivity.class);
+
+        startActivity(intent);
+        supportFinishAfterTransition();
     }
 }
