@@ -1,4 +1,4 @@
-package com.example.ozogram.utility;
+package com.example.ozogram.app.utils;
 
 import android.content.res.Resources;
 import android.graphics.Rect;

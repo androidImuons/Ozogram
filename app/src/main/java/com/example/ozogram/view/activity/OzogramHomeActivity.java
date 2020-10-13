@@ -1,21 +1,24 @@
 package com.example.ozogram.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.ozogram.R;
-import com.example.ozogram.adapter.PostRecycleViewAdapter;
-import com.example.ozogram.adapter.StoryUserRecycleViewAdapter;
-import com.example.ozogram.utility.DeviceScreenUtil;
+import com.example.ozogram.app.utils.SessionManager;
+import com.example.ozogram.view.adapter.PostRecycleViewAdapter;
+import com.example.ozogram.view.adapter.StoryUserRecycleViewAdapter;
+import com.example.ozogram.app.utils.DeviceScreenUtil;
 import com.google.android.material.appbar.AppBarLayout;
 
 
 public class OzogramHomeActivity extends AppCompatActivity {
+    // Session Manager Class
+    SessionManager session;
     //@BindView(R.id.recycle_story_user)
     RecyclerView recycle_story_user;
     //@BindView(R.id.recycle_post_list)
@@ -26,6 +29,10 @@ public class OzogramHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ozogram_home);
+
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -64,4 +71,9 @@ public class OzogramHomeActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
 }

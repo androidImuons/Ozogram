@@ -1,4 +1,4 @@
-package com.example.ozogram.adapter;
+package com.example.ozogram.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
