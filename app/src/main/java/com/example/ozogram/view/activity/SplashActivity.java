@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.ozogram.R;
+import com.example.ozogram.app.utils.SessionManager;
 
 public class SplashActivity extends AppCompatActivity {
     private static final long SPLASH_TIME_MS = 2000;
     private Handler handler = new Handler();
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+        session = new SessionManager(getApplicationContext());
     }
 
     @Override
@@ -30,7 +33,12 @@ public class SplashActivity extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            goToLoginActivity();
+            if(session.isLoggedIn()){
+                session.goToOzogramHomeActivity();
+            }else{
+                goToLoginActivity();
+            }
+
         }
     };
     @Override

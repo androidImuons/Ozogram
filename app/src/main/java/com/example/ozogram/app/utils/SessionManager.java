@@ -80,7 +80,7 @@ public class SessionManager {
 
     }
 
-    private void goToOzogramHomeActivity() {
+    public void goToOzogramHomeActivity() {
         Intent intent = new Intent(_context, OzogramHomeActivity.class);
         // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
