@@ -1,74 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="bottomtab"
+            type="com.example.ozogram.viewmodel.HomeViewModel" />
+    </data>
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:weightSum="5"
         android:orientation="horizontal"
         android:background="@drawable/bootom_action_bar_bg"
-        android:layout_height="50dp">
+        tools:context=".view.activity.OzogramHomeActivity"
+        android:layout_height="@dimen/dp50">
         <LinearLayout
+            android:id="@+id/ll_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:onClick="@{bottomtab::onClickHome}"
             android:gravity="center"
             android:layout_weight="1">
-            <ImageView
+            <com.example.ozogram.customeview.TintImageView
+                android:id="@+id/iv_home"
                 android:layout_width="25dp"
-                android:background="@drawable/ic_home"
+                android:src="@drawable/ic_home"
+                android:duplicateParentState="true"
+                android:tint="@color/colorWhite"
+                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </ImageView>
+            </com.example.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:onClick="@{bottomtab::onClicVideo}"
             android:layout_weight="1">
-            <ImageView
+            <com.example.ozogram.customeview.TintImageView
+                android:id="@+id/iv_video"
                 android:layout_width="25dp"
-                android:background="@drawable/ic_video"
+                android:src="@drawable/ic_video"
+                android:duplicateParentState="true"
+                android:tint="@color/colorWhite"
+                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </ImageView>
+            </com.example.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_gallery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:onClick="@{bottomtab::onClickGallery}"
             android:layout_weight="1">
-            <ImageView
+            <com.example.ozogram.customeview.TintImageView
+                android:id="@+id/iv_gallery"
                 android:layout_width="25dp"
-                android:background="@drawable/ic_add"
+                android:src="@drawable/ic_add"
+                android:duplicateParentState="true"
+                android:tint="@color/colorWhite"
+                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </ImageView>
+            </com.example.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_fav"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:onClick="@{bottomtab::onClickFav}"
             android:layout_weight="1">
-            <ImageView
+            <com.example.ozogram.customeview.TintImageView
+                android:id="@+id/iv_fav"
                 android:layout_width="25dp"
-                android:background="@drawable/ic_heart"
-                android:backgroundTint="#ffffff"
+                android:src="@drawable/ic_heart"
+                android:duplicateParentState="true"
+                android:tint="@color/colorWhite"
+                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </ImageView>
+            </com.example.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_profile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:onClick="@{bottomtab::onClickProfile}"
             android:layout_weight="1">
-            <ImageView
+            <com.example.ozogram.customeview.TintImageView
+                android:id="@+id/iv_profile"
                 android:layout_width="25dp"
-                android:background="@drawable/ic_profile"
+                android:src="@drawable/ic_profile"
+                android:duplicateParentState="true"
+                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </ImageView>
+            </com.example.ozogram.customeview.TintImageView>
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</layout>

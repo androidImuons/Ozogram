@@ -1,5 +1,6 @@
 package com.example.ozogram.app.web_api_services;
 
+import com.example.ozogram.model.GetPostResponseModel;
 import com.example.ozogram.model.LoginResponseModel;
 
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface AppServices {
@@ -14,4 +16,7 @@ public interface AppServices {
     @POST("ozogram/login")
     Call<LoginResponseModel> userLogin(@FieldMap Map<String, String> loginMap);
 
+
+    @POST("ozogram/get_posts")
+    Call<GetPostResponseModel> getPostS();
 }
