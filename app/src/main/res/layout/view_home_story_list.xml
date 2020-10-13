@@ -2,23 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp100"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools">
 <LinearLayout
     android:layout_width="90dp"
     android:gravity="center"
     android:orientation="vertical"
     android:layout_height="130dp">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="70dp"
         android:background="@drawable/ic_circle_100"
         android:gravity="center"
         android:layout_height="70dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="60dp"
-            android:background="@drawable/animal_story"
-            android:layout_height="60dp">
-        </de.hdodenhof.circleimageview.CircleImageView>
-    </LinearLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_user_2"
+            android:layout_width="@dimen/dp50"
+          android:layout_centerInParent="true"
+            android:layout_height="@dimen/dp50"
+            app:placeholderImage="@mipmap/ic_logo"
+            fresco:progressBarAutoRotateInterval="1000"
+            fresco:roundAsCircle="true"/>
+
+        <ProgressBar
+            android:id="@+id/pb_image"
+            android:layout_width="@dimen/dp15"
+            android:layout_height="@dimen/dp15"
+            android:layout_centerInParent="true" />
+
+
+    </RelativeLayout>
     <com.example.ozogram.customeview.TypeTextView
         android:layout_height="18dp"
         app:custom_font="@string/app_font_regular"

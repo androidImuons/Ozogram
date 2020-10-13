@@ -9,33 +9,51 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ozogram.R;
+import com.example.ozogram.base.AppBaseRecycleAdapter;
+import com.example.ozogram.base.BaseRecycleAdapter;
+import com.example.ozogram.model.GetPostDataModel;
 
-public class PostRecycleViewAdapter extends RecyclerView.Adapter<PostRecycleViewAdapter.UserPostListView>  {
-    public PostRecycleViewAdapter(Context applicationContext) {
+import java.util.List;
 
+public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
+    Context context;
+    List<GetPostDataModel> postDataModelList;
+
+    public PostRecycleViewAdapter(Context applicationContext, List<GetPostDataModel> post) {
+        context = applicationContext;
+        postDataModelList = post;
     }
 
-    @NonNull
+    public int getViewHeight() {
+        return 0;
+    }
+
     @Override
-    public UserPostListView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_post_view_list, parent, false);
-        return new UserPostListView(v);
+    public BaseRecycleAdapter.BaseViewHolder getViewHolder() {
+        return new StoryUserListView(inflateLayout(R.layout.view_post_view_list));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserPostListView holder, int position) {
-
+    public int getDataCount() {
+        return postDataModelList == null ? 10 :postDataModelList.size();
     }
 
-    @Override
-    public int getItemCount() {
-        return 10;
+
+
+    public void updateList(List<GetPostDataModel> post) {
+        postDataModelList=post;
+        notifyDataSetChanged();
     }
 
-    public class UserPostListView extends RecyclerView.ViewHolder{
+    public class StoryUserListView extends BaseRecycleAdapter.BaseViewHolder {
 
-        public UserPostListView(View itemView) {
+        public StoryUserListView(View itemView) {
             super(itemView);
+        }
+
+        @Override
+        public void setData(int position) {
+
         }
 
     }

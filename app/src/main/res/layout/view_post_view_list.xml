@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -14,18 +15,25 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
             android:background="@drawable/ic_circle_80"
-            android:gravity="center">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/animal_story">
+            android:layout_height="60dp">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_user1"
+                android:layout_width="@dimen/dp50"
+                app:placeholderImage="@mipmap/ic_logo"
+                android:layout_centerInParent="true"
+                android:layout_height="@dimen/dp50"
+                fresco:progressBarAutoRotateInterval="1000"
+                fresco:roundAsCircle="true"/>
 
-            </de.hdodenhof.circleimageview.CircleImageView>
-        </LinearLayout>
+            <ProgressBar
+                android:id="@+id/pb_image"
+                android:layout_width="@dimen/dp15"
+                android:layout_height="@dimen/dp15"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"

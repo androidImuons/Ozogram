@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Ozogram</string>
 
-  <string name="app_font_bold">urfa_bold.otf</string>
+    <string name="app_font_bold">urfa_bold.otf</string>
     <string name="app_font_sim_bold">urfa_sim_bold.otf</string>
     <string name="app_font_bold_italic">urfa_bold_italic.otf</string>
     <string name="app_font_regular">urfa_regular_1.otf</string>
