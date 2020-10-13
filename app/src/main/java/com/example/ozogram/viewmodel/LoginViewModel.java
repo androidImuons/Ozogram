@@ -25,7 +25,7 @@ public class LoginViewModel extends ViewModel {
     private LiveData<LoginResponseModel> loginResponseModel;
 
     public void onLoginButtonClick(View view) {
-
+        loginListener.onStarted();
         if(isInputDataValid()){
             loginListener.onLoginFailure(errorMessage);
             return;

@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            goToDashboardActivity();
+            goToLoginActivity();
         }
     };
     @Override
@@ -39,9 +39,14 @@ public class SplashActivity extends AppCompatActivity {
         handler.removeCallbacks(runnable);
     }
 
-    private void goToDashboardActivity() {
-        Intent intent = new Intent(this, OzogramHomeActivity.class);
+    private void goToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        // Closing all the Activities
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // Add new Flag to start new Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        supportFinishAfterTransition();
+        finish();
+        //supportFinishAfterTransition();
     }
 }
