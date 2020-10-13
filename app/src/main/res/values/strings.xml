@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Ozogram</string>
 
-  <string name="app_font_bold">urfa_bold.otf</string>
+    <string name="app_font_bold">urfa_bold.otf</string>
     <string name="app_font_sim_bold">urfa_sim_bold.otf</string>
     <string name="app_font_bold_italic">urfa_bold_italic.otf</string>
     <string name="app_font_regular">urfa_regular_1.otf</string>
@@ -14,5 +14,21 @@
     <string name="forget_password">Forget Password</string>
     <string name="login">LOGIN</string>
     <string name="new_user_sign_up">New User? <font fgcolor="#CD7F0C">Sign Up</font></string>
+    <string name="posts">Posts</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="story_highlights">Story Highlights</string>
+    <string name="keep_your_favourite_stories_on_your_profile">keep your favourite stories on your profile</string>
+    <string name="txt_new">New</string>
+    <string name="complete_your_profile">Complete your profile</string>
+    <string name="_3_of_4_complete">3 of 4 COMPLETE</string>
+    <string name="add_bio">Add Bio</string>
+    <string name="add_your_name">Add Your Name</string>
+    <string name="add_your_full_name_so_your_friend_know_it_s_you">Add your full name so your friend know it\'s you</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="find_more">Find More</string>
+    <string name="find_people_to_follow">Find People to follow</string>
+    <string name="follow_people_and_interests_you_care_about">Follow people and interests you care about</string>
 
 </resources>
