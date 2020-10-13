@@ -15,8 +15,10 @@ import com.example.ozogram.utility.DeviceScreenUtil;
 import com.google.android.material.appbar.AppBarLayout;
 
 
+
+
 public class OzogramHomeActivity extends AppCompatActivity {
-    //@BindView(R.id.recycle_story_user)
+
     RecyclerView recycle_story_user;
     //@BindView(R.id.recycle_post_list)
     RecyclerView recycle_post_list;
@@ -32,7 +34,7 @@ public class OzogramHomeActivity extends AppCompatActivity {
       recycle_story_user=findViewById(R.id.recycle_story_user);
         recycle_post_list=findViewById(R.id.recycle_post_list);
         coordinatorLayout =findViewById(R.id.coordinatorLayout);
-        app_bar_layout = findViewById(R.id.app_bar_layout);
+//        app_bar_layout = findViewById(R.id.app_bar_layout);
 
 
         recycle_story_user.setHasFixedSize(true);
@@ -46,22 +48,22 @@ public class OzogramHomeActivity extends AppCompatActivity {
         PostRecycleViewAdapter postRecycleViewAdapter=new PostRecycleViewAdapter(getApplicationContext());
         recycle_post_list.setAdapter(postRecycleViewAdapter);
 
-        setupUi();
+      //  setupUi();
 
     }
 
-    private void setupUi() {
-        coordinatorLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = app_bar_layout.getWidth();
-                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) app_bar_layout.getLayoutParams();
-                layoutParams.height = Math.round(width * 0.30f) + DeviceScreenUtil.getInstance()
-                        .convertDpToPixel(20.0f);
-                app_bar_layout.setLayoutParams(layoutParams);
-            }
-        });
-
-    }
+//    private void setupUi() {
+//        coordinatorLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int width = app_bar_layout.getWidth();
+//                CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) app_bar_layout.getLayoutParams();
+//                layoutParams.height = Math.round(width * 0.20f) + DeviceScreenUtil.getInstance()
+//                        .convertDpToPixel(20.0f);
+//                app_bar_layout.setLayoutParams(layoutParams);
+//            }
+//        });
+//
+//    }
 
 }

@@ -40,7 +40,7 @@
                 android:paddingRight="@dimen/dp5"
                 android:text="Rahul Vh"
                 android:textColor="@color/colorBlack"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 app:custom_font="@string/app_font_regular">
 
             </com.example.ozogram.customeview.TypeTextView>
@@ -53,17 +53,24 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="@dimen/dp30"
-                android:layout_height="@dimen/dp30"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:background="@drawable/ic_more_new">
 
             </ImageView>
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/gray_line">
 
+    </View>
     <ImageView
+        android:id="@+id/iv_more"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginTop="2dp"
         android:background="@drawable/ic_post_temp"
         android:layout_weight=".65"></ImageView>
 
@@ -85,9 +92,11 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/ic_heart">
+                    android:id="@+id/iv_heart"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/selected_heart"
+                    app:tint="@color/colorBlack">
 
                 </ImageView>
             </LinearLayout>
@@ -100,8 +109,9 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/iv_commit"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:background="@drawable/ic_chat">
 
                 </ImageView>
@@ -114,8 +124,9 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/iv_share"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:backgroundTint="@color/colorBlack"
                     android:background="@drawable/ic_rocket">
 
@@ -144,8 +155,9 @@
                 android:gravity="right|center">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:id="@+id/iv_tag"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/dp10"
                     android:backgroundTint="@color/colorBlack"
                     android:background="@drawable/ic_tag">
