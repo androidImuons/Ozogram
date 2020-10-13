@@ -40,8 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToDashboardActivity() {
-        Intent intent = new Intent(this, OzogramHomeActivity.class);
-
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         supportFinishAfterTransition();
     }

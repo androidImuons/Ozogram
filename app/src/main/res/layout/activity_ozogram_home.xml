@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="false"
     android:layout_height="match_parent"
     tools:context=".view.activity.OzogramHomeActivity">
+
     <LinearLayout
         android:id="@+id/container_toolbar"
         android:layout_width="match_parent"
@@ -16,25 +19,92 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar_view" />
     </LinearLayout>
-    <LinearLayout
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1"
-       android:layout_marginTop="40dp"
-        android:layout_height="match_parent">
+        android:layout_height="130dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/colorWhite"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginEnd="@dimen/dp5"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_story_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                tools:listitem="@layout/view_home_story_list">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="170dp"
+        android:layout_marginBottom="@dimen/dp50">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight=".94"
-            android:layout_height="0dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/gray_line">
+
+            </View>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_post_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp5"
+                tools:listitem="@layout/view_post_view_list">
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-        <include
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:layout_weight=".06"
-            android:gravity="bottom|center"
-            android:id="@+id/bottom_action_bar"
-            layout="@layout/bottom_action_bar" />
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/bottom_action_bar"
+        layout="@layout/bottom_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom" />
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:weightSum="1"-->
+    <!--        android:layout_marginTop="170dp"-->
+    <!--        android:layout_height="match_parent">-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_weight=".93"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:layout_height="0dp">-->
 
 
-</RelativeLayout>
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="@dimen/dp10"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/ic_circle_80"
+            android:gravity="center">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/animal_story">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.85"
+            android:gravity="center_vertical">
+
+            <com.example.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp5"
+                android:text="Rahul Vh"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp"
+                app:custom_font="@string/app_font_regular">
+
+            </com.example.ozogram.customeview.TypeTextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:background="@drawable/ic_more_new">
+
+            </ImageView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/ic_post_temp"
+        android:layout_weight=".65"></ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:gravity="center_vertical"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_weight=".1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_heart">
+
+                </ImageView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_weight=".1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_chat">
+
+                </ImageView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_weight=".1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/colorBlack"
+                    android:background="@drawable/ic_rocket">
+
+                </ImageView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".4"
+                android:layout_height="match_parent">
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/circle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|bottom"
+                    android:layout_margin="@dimen/dp5"
+                    android:visibility="visible"
+                    app:ci_drawable="@drawable/white_circle"
+                    app:ci_drawable_unselected="@drawable/white_circle" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dp10"
+                android:layout_weight=".3"
+                android:gravity="right|center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:backgroundTint="@color/colorBlack"
+                    android:background="@drawable/ic_tag">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <com.example.ozogram.customeview.TypeTextView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/dp5"
+        android:text="Test Message Test Message Test Message Test Message Test Message Test Message Test Message "
+        android:layout_height="wrap_content">
+
+    </com.example.ozogram.customeview.TypeTextView>
+</LinearLayout>

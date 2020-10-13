@@ -29,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:orientation="horizontal"
             android:layout_weight="0.8">
             <ImageView
                 android:layout_width="match_parent"
@@ -42,8 +43,7 @@
                 android:gravity="center"
                 android:text="OZOGRAM"
                 android:textSize="25dp"
-                android:textStyle="bold"
-                app:custom_font="@string/app_font_bold"
+                app:custom_font="@string/app_font_bold_italic"
                 android:textColor="#ffffff"
                 android:layout_height="match_parent">
 

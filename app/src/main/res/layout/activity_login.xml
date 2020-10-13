@@ -125,6 +125,7 @@
         android:layout_marginTop="@dimen/dp20"
         android:text="@string/login"
         android:textColor="@color/colorWhite"
+        android:onClick="login"
         app:custom_font="@string/app_font_bold_italic"
         android:gravity="center"
         android:textSize="@dimen/sp25"
