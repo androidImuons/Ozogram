@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    android:background="@color/colorWhite"
+    tools:context=".view.fragment.StoryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_profile_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            tools:listitem="@layout/profile_gallery_list_item" />
+
+        <com.example.ozogram.customeview.TypeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_your_profile"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp12"
+            android:textStyle="bold"
+            android:layout_margin="@dimen/dp5"
+            app:custom_font="@string/app_font_bold" />
+
+        <com.example.ozogram.customeview.TypeTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/_3_of_4_complete"
+            android:layout_marginLeft="@dimen/dp5"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp12"
+            app:custom_font="@string/app_font_bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp150"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/dp5"
+                android:orientation="vertical"
+                android:background="@drawable/gallery_box">
+
+                <ImageView
+                    android:id="@+id/iv_addBio"
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/add_bio_icon"/>
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/tv_addBio1"
+                    android:layout_below="@+id/iv_addBio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_bio"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    android:padding="@dimen/dp2"
+                    android:textStyle="bold"
+                    android:layout_margin="@dimen/dp2"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:layout_below="@+id/tv_addBio1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tell your followers a little bit about yourself"
+                    android:layout_margin="@dimen/dp2"
+                    android:gravity="center"
+                    android:padding="@dimen/dp2"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/btnAddBio"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp30"
+                    android:text="@string/add_bio"
+                    android:background="@drawable/profile_enable_btn"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginRight="@dimen/dp15"
+                    android:gravity="center"
+                    android:padding="@dimen/dp5"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp150"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/dp5"
+                android:orientation="vertical"
+                android:background="@drawable/gallery_box">
+
+                <ImageView
+                    android:id="@+id/iv_edit"
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/edit_name_icon"/>
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/tv_edit1"
+                    android:layout_below="@+id/iv_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_your_name"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    android:padding="@dimen/dp2"
+                    android:textStyle="bold"
+                    android:layout_margin="@dimen/dp2"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:layout_below="@+id/tv_edit1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_your_full_name_so_your_friend_know_it_s_you"
+                    android:layout_margin="@dimen/dp2"
+                    android:gravity="center"
+                    android:padding="@dimen/dp2"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/btnEditName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp30"
+                    android:text="@string/edit_name"
+                    android:background="@drawable/profile_disable_btn"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginRight="@dimen/dp15"
+                    android:gravity="center"
+                    android:padding="@dimen/dp5"
+                    android:textStyle="bold"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp150"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/dp5"
+                android:orientation="vertical"
+                android:background="@drawable/gallery_box">
+
+                <ImageView
+                    android:id="@+id/iv_find"
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/follow_icon"/>
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/tv_findPeople"
+                    android:layout_below="@+id/iv_find"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/find_people_to_follow"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    android:padding="@dimen/dp2"
+                    android:textStyle="bold"
+                    android:layout_margin="@dimen/dp2"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/tv_findPeople2"
+                    android:layout_below="@+id/tv_findPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/follow_people_and_interests_you_care_about"
+                    android:layout_margin="@dimen/dp2"
+                    android:gravity="center"
+                    android:padding="@dimen/dp2"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+                <com.example.ozogram.customeview.TypeTextView
+                    android:id="@+id/btnFindMore"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp30"
+                    android:text="@string/find_more"
+                    android:background="@drawable/profile_disable_btn"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:layout_marginRight="@dimen/dp15"
+                    android:gravity="center"
+                    android:padding="@dimen/dp5"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</FrameLayout>

@@ -82,11 +82,11 @@
                 android:layout_marginTop="@dimen/dp10"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp40"
-                android:layout_marginRight="@dimen/dp40"
                 android:layout_marginTop="@dimen/dp10"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <com.example.ozogram.customeview.TypefaceCheckBox
@@ -110,6 +110,7 @@
                     android:layout_margin="@dimen/dp5"
                     android:text="@string/remember_me"/>
 
+<!--
                 <com.example.ozogram.customeview.TypeTextView
                     android:id="@+id/tv_forgot_password"
                     android:layout_width="match_parent"
@@ -123,6 +124,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dp5"
                     android:text="@string/forget_password"/>
+-->
 
             </LinearLayout>
 
@@ -141,6 +143,7 @@
             android:textSize="@dimen/sp25"
             android:background="@drawable/button_bg" />
 
+<!--
         <com.example.ozogram.customeview.TypeTextView
             android:id="@+id/tv_SignUp"
             android:layout_width="match_parent"
@@ -153,6 +156,7 @@
             android:layout_marginTop="30dp"
             android:textSize="@dimen/sp12"
             android:background="@android:color/transparent" />
+-->
 
     </LinearLayout>
 </layout>
