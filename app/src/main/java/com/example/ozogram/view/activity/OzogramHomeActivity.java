@@ -57,13 +57,9 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.setLifecycleOwner(OzogramHomeActivity.this);
         setupSwipLayout();
         init();
-        settabLayout();
 
     }
 
-    private void settabLayout() {
-
-    }
 
     private void init() {
 
@@ -96,9 +92,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
                     }
                 });
+
+
     }
 
     private void setupSwipLayout() {
+        homeViewModel.getPost(getApplicationContext());
         activityOzogramHomeBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

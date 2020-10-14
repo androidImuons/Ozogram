@@ -65,6 +65,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation 'com.facebook.fresco:fresco:2.3.0'
-
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
