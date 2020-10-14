@@ -99,7 +99,6 @@
                 android:layout_width="25dp"
                 android:src="@drawable/ic_profile"
                 android:duplicateParentState="true"
-                app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
             </com.example.ozogram.customeview.TintImageView>
