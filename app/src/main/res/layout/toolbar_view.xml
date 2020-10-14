@@ -5,7 +5,7 @@
     <data>
         <variable
             name="toolbar"
-            type="com.example.ozogram.viewmodel.HomeViewModel" />
+            type="com.ozonetech.ozogram.viewmodel.HomeViewModel" />
     </data>
 
     <LinearLayout
@@ -42,7 +42,7 @@
                 android:layout_height="18dp">
 
             </ImageView>
-            <com.example.ozogram.customeview.TypeTextView
+            <com.ozonetech.ozogram.customeview.TypeTextView
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:text="OZOGRAM"
@@ -51,7 +51,7 @@
                 android:textColor="#ffffff"
                 android:layout_height="match_parent">
 
-            </com.example.ozogram.customeview.TypeTextView>
+            </com.ozonetech.ozogram.customeview.TypeTextView>
         </LinearLayout>
 
         <LinearLayout

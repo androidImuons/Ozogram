@@ -18,7 +18,7 @@
             android:layout_height="100dp"
             tools:listitem="@layout/profile_gallery_list_item" />
 
-        <com.example.ozogram.customeview.TypeTextView
+        <com.ozonetech.ozogram.customeview.TypeTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/complete_your_profile"
@@ -28,7 +28,7 @@
             android:layout_margin="@dimen/dp5"
             app:custom_font="@string/app_font_bold" />
 
-        <com.example.ozogram.customeview.TypeTextView
+        <com.ozonetech.ozogram.customeview.TypeTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/_3_of_4_complete"
@@ -58,7 +58,7 @@
                     android:layout_marginTop="@dimen/dp10"
                     android:background="@drawable/add_bio_icon"/>
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/tv_addBio1"
                     android:layout_below="@+id/iv_addBio"
                     android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                     android:layout_margin="@dimen/dp2"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:layout_below="@+id/tv_addBio1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                     android:textSize="@dimen/sp10"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/btnAddBio"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="@dimen/dp10"
@@ -120,7 +120,7 @@
                     android:layout_marginTop="@dimen/dp10"
                     android:background="@drawable/edit_name_icon"/>
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/tv_edit1"
                     android:layout_below="@+id/iv_edit"
                     android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                     android:layout_margin="@dimen/dp2"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:layout_below="@+id/tv_edit1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:textSize="@dimen/sp10"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/btnEditName"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp30"
@@ -183,7 +183,7 @@
                     android:layout_marginTop="@dimen/dp10"
                     android:background="@drawable/follow_icon"/>
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/tv_findPeople"
                     android:layout_below="@+id/iv_find"
                     android:layout_width="match_parent"
@@ -197,7 +197,7 @@
                     android:layout_margin="@dimen/dp2"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/tv_findPeople2"
                     android:layout_below="@+id/tv_findPeople"
                     android:layout_width="match_parent"
@@ -210,7 +210,7 @@
                     android:textSize="@dimen/sp10"
                     app:custom_font="@string/app_font_bold" />
 
-                <com.example.ozogram.customeview.TypeTextView
+                <com.ozonetech.ozogram.customeview.TypeTextView
                     android:id="@+id/btnFindMore"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="@dimen/dp10"

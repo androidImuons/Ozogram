@@ -5,7 +5,7 @@
     <data>
         <variable
             name="bottomtab"
-            type="com.example.ozogram.viewmodel.HomeViewModel" />
+            type="com.ozonetech.ozogram.viewmodel.HomeViewModel" />
     </data>
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -22,7 +22,7 @@
             android:onClick="@{bottomtab::onClickHome}"
             android:gravity="center"
             android:layout_weight="1">
-            <com.example.ozogram.customeview.TintImageView
+            <com.ozonetech.ozogram.customeview.TintImageView
                 android:id="@+id/iv_home"
                 android:layout_width="25dp"
                 android:src="@drawable/ic_home"
@@ -31,7 +31,7 @@
                 app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </com.example.ozogram.customeview.TintImageView>
+            </com.ozonetech.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_video"
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:onClick="@{bottomtab::onClicVideo}"
             android:layout_weight="1">
-            <com.example.ozogram.customeview.TintImageView
+            <com.ozonetech.ozogram.customeview.TintImageView
                 android:id="@+id/iv_video"
                 android:layout_width="25dp"
                 android:src="@drawable/ic_video"
@@ -49,7 +49,7 @@
                 app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </com.example.ozogram.customeview.TintImageView>
+            </com.ozonetech.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_gallery"
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:onClick="@{bottomtab::onClickGallery}"
             android:layout_weight="1">
-            <com.example.ozogram.customeview.TintImageView
+            <com.ozonetech.ozogram.customeview.TintImageView
                 android:id="@+id/iv_gallery"
                 android:layout_width="25dp"
                 android:src="@drawable/ic_add"
@@ -67,7 +67,7 @@
                 app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </com.example.ozogram.customeview.TintImageView>
+            </com.ozonetech.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_fav"
@@ -76,7 +76,7 @@
             android:gravity="center"
             android:onClick="@{bottomtab::onClickFav}"
             android:layout_weight="1">
-            <com.example.ozogram.customeview.TintImageView
+            <com.ozonetech.ozogram.customeview.TintImageView
                 android:id="@+id/iv_fav"
                 android:layout_width="25dp"
                 android:src="@drawable/ic_heart"
@@ -85,7 +85,7 @@
                 app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </com.example.ozogram.customeview.TintImageView>
+            </com.ozonetech.ozogram.customeview.TintImageView>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_profile"
@@ -94,7 +94,7 @@
             android:gravity="center"
             android:onClick="@{bottomtab::onClickProfile}"
             android:layout_weight="1">
-            <com.example.ozogram.customeview.TintImageView
+            <com.ozonetech.ozogram.customeview.TintImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="25dp"
                 android:src="@drawable/ic_profile"
@@ -102,7 +102,7 @@
                 app:tintColorStateList="@color/dashboard_tab_image_tint_selector"
                 android:layout_height="25dp">
 
-            </com.example.ozogram.customeview.TintImageView>
+            </com.ozonetech.ozogram.customeview.TintImageView>
         </LinearLayout>
     </LinearLayout>
 
