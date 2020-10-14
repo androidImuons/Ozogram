@@ -3,30 +3,34 @@ package com.ozonetech.ozogram.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.ozonetech.ozogram.R;
-import com.ozonetech.ozogram.databinding.ProfileStoryListItemBinding;
+import com.ozonetech.ozogram.databinding.PostRowItemBinding;
 import com.ozonetech.ozogram.model.Post;
+
 import java.util.List;
 
-public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.MyViewHolder> {
+public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder> {
 
     private List<Post> postList;
     private LayoutInflater layoutInflater;
-    private ProfileStroyAdpterListener listener;
+    private PostsAdapterListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private final ProfileStoryListItemBinding binding;
+        private final PostRowItemBinding binding;
 
-        public MyViewHolder(final ProfileStoryListItemBinding itemBinding) {
+        public MyViewHolder(final PostRowItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.binding = itemBinding;
         }
     }
 
-    public ProfileStroyAdpter(List<Post> postList, ProfileStroyAdpterListener listener) {
+
+    public PostsAdapter(List<Post> postList, PostsAdapterListener listener) {
         this.postList = postList;
         this.listener = listener;
     }
@@ -36,8 +40,8 @@ public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.
         if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        ProfileStoryListItemBinding binding =
-                DataBindingUtil.inflate(layoutInflater, R.layout.profile_story_list_item, parent, false);
+        PostRowItemBinding binding =
+                DataBindingUtil.inflate(layoutInflater, R.layout.post_row_item, parent, false);
         return new MyViewHolder(binding);
     }
 
@@ -59,7 +63,7 @@ public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.
         return postList.size();
     }
 
-    public interface ProfileStroyAdpterListener {
+    public interface PostsAdapterListener {
         void onPostClicked(Post post);
     }
 }

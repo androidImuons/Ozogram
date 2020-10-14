@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
+    android:padding="@dimen/dp15"
     android:background="@color/colorWhite"
     tools:context=".view.fragment.StoryFragment">
 
@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_profile_gallery"
+            android:id="@+id/rv_profile_story_gallery"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            tools:listitem="@layout/profile_gallery_list_item" />
+            android:layout_height="160dp"
+            tools:listitem="@layout/post_row_item" />
 
         <com.ozonetech.ozogram.customeview.TypeTextView
             android:layout_width="match_parent"

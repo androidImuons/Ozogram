@@ -31,7 +31,6 @@ public class GetPosts {
                     Log.d("get post", "--2-"+response.message());
                     getpostModel = response.body();
                     loginResponse.setValue(getpostModel);
-                    // todo: save access token is pending
                 } else {
                     Log.d("get post", "--3-"+response.message());
                     getpostModel = response.body();

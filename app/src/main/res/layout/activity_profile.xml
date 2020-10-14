@@ -1,162 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
-    tools:context=".view.activity.ProfileActivity">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.ozonetech.ozogram.app.utils.BindingUtils" />
+
+        <variable
+            name="user"
+            type="com.ozonetech.ozogram.model.User" />
+        
+        <variable
+            name="handlers"
+            type="com.ozonetech.ozogram.view.activity.ProfileActivity.MyClickHandlers" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        tools:context=".view.activity.ProfileActivity">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp15"
-            android:orientation="vertical">
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp15"
+            android:orientation="horizontal">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="@dimen/dp100"
-                    android:layout_height="@dimen/dp100"
-                    android:src="@drawable/profile_pic"
-                    app:civ_border_color="#7e3c62"
-                    app:civ_border_width="2dp" />
-
-                <ImageView
-                    android:id="@+id/iv_add_pic"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="@dimen/dp75"
-                    android:layout_marginTop="@dimen/dp75"
-                    android:background="@drawable/add_pic_icon" />
-
-            </FrameLayout>
+            <ImageView
+                android:layout_width="@dimen/dp10"
+                android:layout_height="@dimen/dp10"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp5"
+                android:background="@drawable/add_icon" />
 
             <com.ozonetech.ozogram.customeview.TypeTextView
-                android:id="@+id/tvProfileName"
+                android:id="@+id/tvProfileName1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp5"
                 android:gravity="center"
-                android:text="Profile Name"
+                android:text="@{user.name,default=ProfileName}"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp12"
                 app:custom_font="@string/app_font_bold" />
 
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_margin="@dimen/dp15"
                 android:orientation="vertical">
 
-                <com.ozonetech.ozogram.customeview.TypeTextView
-                    android:id="@+id/tvTotalPostCount"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
-                    android:gravity="center"
-                    android:text="200"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold"
-                    app:custom_font="@string/app_font_bold" />
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="@dimen/dp100"
+                        android:layout_height="@dimen/dp100"
+                        android:src="@drawable/profile_pic"
+                        app:civ_border_color="#7e3c62"
+                        app:civ_border_width="2dp"
+                        android:onLongClick="@{handlers::onProfileImageLongPressed}"
+                        bind:profileImage="@{user.profileImage}"/>
+
+                    <ImageView
+                        android:id="@+id/iv_add_pic"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="@dimen/dp75"
+                        android:layout_marginTop="@dimen/dp75"
+                        android:onClick="@{handlers::onProfileFabClicked}"
+                        android:background="@drawable/add_pic_icon" />
+
+                </FrameLayout>
 
                 <com.ozonetech.ozogram.customeview.TypeTextView
+                    android:id="@+id/tvProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
+                    android:layout_margin="@dimen/dp5"
                     android:gravity="center"
-                    android:text="@string/posts"
+                    android:text="@{user.about,default= About_Profile}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/sp12"
                     app:custom_font="@string/app_font_bold" />
-
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-                <com.ozonetech.ozogram.customeview.TypeTextView
-                    android:id="@+id/tvTotalFollowersCount"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
-                    android:gravity="center"
-                    android:text="8.5 k"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold"
-                    app:custom_font="@string/app_font_bold" />
+                    android:layout_weight="1"
+                    android:onClick="@{handlers::onPostsClicked}"
+                    android:orientation="vertical">
 
-                <com.ozonetech.ozogram.customeview.TypeTextView
-                    android:layout_width="wrap_content"
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:id="@+id/tvTotalPostCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@{BindingUtils.convertToSuffix(user.numberOfPosts),default=0}"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        app:custom_font="@string/app_font_bold" />
+
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@string/posts"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp12"
+                        app:custom_font="@string/app_font_bold" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
-                    android:gravity="center"
-                    android:text="@string/followers"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp12"
-                    app:custom_font="@string/app_font_bold" />
+                    android:layout_weight="1"
+                    android:onClick="@{handlers::onFollowersClicked}"
+                    android:orientation="vertical">
+
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:id="@+id/tvTotalFollowersCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@{BindingUtils.convertToSuffix(user.numberOfFollowers),default=0}"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        app:custom_font="@string/app_font_bold" />
+
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@string/followers"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp12"
+                        app:custom_font="@string/app_font_bold" />
 
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <com.ozonetech.ozogram.customeview.TypeTextView
-                    android:id="@+id/tvTotalFollowingCount"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
-                    android:gravity="center"
-                    android:text="100"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold"
-                    app:custom_font="@string/app_font_bold" />
+                    android:layout_weight="1"
+                    android:onClick="@{handlers::onFollowingClicked}"
+                    android:orientation="vertical">
 
-                <com.ozonetech.ozogram.customeview.TypeTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/dp2"
-                    android:gravity="center"
-                    android:text="@string/following"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp12"
-                    app:custom_font="@string/app_font_bold" />
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:id="@+id/tvTotalFollowingCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@{BindingUtils.convertToSuffix(user.numberOfFollowing),default=0}"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        app:custom_font="@string/app_font_bold" />
+
+                    <com.ozonetech.ozogram.customeview.TypeTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp2"
+                        android:gravity="center"
+                        android:text="@string/following"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp12"
+                        app:custom_font="@string/app_font_bold" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -164,123 +217,122 @@
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginRight="@dimen/dp15"
-        android:orientation="vertical">
-
-        <com.ozonetech.ozogram.customeview.TypeTextView
-            android:id="@+id/tvEditProfile"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp30"
-            android:background="@drawable/profile_edit_btn"
-            android:gravity="center"
-            android:text="@string/edit_profile"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/sp14"
-            android:textStyle="bold"
-            app:custom_font="@string/app_font_bold" />
-
-        <com.ozonetech.ozogram.customeview.TypeTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp5"
-            android:text="@string/story_highlights"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/sp12"
-            android:textStyle="bold"
-            app:custom_font="@string/app_font_bold" />
-
-        <com.ozonetech.ozogram.customeview.TypeTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/keep_your_favourite_stories_on_your_profile"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/sp10"
-            app:custom_font="@string/app_font_bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp5"
-        android:orientation="horizontal">
-
         <LinearLayout
-            android:id="@+id/ll_add_story"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp15"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="@dimen/dp50"
-                    android:layout_height="@dimen/dp50"
-                    android:src="@drawable/add_circle" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/add_icon" />
-
-            </FrameLayout>
-
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/tvEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp30"
+                android:background="@drawable/profile_edit_btn"
+                android:gravity="center"
+                android:text="@string/edit_profile"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp14"
+                android:textStyle="bold"
+                app:custom_font="@string/app_font_bold" />
 
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp5"
+                android:text="@string/story_highlights"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp12"
+                android:textStyle="bold"
+                app:custom_font="@string/app_font_bold" />
+
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="@string/txt_new"
+                android:text="@string/keep_your_favourite_stories_on_your_profile"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp10"
                 app:custom_font="@string/app_font_bold" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp5"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_add_story"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp15"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="@dimen/dp50"
+                        android:layout_height="@dimen/dp50"
+                        android:src="@drawable/add_circle" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/add_icon" />
+
+                </FrameLayout>
+
+
+                <com.ozonetech.ozogram.customeview.TypeTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/txt_new"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp10"
+                    app:custom_font="@string/app_font_bold" />
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_profile_story"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp100"
+                tools:listitem="@layout/profile_story_list_item" />
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_profile_story"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            tools:listitem="@layout/profile_story_list_item" />
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/profile_edit_btn"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/profile_edit_btn"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
-        </com.google.android.material.appbar.AppBarLayout>
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</LinearLayout>
+</layout>

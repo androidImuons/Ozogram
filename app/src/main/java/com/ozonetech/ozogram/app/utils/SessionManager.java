@@ -41,7 +41,6 @@ public class SessionManager {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
-
     /**
      * Create login session
      * */
