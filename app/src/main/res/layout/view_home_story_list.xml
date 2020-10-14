@@ -32,7 +32,7 @@
 
 
     </RelativeLayout>
-    <com.example.ozogram.customeview.TypeTextView
+    <com.ozonetech.ozogram.customeview.TypeTextView
         android:layout_height="18dp"
         app:custom_font="@string/app_font_regular"
         android:textSize="15dp"
@@ -42,6 +42,6 @@
         android:text="Rahul vh"
         android:layout_width="match_parent">
 
-    </com.example.ozogram.customeview.TypeTextView>
+    </com.ozonetech.ozogram.customeview.TypeTextView>
 </LinearLayout>
 </LinearLayout>

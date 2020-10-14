@@ -41,7 +41,7 @@
             android:layout_weight="0.85"
             android:gravity="center_vertical">
 
-            <com.example.ozogram.customeview.TypeTextView
+            <com.ozonetech.ozogram.customeview.TypeTextView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:paddingLeft="@dimen/dp10"
@@ -51,7 +51,7 @@
                 android:textSize="16dp"
                 app:custom_font="@string/app_font_regular">
 
-            </com.example.ozogram.customeview.TypeTextView>
+            </com.ozonetech.ozogram.customeview.TypeTextView>
         </LinearLayout>
 
         <LinearLayout
@@ -174,11 +174,11 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <com.example.ozogram.customeview.TypeTextView
+    <com.ozonetech.ozogram.customeview.TypeTextView
         android:layout_width="match_parent"
         android:layout_margin="@dimen/dp5"
         android:text="Test Message Test Message Test Message Test Message Test Message Test Message Test Message "
         android:layout_height="wrap_content">
 
-    </com.example.ozogram.customeview.TypeTextView>
+    </com.ozonetech.ozogram.customeview.TypeTextView>
 </LinearLayout>

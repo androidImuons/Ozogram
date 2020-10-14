@@ -6,7 +6,7 @@
     <data>
         <variable
             name="Home"
-            type="com.example.ozogram.viewmodel.HomeViewModel" />
+            type="com.ozonetech.ozogram.viewmodel.HomeViewModel" />
     </data>
 <RelativeLayout
     android:layout_width="match_parent"
