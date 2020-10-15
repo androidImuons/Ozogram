@@ -2,22 +2,46 @@ package com.ozonetech.ozogram.model;
 
 import android.widget.ImageView;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.ozonetech.ozogram.BR;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.R;
 
-public class User extends BaseObservable {
+import java.util.List;
 
-    String name;
-    String email;
-    String profileImage;
-    String about;
+public class User extends ViewModel {
 
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
+    @SerializedName("fullname")
+    @Expose
+    private String fullname;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
+    @SerializedName("bio")
+    @Expose
+    private String bio;
+    @SerializedName("profile_picture")
+    @Expose
+    private String profilePicture;
+    @SerializedName("joining_date")
+    @Expose
+    private String joiningDate;
+    @SerializedName("posts")
+    @Expose
+    private List<Object> posts = null;
+    @SerializedName("topup_status")
+    @Expose
+    private Integer topupStatus;
 
     // profile meta fields are ObservableField, will update the UI
     // whenever a new value is set
@@ -28,27 +52,58 @@ public class User extends BaseObservable {
     public User() {
     }
 
-    @Bindable
-    public String getName() {
-        return name;
+   // @Bindable
+    public String getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-        notifyPropertyChanged(BR.name);
+    public void setUserId(String userId) {
+        this.userId = userId;
+      ///  notifyPropertyChanged(BR.userId);
     }
 
-    @Bindable
+    //@Bindable
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+       // notifyPropertyChanged(BR.fullname);
+    }
+
+   // @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-        notifyPropertyChanged(BR.email);
+      //  notifyPropertyChanged(BR.email);
     }
 
-    @BindingAdapter({"profileImage"})
+   // @Bindable
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+       // notifyPropertyChanged(BR.mobile);
+    }
+
+   // @Bindable
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+       // notifyPropertyChanged(BR.bio);
+    }
+
+
+    @BindingAdapter({"profilePicture"})
     public static void loadImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
@@ -60,24 +115,42 @@ public class User extends BaseObservable {
         // Picasso.with(view.getContext()).load(imageUrl).placeholder(R.drawable.placeholder).into(view);
     }
 
-    @Bindable
-    public String getProfileImage() {
-        return profileImage;
+  //  @Bindable
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-        notifyPropertyChanged(BR.profileImage);
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+       // notifyPropertyChanged(BR.profilePicture);
     }
 
-    @Bindable
-    public String getAbout() {
-        return about;
+   // @Bindable
+    public String getJoiningDate() {
+        return joiningDate;
     }
 
-    public void setAbout(String about) {
-        this.about = about;
-        notifyPropertyChanged(BR.about);
+    public void setJoiningDate(String joiningDate) {
+        this.joiningDate = joiningDate;
+       // notifyPropertyChanged(BR.joiningDate);
+    }
+
+    public List<Object> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Object> posts) {
+        this.posts = posts;
+    }
+
+   // @Bindable
+    public Integer getTopupStatus() {
+        return topupStatus;
+    }
+
+    public void setTopupStatus(Integer topupStatus) {
+        this.topupStatus = topupStatus;
+      //  notifyPropertyChanged(BR.topupStatus);
     }
 
     public ObservableField<Long> getNumberOfFollowers() {
@@ -91,4 +164,5 @@ public class User extends BaseObservable {
     public ObservableField<Long> getNumberOfFollowing() {
         return numberOfFollowing;
     }
+
 }

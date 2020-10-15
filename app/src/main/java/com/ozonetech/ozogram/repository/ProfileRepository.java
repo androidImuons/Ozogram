@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.app.web_api_services.AppServices;
 import com.ozonetech.ozogram.app.web_api_services.ServiceGenerator;
-import com.ozonetech.ozogram.model.UserProfileResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.Map;
 
@@ -22,11 +22,11 @@ public class ProfileRepository {
     UserProfileResponseModel userProfileResponseModel;
 
 
-    public LiveData<UserProfileResponseModel> checkUserProfileData(Map<String, String> userProfileMap,Context context) {
+    public LiveData<UserProfileResponseModel> fetchUserProfileData(Map<String, String> userProfileMap,Context context) {
 
         userProfileResponse = new MutableLiveData<>();
         SessionManager session = new SessionManager(context);
-        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(session.KEY_ACCESS_TOKEN));
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
         apiService.userProfile(userProfileMap).enqueue(new Callback<UserProfileResponseModel>() {
             @Override
             public void onResponse(Call<UserProfileResponseModel> call, Response<UserProfileResponseModel> response) {

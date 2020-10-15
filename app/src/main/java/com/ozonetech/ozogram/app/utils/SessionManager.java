@@ -34,6 +34,16 @@ public class SessionManager {
     // User name (make variable public to access from outside)
     public static final String KEY_USERNAME = "username";
     public static final String KEY_ACCESS_TOKEN="accessToken";
+    public static final String KEY_USERID = "userId";
+    public static final String KEY_FULL_NAME="fullname";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_MOBILE="mobile";
+    public static final String KEY_BIO = "bio";
+    public static final String KEY_PROFILE_PICTURE="profilePicture";
+    public static final String KEY_JOINING_DATE = "joiningDate";
+    public static final String KEY_GENDER="gender";
+    public static final String KEY_WEBSITE = "website";
+
 
     // Constructor
     public SessionManager(Context context){
@@ -98,7 +108,13 @@ public class SessionManager {
         // user name
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
         user.put(KEY_ACCESS_TOKEN,pref.getString(KEY_ACCESS_TOKEN,null));
-
+        user.put(KEY_USERID, pref.getString(KEY_USERID, null));
+        user.put(KEY_FULL_NAME,pref.getString(KEY_FULL_NAME,null));
+        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
+        user.put(KEY_BIO, pref.getString(KEY_BIO, null));
+        user.put(KEY_PROFILE_PICTURE,pref.getString(KEY_PROFILE_PICTURE,null));
+        user.put(KEY_JOINING_DATE,pref.getString(KEY_JOINING_DATE,null));
         // return user
         return user;
     }
@@ -129,5 +145,33 @@ public class SessionManager {
     // Get Login State
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    public void saveUserProfileData(String userId, String fullname, String email, String mobile, String bio, String profilePicture, String joiningDate) {
+        // Storing name in pref
+        editor.putString(KEY_USERID, userId);
+        editor.putString(KEY_FULL_NAME,fullname);
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_MOBILE,mobile);
+        editor.putString(KEY_BIO, bio);
+        editor.putString(KEY_PROFILE_PICTURE,profilePicture);
+        editor.putString(KEY_JOINING_DATE, joiningDate);
+        // commit changes
+        editor.commit();
+    }
+
+    public void setEditProfileData(String profilePicture, String fullName, String userName, String bio, String email, String mobileNumber, String gender, String website) {
+        // Storing name in pref
+
+        editor.putString(KEY_FULL_NAME,fullName);
+        editor.putString(KEY_USERNAME,userName);
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_MOBILE,mobileNumber);
+        editor.putString(KEY_BIO, bio);
+        editor.putString(KEY_PROFILE_PICTURE,profilePicture);
+        editor.putString(KEY_WEBSITE, website);
+        editor.putString(KEY_GENDER,gender);
+        // commit changes
+        editor.commit();
     }
 }

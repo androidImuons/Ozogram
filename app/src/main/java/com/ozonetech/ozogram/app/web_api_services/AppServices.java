@@ -2,7 +2,7 @@ package com.ozonetech.ozogram.app.web_api_services;
 
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.LoginResponseModel;
-import com.ozonetech.ozogram.model.UserProfileResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.Map;
 
