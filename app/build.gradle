@@ -23,6 +23,10 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -62,6 +66,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'com.facebook.fresco:fresco:2.3.0'
+
+    implementation 'com.github.iamutkarshtiwari:Ananas:1.2.4'
 
 //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
