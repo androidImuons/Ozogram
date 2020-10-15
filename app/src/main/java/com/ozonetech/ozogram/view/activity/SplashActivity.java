@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
             if(session.isLoggedIn()){
                 session.goToOzogramHomeActivity();
             }else{
+
                 goToLoginActivity();
             }
 
@@ -48,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, FilterActivity.class);
         // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Add new Flag to start new Activity

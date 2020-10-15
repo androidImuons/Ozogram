@@ -30,5 +30,6 @@
     <string name="find_more">Find More</string>
     <string name="find_people_to_follow">Find People to follow</string>
     <string name="follow_people_and_interests_you_care_about">Follow people and interests you care about</string>
+    <string name="save_path">save path : %s</string>
 
 </resources>
