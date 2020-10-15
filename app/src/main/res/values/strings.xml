@@ -30,10 +30,6 @@
     <string name="find_more">Find More</string>
     <string name="find_people_to_follow">Find People to follow</string>
     <string name="follow_people_and_interests_you_care_about">Follow people and interests you care about</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="garrrey">GALLERY</string>
-    <string name="photo">PHOTO</string>
-    <string name="video">VIDEO</string>
+    <string name="save_path">save path : %s</string>
 
 </resources>
