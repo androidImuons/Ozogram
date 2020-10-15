@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.app.web_api_services;
 
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.LoginResponseModel;
+import com.ozonetech.ozogram.model.UserProfileResponseModel;
 
 import java.util.Map;
 
@@ -12,10 +13,13 @@ import retrofit2.http.POST;
 
 public interface AppServices {
     @FormUrlEncoded
-    @POST("ozogram/login")
+    @POST("login")
     Call<LoginResponseModel> userLogin(@FieldMap Map<String, String> loginMap);
 
+    @FormUrlEncoded
+    @POST("user_profile")
+    Call<UserProfileResponseModel> userProfile(@FieldMap Map<String, String> userProfileMap);
 
-    @POST("ozogram/get_posts")
+    @POST("get_posts")
     Call<GetPostResponseModel> getPostS();
 }
