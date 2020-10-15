@@ -1,4 +1,4 @@
-package com.example.ozogram.view.adapter;
+package com.ozonetech.ozogram.view.adapter;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.ozogram.R;
-import com.example.ozogram.model.ImageModel;
+import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.model.ImageModel;
 
 import java.util.ArrayList;
 

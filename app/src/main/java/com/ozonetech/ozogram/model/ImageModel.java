@@ -1,4 +1,4 @@
-package com.example.ozogram.model;
+package com.ozonetech.ozogram.model;
 
 import java.util.ArrayList;
 

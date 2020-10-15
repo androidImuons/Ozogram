@@ -1,4 +1,4 @@
-package com.example.ozogram.application;
+package com.ozonetech.ozogram.application;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;

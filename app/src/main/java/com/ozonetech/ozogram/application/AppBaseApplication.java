@@ -1,4 +1,4 @@
-package com.example.ozogram.application;
+package com.ozonetech.ozogram.application;
 
 import android.util.Log;
 

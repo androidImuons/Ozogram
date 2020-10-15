@@ -1,13 +1,17 @@
-package com.example.ozogram.view.activity;
+package com.ozonetech.ozogram.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -23,28 +27,41 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
-import com.example.ozogram.R;
-import com.example.ozogram.app.utils.Contrants;
-import com.example.ozogram.app.utils.Gallery;
-import com.example.ozogram.databinding.ActivityGalleryBinding;
-import com.example.ozogram.model.ImageModel;
-import com.example.ozogram.view.adapter.GirdViewAdapter;
-import com.example.ozogram.view.adapter.SpinnerBaseAdapter;
-import com.example.ozogram.viewmodel.GalleryViewModel;
-import com.example.ozogram.viewmodel.HomeViewModel;
+
+
+import com.google.android.material.tabs.TabLayout;
+import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.Gallery;
+import com.ozonetech.ozogram.databinding.ActivityGalleryBinding;
+import com.ozonetech.ozogram.model.ImageModel;
+import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
+import com.ozonetech.ozogram.view.adapter.SpinnerBaseAdapter;
+import com.ozonetech.ozogram.view.fragment.GalleryFragment;
+import com.ozonetech.ozogram.view.fragment.PhotoFragment;
+import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
+import com.ozonetech.ozogram.view.fragment.StoryFragment;
+import com.ozonetech.ozogram.view.fragment.VideoFragment;
+import com.ozonetech.ozogram.viewmodel.GalleryViewModel;
+
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import static com.example.ozogram.app.utils.Contrants.REQUEST_READ_EXTERNAL_STORAGE_PERMISSION;
+import static com.ozonetech.ozogram.app.utils.Contrants.REQUEST_READ_EXTERNAL_STORAGE_PERMISSION;
 
-public class GalleryActivity extends BaseActivity implements GirdViewAdapter.ClickEvent {
+public class GalleryActivity extends BaseActivity  {
     ActivityGalleryBinding galleryBinding;
     GalleryViewModel galleryViewModel;
     private String tag = "GalleryActivity";
     private boolean boolean_folder;
     private GirdViewAdapter obj_adapter;
     private boolean is_crop;
+    private boolean is_check_open;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private PostGalleryFragment postGalleryFrament;
+    private ArrayList<ImageModel> al_images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +75,7 @@ public class GalleryActivity extends BaseActivity implements GirdViewAdapter.Cli
         galleryBinding.executePendingBindings();
         galleryBinding.setLifecycleOwner(GalleryActivity.this);
 
-
+        setupViewPager();
         checkPermission();
 
         setListner();
@@ -69,7 +86,7 @@ public class GalleryActivity extends BaseActivity implements GirdViewAdapter.Cli
         galleryBinding.inculdeGalleryToolBar.spinnerShow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                postGalleryFrament.setList(al_images.get(i).getAl_imagepath());
             }
 
             @Override
@@ -77,25 +94,13 @@ public class GalleryActivity extends BaseActivity implements GirdViewAdapter.Cli
 
             }
         });
-
-        galleryBinding.ivCrop.setOnClickListener(new View.OnClickListener() {
+        galleryBinding.inculdeGalleryToolBar.ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!is_crop) {
-                    is_crop = true;
-                    galleryBinding.ivImage.setVisibility(View.GONE);
-                    galleryBinding.cropImageView.setVisibility(View.VISIBLE);
-                    galleryBinding.cropImageView.setImageUriAsync(Uri.parse(selected_file_url));
-                } else {
-                    is_crop = false;
-                    galleryBinding.ivImage.setVisibility(View.VISIBLE);
-                    galleryBinding.cropImageView.setVisibility(View.GONE);
-                }
-
+                finish();
             }
         });
-
-        galleryBinding.ivSelectMultipleImage.setOnClickListener(new View.OnClickListener() {
+        galleryBinding.inculdeGalleryToolBar.txtNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -110,6 +115,7 @@ public class GalleryActivity extends BaseActivity implements GirdViewAdapter.Cli
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
         } else {
+
             getImages();
         }
     }
@@ -126,35 +132,80 @@ public class GalleryActivity extends BaseActivity implements GirdViewAdapter.Cli
 
 
     public void getImages() {
-        ArrayList<ImageModel> al_images = Gallery.al_images;
+        Gallery gallery = new Gallery();
+        gallery.getImages(getApplicationContext());
+
+         al_images = Gallery.al_images;
         SpinnerBaseAdapter spinnerBaseAdapter = new SpinnerBaseAdapter(getApplicationContext(), al_images);
         galleryBinding.inculdeGalleryToolBar.spinnerShow.setAdapter(spinnerBaseAdapter);
-        // galleryBinding.gridView.setHasFixedSize(true);
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-        galleryBinding.gridView.setLayoutManager(sglm);
-        obj_adapter = new GirdViewAdapter(getApplicationContext(), al_images.get(0).getAl_imagepath(), GalleryActivity.this);
-        galleryBinding.gridView.setAdapter(obj_adapter);
+        // galleryBinding.gridView.setHasFixedSize(true)
+        if(al_images.get(0).getAl_imagepath()!=null){
+            postGalleryFrament.setList(al_images.get(0).getAl_imagepath());
+        }
+
     }
 
     ArrayList<String> selected_image = new ArrayList<>();
     int selected_position;
     String selected_file_url;
 
-    @Override
-    public void imageClickEvent(int position, String url) {
-        Glide.with(getApplicationContext()).load(url)
-                .into(galleryBinding.ivImage);
-        selected_file_url = url;
-        if (selected_position != position) {
-            selected_position = position;
-            selected_image.add(url);
+
+    private void setupViewPager() {
+
+
+//        galleryBinding.gallery.getTabAt(1);
+//        galleryBinding.gallery.getTabAt(2);
+        postGalleryFrament=new PostGalleryFragment();
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(postGalleryFrament, "GALLERY");
+        adapter.addFragment(new PhotoFragment(), "PHOTO");
+        adapter.addFragment(new VideoFragment(), "VIDEO");
+
+        galleryBinding.galleryViewPager.setAdapter(adapter);
+        galleryBinding.gallery.setupWithViewPager( galleryBinding.galleryViewPager);
+
+
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            //  return mFragmentTitleList.get(position);
+            // return null to display only the icon
+            return mFragmentTitleList.get(position);
+        }
     }
 
-    @Override
-    public void checkBokClickEvent(int position, String url) {
-        Glide.with(getApplicationContext()).load(url)
-                .into(galleryBinding.ivImage);
-    }
+//    @Override
+//    public void imageClickEvent(int position, String url) {
+//        postGalleryFrament.imageClick(position,url);
+//    }
+//
+//    @Override
+//    public void checkBokClickEvent(int position, String url) {
+//     postGalleryFrament.checkClick(position,url);
+//    }
+
 }

@@ -1,4 +1,4 @@
-package com.example.ozogram.view.adapter;
+package com.ozonetech.ozogram.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,10 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
-import com.example.ozogram.R;
-import com.example.ozogram.view.activity.GalleryActivity;
-
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
+import com.ozonetech.ozogram.view.activity.GalleryActivity;
+import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
 
 import java.util.ArrayList;
 
@@ -30,11 +32,13 @@ public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridVi
     Context context;
     ArrayList<String> arrayList;
     ClickEvent clickEvent;
+PostGalleryFragment postGalleryFragment;
 
-    public GirdViewAdapter(Context applicationContext, ArrayList<String> al_images, GalleryActivity galleryActivity) {
+    public GirdViewAdapter(Context applicationContext, ArrayList<String> al_images, PostGalleryFragment galleryActivity) {
         context = applicationContext;
         arrayList = al_images;
-        clickEvent=(ClickEvent)galleryActivity;
+        //clickEvent = (ClickEvent)galleryActivity;
+        this.postGalleryFragment=galleryActivity;
     }
 
     @NonNull
@@ -46,30 +50,49 @@ public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GridView binding, final int position) {
+    public void onBindViewHolder(@NonNull final GridView binding, final int position) {
         Log.d("grid adpter", "----");
         //   binding.imageview.setImageBitmap(listofImage[position]);
-
-        final String file = "file://"+arrayList.get(position);
-        Glide.with(context).load(file)
-                .into(binding.imageview);
-        binding.id = position;
-        if(position==0){
-            clickEvent.imageClickEvent(position,file);
+        final String file = "file://" + arrayList.get(position);
+        if (position == 0) {
+            postGalleryFragment.imageClick(position, file);
         }
+        setImage(position, binding, file);
+        setVisibility(binding);
+
 
         binding.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickEvent.imageClickEvent(position,file);
+                postGalleryFragment.imageClick(position, file);
             }
         });
         binding.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickEvent.checkBokClickEvent(position,file);
+                postGalleryFragment.checkClick(position, file);
+
             }
         });
+    }
+
+    private void setImage(int position, GridView binding, String file) {
+
+        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+        Glide.with(context).load(file)
+                .thumbnail(0.25f)
+                .apply(requestOptions)
+                .into(binding.imageview);
+        binding.id = position;
+    }
+
+    private void setVisibility(GridView binding) {
+        if (is_check_open) {
+            binding.checkbox.setVisibility(View.VISIBLE);
+
+        } else {
+            binding.checkbox.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -78,10 +101,22 @@ public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridVi
     }
 
 
-    public void update(Bitmap[] thumbnails, boolean[] thumbnailsselection) {
-        this.thumbnailsselection = thumbnailsselection;
-        this.listofImage = thumbnails;
+    public void update(ArrayList<String> list) {
+        arrayList = list;
         notifyDataSetChanged();
+    }
+
+    boolean is_check_open;
+
+    public void update(boolean is_check_open) {
+        if (is_check_open) {
+            this.is_check_open = is_check_open;
+            notifyDataSetChanged();
+
+        } else {
+            this.is_check_open = is_check_open;
+            notifyDataSetChanged();
+        }
     }
 
     protected class GridView extends RecyclerView.ViewHolder {
@@ -93,12 +128,13 @@ public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridVi
         public GridView(@NonNull View itemView) {
             super(itemView);
             imageview = itemView.findViewById(R.id.iv_show_image);
-            checkbox=itemView.findViewById(R.id.ch_image_check);
+            checkbox = itemView.findViewById(R.id.ch_image_check);
         }
     }
 
-    public interface ClickEvent{
-        public void imageClickEvent(int position,String url);
-        public void checkBokClickEvent(int position,String url);
+    public interface ClickEvent {
+        public void imageClickEvent(int position, String url);
+
+        public void checkBokClickEvent(int position, String url);
     }
 }

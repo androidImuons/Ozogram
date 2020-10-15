@@ -1,4 +1,4 @@
-package com.example.ozogram.app.utils;
+package com.ozonetech.ozogram.app.utils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,9 +8,8 @@ import android.util.Log;
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.ozogram.model.ImageModel;
-import com.example.ozogram.view.adapter.GirdViewAdapter;
-import com.example.ozogram.view.adapter.SpinnerBaseAdapter;
+
+import com.ozonetech.ozogram.model.ImageModel;
 
 import java.util.ArrayList;
 
