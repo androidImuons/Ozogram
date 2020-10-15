@@ -23,7 +23,6 @@ public class LoginActivity extends BaseActivity implements LoginListener {
 
     ActivityLoginBinding loginBinding;
     LoginViewModel loginViewModel;
-    // Session Manager Class
     SessionManager session;
 
     @Override
@@ -37,9 +36,8 @@ public class LoginActivity extends BaseActivity implements LoginListener {
         loginBinding.executePendingBindings();
         loginBinding.setLifecycleOwner(LoginActivity.this);
 
-        // Session Manager
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
+
     }
 
     @Override

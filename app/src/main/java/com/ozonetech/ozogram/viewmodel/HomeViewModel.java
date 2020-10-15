@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.repository.GetPosts;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
+import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
 
 public class HomeViewModel extends ViewModel {
@@ -46,6 +47,7 @@ public class HomeViewModel extends ViewModel {
 
     }
     public void onClickProfile(View view){
-
+        Intent intent=new Intent(view.getContext(), ProfileActivity.class);
+        view.getContext().startActivity(intent);
     }
 }
