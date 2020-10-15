@@ -1,7 +1,6 @@
 package com.ozonetech.ozogram.view.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -9,24 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-
-import com.bumptech.glide.Glide;
 
 
 import com.google.android.material.tabs.TabLayout;
@@ -36,20 +25,17 @@ import com.ozonetech.ozogram.databinding.ActivityGalleryBinding;
 import com.ozonetech.ozogram.model.ImageModel;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
 import com.ozonetech.ozogram.view.adapter.SpinnerBaseAdapter;
-import com.ozonetech.ozogram.view.fragment.GalleryFragment;
 import com.ozonetech.ozogram.view.fragment.PhotoFragment;
 import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
-import com.ozonetech.ozogram.view.fragment.StoryFragment;
 import com.ozonetech.ozogram.view.fragment.VideoFragment;
 import com.ozonetech.ozogram.viewmodel.GalleryViewModel;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.ozonetech.ozogram.app.utils.Contrants.REQUEST_READ_EXTERNAL_STORAGE_PERMISSION;
-
+//https://deepshikhapuri.wordpress.com/2017/03/29/get-all-videos-from-gallery-in-android/
 public class GalleryActivity extends BaseActivity  {
     ActivityGalleryBinding galleryBinding;
     GalleryViewModel galleryViewModel;
@@ -86,7 +72,7 @@ public class GalleryActivity extends BaseActivity  {
         galleryBinding.inculdeGalleryToolBar.spinnerShow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                postGalleryFrament.setList(al_images.get(i).getAl_imagepath());
+                postGalleryFrament.setList(al_images.get(i).getAl_imagepath(),al_images.get(i).getType());
             }
 
             @Override
@@ -103,7 +89,8 @@ public class GalleryActivity extends BaseActivity  {
         galleryBinding.inculdeGalleryToolBar.txtNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(getApplicationContext(),FilterActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -136,11 +123,12 @@ public class GalleryActivity extends BaseActivity  {
         gallery.getImages(getApplicationContext());
 
          al_images = Gallery.al_images;
+
         SpinnerBaseAdapter spinnerBaseAdapter = new SpinnerBaseAdapter(getApplicationContext(), al_images);
         galleryBinding.inculdeGalleryToolBar.spinnerShow.setAdapter(spinnerBaseAdapter);
         // galleryBinding.gridView.setHasFixedSize(true)
         if(al_images.get(0).getAl_imagepath()!=null){
-            postGalleryFrament.setList(al_images.get(0).getAl_imagepath());
+            postGalleryFrament.setList(al_images.get(0).getAl_imagepath(), al_images.get(0).getType());
         }
 
     }

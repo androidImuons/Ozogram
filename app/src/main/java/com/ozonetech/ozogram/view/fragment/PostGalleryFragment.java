@@ -12,12 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
-import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
 import com.ozonetech.ozogram.viewmodel.PostGalleryViewModel;
 
@@ -139,10 +137,10 @@ public class PostGalleryFragment extends Fragment {
 
     ArrayList<String> arrayList = new ArrayList<>();
 
-    public void setList(ArrayList<String> arrayList) {
+    public void setList(ArrayList<String> arrayList, int type) {
         this.arrayList = arrayList;
         if (obj_adapter != null) {
-            obj_adapter.update(arrayList);
+            obj_adapter.update(arrayList,type);
         } else {
             Log.d(tag, "--post obj null-");
         }

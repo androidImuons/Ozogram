@@ -33,6 +33,7 @@ public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridVi
     ArrayList<String> arrayList;
     ClickEvent clickEvent;
 PostGalleryFragment postGalleryFragment;
+    private int type;
 
     public GirdViewAdapter(Context applicationContext, ArrayList<String> al_images, PostGalleryFragment galleryActivity) {
         context = applicationContext;
@@ -78,11 +79,21 @@ PostGalleryFragment postGalleryFragment;
 
     private void setImage(int position, GridView binding, String file) {
 
-        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
-        Glide.with(context).load(file)
-                .thumbnail(0.25f)
-                .apply(requestOptions)
-                .into(binding.imageview);
+        if(type==0){
+            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+            Glide.with(context).load(file)
+                    .thumbnail(0.25f)
+                    .apply(requestOptions)
+                    .into(binding.imageview);
+        }else if(type==1){
+            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+            Glide.with(context).load(file)
+                    .skipMemoryCache(false)
+                    .apply(requestOptions)
+                    .into(binding.imageview);
+        }
+
+
         binding.id = position;
     }
 
@@ -101,7 +112,8 @@ PostGalleryFragment postGalleryFragment;
     }
 
 
-    public void update(ArrayList<String> list) {
+    public void update(ArrayList<String> list,int type) {
+        this.type=type;
         arrayList = list;
         notifyDataSetChanged();
     }

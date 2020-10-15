@@ -16,6 +16,8 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.ozonetech.ozogram.view.activity.ProfileActivity">
         </activity>
+        <activity android:name="com.ozonetech.ozogram.view.activity.FilterActivity">
+        </activity>
         <activity android:name="com.ozonetech.ozogram.view.activity.GalleryActivity"/>
         <activity
             android:name="com.ozonetech.ozogram.view.activity.LoginActivity"

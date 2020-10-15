@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
@@ -31,10 +32,9 @@ import java.io.File;
 import iamutkarshtiwari.github.io.ananas.BaseActivity;
 import iamutkarshtiwari.github.io.ananas.editimage.EditImageActivity;
 import iamutkarshtiwari.github.io.ananas.editimage.ImageEditorIntentBuilder;
-import iamutkarshtiwari.github.io.ananas.editimage.utils.BitmapUtils;
-import iamutkarshtiwari.github.io.ananas.picchooser.SelectPictureActivity;
 
-public class FilterActivity extends Activity implements View.OnClickListener {
+
+public class FilterActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int REQUEST_PERMISSON_SORAGE = 1;
     public static final int REQUEST_PERMISSON_CAMERA = 2;
 

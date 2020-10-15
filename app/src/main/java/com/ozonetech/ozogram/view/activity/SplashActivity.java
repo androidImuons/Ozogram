@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToLoginActivity() {
-        Intent intent = new Intent(this, FilterActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Add new Flag to start new Activity
