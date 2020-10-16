@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.app.utils.SessionManager;
-import com.ozonetech.ozogram.model.User;
+import com.ozonetech.ozogram.model.UserData;
 import com.ozonetech.ozogram.repository.ProfileRepository;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
 
@@ -28,7 +28,7 @@ public class UserProfileResponseModel extends ViewModel {
     private String message;
     @SerializedName("data")
     @Expose
-    private User user;
+    private UserData user;
 
     public Integer getCode() {
         return code;
@@ -54,11 +54,11 @@ public class UserProfileResponseModel extends ViewModel {
         this.message = message;
     }
 
-    public User getUser() {
+    public UserData getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserData user) {
         this.user = user;
     }
 

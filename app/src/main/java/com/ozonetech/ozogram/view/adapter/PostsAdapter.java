@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.PostRowItemBinding;
-import com.ozonetech.ozogram.model.Post;
+import com.ozonetech.ozogram.model.PostGalleryPath;
 
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder> {
 
-    private List<Post> postList;
+    private List<PostGalleryPath> postGalleryPathList;
     private LayoutInflater layoutInflater;
     private PostsAdapterListener listener;
 
@@ -30,8 +30,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
     }
 
 
-    public PostsAdapter(List<Post> postList, PostsAdapterListener listener) {
-        this.postList = postList;
+    public PostsAdapter(List<PostGalleryPath> postGalleryPathList, PostsAdapterListener listener) {
+        this.postGalleryPathList = postGalleryPathList;
         this.listener = listener;
     }
 
@@ -47,12 +47,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.binding.setPost(postList.get(position));
+        holder.binding.setPostGalleryPath(postGalleryPathList.get(position));
         holder.binding.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPostClicked(postList.get(position));
+                    listener.onPostClicked(postGalleryPathList.get(position));
                 }
             }
         });
@@ -60,10 +60,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return postList.size();
+        return postGalleryPathList.size();
     }
 
     public interface PostsAdapterListener {
-        void onPostClicked(Post post);
+        void onPostClicked(PostGalleryPath postGalleryPath);
     }
 }

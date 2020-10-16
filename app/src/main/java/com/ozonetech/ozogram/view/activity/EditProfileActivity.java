@@ -2,83 +2,98 @@ package com.ozonetech.ozogram.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.ActivityEditProfileBinding;
-import com.ozonetech.ozogram.viewmodel.EditProfileModel;
+import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.view.listeners.EditProfileListener;
+import com.ozonetech.ozogram.viewmodel.EditProfileViewModel;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseActivity implements EditProfileListener, View.OnClickListener {
 
     ActivityEditProfileBinding activityEditProfileBinding;
-    EditProfileModel editProfileModel;
-    MyClickHandlers handlers;
+    public EditProfileViewModel editProfileViewModel;
     SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        activityEditProfileBinding= DataBindingUtil.setContentView(EditProfileActivity.this,R.layout.activity_edit_profile);
-        sessionManager=new SessionManager(EditProfileActivity.this);
-        handlers = new MyClickHandlers(this);
+        editProfileViewModel = ViewModelProviders.of(EditProfileActivity.this).get(EditProfileViewModel.class);
+        activityEditProfileBinding = DataBindingUtil.setContentView(EditProfileActivity.this, R.layout.activity_edit_profile);
+        editProfileViewModel.editProfileListener = this;
+        activityEditProfileBinding.executePendingBindings();
+        activityEditProfileBinding.setLifecycleOwner(this);
+        activityEditProfileBinding.setEditProfile(editProfileViewModel);
+        sessionManager = new SessionManager(getApplicationContext());
         renderEditProfile();
+
     }
 
     private void renderEditProfile() {
+        editProfileViewModel.setProfilePicture(sessionManager.getUserDetails().get(SessionManager.KEY_PROFILE_PICTURE));
+        editProfileViewModel.setFullName(sessionManager.getUserDetails().get(SessionManager.KEY_FULL_NAME));
+        editProfileViewModel.setUserName(sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME));
+        editProfileViewModel.setBio(sessionManager.getUserDetails().get(SessionManager.KEY_BIO));
+        editProfileViewModel.setEmail(sessionManager.getUserDetails().get(SessionManager.KEY_EMAIL));
+        editProfileViewModel.setMobileNumber(sessionManager.getUserDetails().get(SessionManager.KEY_MOBILE));
+        editProfileViewModel.setGender(sessionManager.getUserDetails().get(SessionManager.KEY_GENDER));
+        editProfileViewModel.setWebsite(sessionManager.getUserDetails().get(SessionManager.KEY_WEBSITE));
+        activityEditProfileBinding.setEditProfile(editProfileViewModel);
 
-        editProfileModel=new EditProfileModel();
-        editProfileModel.setProfilePicture(sessionManager.getUserDetails().get(SessionManager.KEY_PROFILE_PICTURE));
-        editProfileModel.setFullName(sessionManager.getUserDetails().get(SessionManager.KEY_FULL_NAME));
-        editProfileModel.setUserName(sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME));
-        editProfileModel.setBio(sessionManager.getUserDetails().get(SessionManager.KEY_BIO));
-        editProfileModel.setEmail(sessionManager.getUserDetails().get(SessionManager.KEY_EMAIL));
-        editProfileModel.setMobileNumber(sessionManager.getUserDetails().get(SessionManager.KEY_MOBILE));
-        editProfileModel.setGender(sessionManager.getUserDetails().get(SessionManager.KEY_GENDER));
-        editProfileModel.setWebsite(sessionManager.getUserDetails().get(SessionManager.KEY_WEBSITE));
-
-        activityEditProfileBinding.setEditProfile(editProfileModel);
-        // assign click handlers
-        activityEditProfileBinding.setHandlers(handlers);
+        activityEditProfileBinding.ivAccept.setOnClickListener(this);
+        activityEditProfileBinding.ivCancel.setOnClickListener(this);
 
     }
 
-    public class MyClickHandlers {
+    private void updateProfiel() {
+        showProgressDialog("Please wait...");
+        editProfileViewModel.onUpdateProfile(EditProfileActivity.this, editProfileViewModel.editProfileListener = this);
+    }
 
-        Context context;
 
-        public MyClickHandlers(Context context) {
-            this.context = context;
-        }
+    @Override
+    public void onUpdateProfileDataSuccess(LiveData<UpdateDataResponseModel> updateDataResponse) {
 
-        public void onAcceptClicked(View view){
+        updateDataResponse.observe(EditProfileActivity.this, new Observer<UpdateDataResponseModel>() {
+            @Override
+            public void onChanged(UpdateDataResponseModel updateDataResponseModel) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (updateDataResponse.getValue().getCode() == 200 && updateDataResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
+                        showSnackbar(activityEditProfileBinding.llEditProfileData, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                        sessionManager.setEditProfileData(editProfileViewModel.bio, editProfileViewModel.website, editProfileViewModel.gender);
+                        Log.d("EditProfileActivity", "Response : Code" + updateDataResponse.getValue().getCode() + "\n Status : " + updateDataResponse.getValue().getStatus() + "\n Message : " + updateDataResponse.getValue().getMessage());
 
-            Toast.makeText(getApplicationContext(), "Edit Profile Accept pressed!", Toast.LENGTH_LONG).show();
+                    } else {
+                        showSnackbar(activityEditProfileBinding.llEditProfileData, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
 
-            editProfileModel.setProfilePicture(editProfileModel.getProfilePicture());
-            editProfileModel.setFullName(editProfileModel.getFullName());
-            editProfileModel.setUserName(editProfileModel.getUserName());
-            editProfileModel.setBio(editProfileModel.getBio());
-            editProfileModel.setEmail(editProfileModel.getEmail());
-            editProfileModel.setMobileNumber(editProfileModel.getMobileNumber());
-            editProfileModel.setGender(editProfileModel.getGender());
-            editProfileModel.setWebsite(editProfileModel.getWebsite());
+    }
 
-            activityEditProfileBinding.setEditProfile(editProfileModel);
-            activityEditProfileBinding.setHandlers(handlers);
-
-            sessionManager.setEditProfileData(editProfileModel.getProfilePicture(),editProfileModel.getFullName(),editProfileModel.getUserName(),
-                    editProfileModel.getBio(),editProfileModel.getEmail() ,editProfileModel.getMobileNumber(),editProfileModel.getGender(),editProfileModel.getWebsite());
-        }
-
-        public void onCancelClicked(View view){
-            finish();
-        }
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
     @Override
@@ -86,4 +101,15 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.iv_accept) {
+            updateProfiel();
+        }else if(view.getId() == R.id.iv_cancel){
+           finish();
+        }
+    }
+
+
 }

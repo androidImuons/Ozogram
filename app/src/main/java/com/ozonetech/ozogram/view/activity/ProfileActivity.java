@@ -1,8 +1,6 @@
 package com.ozonetech.ozogram.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableField;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -25,8 +23,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.ActivityProfileBinding;
-import com.ozonetech.ozogram.model.Post;
-import com.ozonetech.ozogram.model.User;
+import com.ozonetech.ozogram.model.PostData;
+import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
 import com.ozonetech.ozogram.view.fragment.GalleryFragment;
 import com.ozonetech.ozogram.view.fragment.StoryFragment;
@@ -81,8 +79,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
     private void initRecyclerView() {
         rv_profile_story = activityProfileBinding.rvProfileStory;
         rv_profile_story.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        profileStroyAdpter = new ProfileStroyAdpter(getPosts(), this);
-        rv_profile_story.setAdapter(profileStroyAdpter);
+
 
         viewPager = activityProfileBinding.viewpager;
         setupViewPager(viewPager);
@@ -111,21 +108,11 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         userProfileResponseModel.fetchUserProfileData(ProfileActivity.this, userProfileResponseModel.userProfileListener=this);
     }
 
-    private ArrayList<Post> getPosts() {
-        ArrayList<Post> posts = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
-            Post post = new Post();
-            post.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
-            posts.add(post);
-        }
-
-        return posts;
-    }
 
 
     @Override
-    public void onPostClicked(Post post) {
-        Toast.makeText(getApplicationContext(), "Post clicked! " + post.getImageUrl(), Toast.LENGTH_SHORT).show();
+    public void onPostClicked(PostGalleryPath postGalleryPath) {
+        Toast.makeText(getApplicationContext(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -147,18 +134,43 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                         Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
                         Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
 
-                        session.saveUserProfileData(userProfileResponse.getValue().getUser().getUserId(),
+                        session.saveUserProfileData(
+                                String.valueOf(userProfileResponse.getValue().getUser().getId()),
+                                userProfileResponse.getValue().getUser().getUserId(),
                                 userProfileResponse.getValue().getUser().getFullname(),
                                 userProfileResponse.getValue().getUser().getEmail(),
                                 userProfileResponse.getValue().getUser().getMobile(),
                                 userProfileResponse.getValue().getUser().getBio(),
                                 userProfileResponse.getValue().getUser().getProfilePicture(),
-                                userProfileResponse.getValue().getUser().getJoiningDate());
+                                userProfileResponse.getValue().getUser().getWebsite(),
+                                userProfileResponse.getValue().getUser().getGender(),
+                                userProfileResponse.getValue().getUser().getJoiningDate(),
+                                String.valueOf(userProfileResponse.getValue().getUser().getPostsCount()));
 
                         // display user
                         activityProfileBinding.setUser(userProfileResponse.getValue().getUser());
+
                         // assign click handlers
                         activityProfileBinding.setHandlers(handlers);
+
+
+                        List<PostData> postDataArrayList=new ArrayList<>();
+                        postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
+                        if(postDataArrayList.size() != 0 ){
+                            List<PostGalleryPath> postGalleryPathsArraylist=new ArrayList<>();
+                            for(int i=0;i<postDataArrayList.size();i++){
+                                if(postDataArrayList.get(i).getPostGalleryPath().size() != 0){
+
+                                    for (int j=0;j<postDataArrayList.get(i).getPostGalleryPath().size();j++){
+                                        postGalleryPathsArraylist.add(postDataArrayList.get(i).getPostGalleryPath().get(j));
+                                    }
+
+                                }
+                            }
+
+                            setRecyclerView(postGalleryPathsArraylist);
+
+                        }
 
                     } else {
                         showSnackbar(activityProfileBinding.llUserProfile, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
@@ -172,6 +184,21 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
     }
 
 
+    private void setRecyclerView(List<PostGalleryPath> postGalleryPathsArraylist) {
+        profileStroyAdpter = new ProfileStroyAdpter(getPosts(postGalleryPathsArraylist), this);
+        rv_profile_story.setAdapter(profileStroyAdpter);
+    }
+
+    private ArrayList<PostGalleryPath> getPosts(List<PostGalleryPath> postGalleryPathsArraylist) {
+        ArrayList<PostGalleryPath> postGalleryPaths = new ArrayList<>();
+        for(int i=0;i<postGalleryPathsArraylist.size();i++){
+            PostGalleryPath postGalleryPath = new PostGalleryPath();
+            postGalleryPath.setImageUrl(postGalleryPathsArraylist.get(i).getImageUrl());
+            postGalleryPaths.add(postGalleryPath);
+        }
+
+        return postGalleryPaths;
+    }
 
     @Override
     public void onFailure(String message) {
@@ -257,4 +284,9 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

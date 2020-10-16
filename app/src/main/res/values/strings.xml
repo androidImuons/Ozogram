@@ -14,7 +14,7 @@
     <string name="forget_password">Forget Password</string>
     <string name="login">LOGIN</string>
     <string name="new_user_sign_up">New User? <font fgcolor="#CD7F0C">Sign Up</font></string>
-    <string name="posts">Posts</string>
+    <string name="postGalleryPaths">Posts</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="edit_profile">Edit Profile</string>

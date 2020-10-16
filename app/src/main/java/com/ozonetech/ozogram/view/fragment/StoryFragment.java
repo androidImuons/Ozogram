@@ -1,7 +1,10 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -18,15 +21,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ozonetech.ozogram.R;
-import com.ozonetech.ozogram.model.Post;
+import com.ozonetech.ozogram.databinding.StoryFragmentBinding;
+import com.ozonetech.ozogram.model.PostGalleryPath;
+import com.ozonetech.ozogram.view.activity.AddProfileActivity;
+import com.ozonetech.ozogram.view.activity.EditProfileActivity;
+import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
 
 import java.util.ArrayList;
 
 public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapterListener {
 
+    public StoryFragmentBinding storyFragmentBinding;
     private StoryViewModel mViewModel;
     RecyclerView rv_profile_story_gallery;
+    private MyClickHandlers handlers;
     private PostsAdapter mAdapter;
 
     public static StoryFragment newInstance() {
@@ -36,14 +45,22 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        storyFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.story_fragment, container, false);
+        View view = storyFragmentBinding.getRoot();
+        storyFragmentBinding.setLifecycleOwner(this);
+        handlers = new MyClickHandlers(getActivity());
 
-        View view = inflater.inflate(R.layout.story_fragment, container, false);
-        rv_profile_story_gallery=(RecyclerView)view.findViewById(R.id.rv_profile_story_gallery);
-        rv_profile_story_gallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        mAdapter = new PostsAdapter(getPosts(), this);
-        rv_profile_story_gallery.setAdapter(mAdapter);
+
+        renderStroryFragment(view);
         return view;
 
+    }
+
+    private void renderStroryFragment(View view) {
+        storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mAdapter = new PostsAdapter(getPosts(), this);
+        storyFragmentBinding.rvProfileStoryGallery.setAdapter(mAdapter);
+        storyFragmentBinding.setHandlers(handlers);
     }
 
     @Override
@@ -53,15 +70,15 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
         // TODO: Use the ViewModel
     }
 
-    private ArrayList<Post> getPosts() {
-        ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<PostGalleryPath> getPosts() {
+        ArrayList<PostGalleryPath> postGalleryPaths = new ArrayList<>();
         for (int i = 1; i < 10; i++) {
-            Post post = new Post();
-            post.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
-            posts.add(post);
+            PostGalleryPath postGalleryPath = new PostGalleryPath();
+            postGalleryPath.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
+            postGalleryPaths.add(postGalleryPath);
         }
 
-        return posts;
+        return postGalleryPaths;
     }
 
     /**
@@ -73,7 +90,36 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
     }
 
     @Override
-    public void onPostClicked(Post post) {
-        Toast.makeText(getActivity(), "Post clicked! " + post.getImageUrl(), Toast.LENGTH_SHORT).show();
+    public void onPostClicked(PostGalleryPath postGalleryPath) {
+        Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
+    }
+
+    public class MyClickHandlers {
+
+        Context context;
+
+        public MyClickHandlers(Context context) {
+            this.context = context;
+        }
+
+        public void onAddBioClick(View view){
+            goToAddProfileActivity("addBio");
+        }
+
+        public void onEditNameClick(View view) {
+            goToAddProfileActivity("editName");
+        }
+
+        public void onFindMoreClick(View view){
+            Toast.makeText(getActivity(), "Find More Firends clicked! ", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private void goToAddProfileActivity(String type) {
+        Intent intent = new Intent(getActivity(), AddProfileActivity.class);
+        intent.putExtra("type",type);
+        getActivity().startActivity(intent);
     }
 }
