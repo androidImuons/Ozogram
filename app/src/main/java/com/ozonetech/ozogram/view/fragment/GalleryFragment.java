@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
-import com.ozonetech.ozogram.model.Post;
+import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
 
 import java.util.ArrayList;
@@ -56,15 +56,15 @@ public class GalleryFragment extends Fragment implements PostsAdapter.PostsAdapt
         // TODO: Use the ViewModel
     }
 
-    private ArrayList<Post> getPosts() {
-        ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<PostGalleryPath> getPosts() {
+        ArrayList<PostGalleryPath> postGalleryPaths = new ArrayList<>();
         for (int i = 1; i < 10; i++) {
-            Post post = new Post();
-            post.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
-            posts.add(post);
+            PostGalleryPath postGalleryPath = new PostGalleryPath();
+            postGalleryPath.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
+            postGalleryPaths.add(postGalleryPath);
         }
 
-        return posts;
+        return postGalleryPaths;
     }
 
     /**
@@ -76,7 +76,7 @@ public class GalleryFragment extends Fragment implements PostsAdapter.PostsAdapt
     }
 
     @Override
-    public void onPostClicked(Post post) {
-        Toast.makeText(getActivity(), "Post clicked! " + post.getImageUrl(), Toast.LENGTH_SHORT).show();
+    public void onPostClicked(PostGalleryPath postGalleryPath) {
+        Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 }

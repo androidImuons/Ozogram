@@ -34,6 +34,7 @@ public class SessionManager {
     // User name (make variable public to access from outside)
     public static final String KEY_USERNAME = "username";
     public static final String KEY_ACCESS_TOKEN="accessToken";
+    public static final String KEY_ID ="id";
     public static final String KEY_USERID = "userId";
     public static final String KEY_FULL_NAME="fullname";
     public static final String KEY_EMAIL = "email";
@@ -43,6 +44,7 @@ public class SessionManager {
     public static final String KEY_JOINING_DATE = "joiningDate";
     public static final String KEY_GENDER="gender";
     public static final String KEY_WEBSITE = "website";
+    public static final String KEY_POST_COUNT="postCount";
 
 
     // Constructor
@@ -106,15 +108,19 @@ public class SessionManager {
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
+        user.put(KEY_ID,pref.getString(KEY_ID,"0"));
+        user.put(KEY_USERID,pref.getString(KEY_USERID,null));
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
         user.put(KEY_ACCESS_TOKEN,pref.getString(KEY_ACCESS_TOKEN,null));
-        user.put(KEY_USERID, pref.getString(KEY_USERID, null));
         user.put(KEY_FULL_NAME,pref.getString(KEY_FULL_NAME,null));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_MOBILE,pref.getString(KEY_MOBILE,null));
         user.put(KEY_BIO, pref.getString(KEY_BIO, null));
         user.put(KEY_PROFILE_PICTURE,pref.getString(KEY_PROFILE_PICTURE,null));
+        user.put(KEY_WEBSITE,pref.getString(KEY_WEBSITE,null));
+        user.put(KEY_GENDER,pref.getString(KEY_GENDER,null));
         user.put(KEY_JOINING_DATE,pref.getString(KEY_JOINING_DATE,null));
+        user.put(KEY_POST_COUNT,pref.getString(KEY_POST_COUNT,"0"));
         // return user
         return user;
     }
@@ -147,30 +153,37 @@ public class SessionManager {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void saveUserProfileData(String userId, String fullname, String email, String mobile, String bio, String profilePicture, String joiningDate) {
+    public void saveUserProfileData(String id,String userId, String fullname, String email, String mobile, String bio,
+                                    String profilePicture,String website,String gender, String joiningDate,String postCount) {
         // Storing name in pref
+        editor.putString(KEY_ID,id);
         editor.putString(KEY_USERID, userId);
         editor.putString(KEY_FULL_NAME,fullname);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_MOBILE,mobile);
         editor.putString(KEY_BIO, bio);
         editor.putString(KEY_PROFILE_PICTURE,profilePicture);
+        editor.putString(KEY_WEBSITE,website);
+        editor.putString(KEY_GENDER,gender);
         editor.putString(KEY_JOINING_DATE, joiningDate);
+        editor.putString(KEY_POST_COUNT,postCount);
         // commit changes
         editor.commit();
     }
 
-    public void setEditProfileData(String profilePicture, String fullName, String userName, String bio, String email, String mobileNumber, String gender, String website) {
+    public void setEditProfileData(String bio, String website,String gender) {
         // Storing name in pref
 
-        editor.putString(KEY_FULL_NAME,fullName);
-        editor.putString(KEY_USERNAME,userName);
-        editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_MOBILE,mobileNumber);
         editor.putString(KEY_BIO, bio);
-        editor.putString(KEY_PROFILE_PICTURE,profilePicture);
+        //editor.putString(KEY_PROFILE_PICTURE,profilePicture);
         editor.putString(KEY_WEBSITE, website);
         editor.putString(KEY_GENDER,gender);
+        // commit changes
+        editor.commit();
+    }
+
+    public void setProfileBio(String bio) {
+        editor.putString(KEY_BIO, bio);
         // commit changes
         editor.commit();
     }

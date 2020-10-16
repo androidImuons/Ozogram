@@ -7,15 +7,16 @@
     <data>
 
         <variable
-            name="edit_profile"
-            type="com.ozonetech.ozogram.viewmodel.EditProfileModel" />
+            name="EditProfile"
+            type="com.ozonetech.ozogram.viewmodel.EditProfileViewModel" />
         
-        <variable
+      <!--  <variable
             name="handlers"
-            type="com.ozonetech.ozogram.view.activity.EditProfileActivity.MyClickHandlers" />
+            type="com.ozonetech.ozogram.view.activity.EditProfileActivity.MyClickHandlers" />-->
     </data>
 
     <LinearLayout
+        android:id="@+id/ll_editProfileData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_image"
@@ -31,13 +32,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_cancel"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="@dimen/dp50"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:onClick="@{handlers::onCancelClicked}"
                 android:background="@drawable/cancel_icon" />
+<!--android:onClick="@{handlers::onCancelClicked}"-->
 
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:layout_width="match_parent"
@@ -53,13 +55,14 @@
                 app:custom_font="@string/app_font_bold" />
 
             <ImageView
+                android:id="@+id/iv_accept"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:padding="@dimen/dp10"
                 android:layout_marginRight="@dimen/dp50"
                 android:layout_gravity="center"
-                android:onClick="@{handlers::onAcceptClicked}"
                 android:background="@drawable/accept_icon" />
+            <!-- android:onClick="@{handlers::onAcceptClicked}"-->
 
 
         </LinearLayout>
@@ -84,7 +87,7 @@
                 android:layout_margin="@dimen/dp10"
                 android:src="@drawable/profile_pic"
                 app:civ_border_color="#7e3c62"
-                bind:profilePicture="@{edit_profile.profilePicture}"
+                bind:profilePicture="@{EditProfile.profilePicture}"
                 app:civ_border_width="2dp" />
 
             <com.ozonetech.ozogram.customeview.TypeTextView
@@ -110,7 +113,7 @@
                     android:hint="@string/name"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:text="@={edit_profile.fullName}"
+                    android:text="@={EditProfile.fullName}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"
@@ -129,7 +132,7 @@
                     android:hint="@string/user_name"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:text="@={edit_profile.userName}"
+                    android:text="@={EditProfile.userName}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"
@@ -148,7 +151,7 @@
                     android:hint="@string/website"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:text="@={edit_profile.website}"
+                    android:text="@={EditProfile.website}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"
@@ -166,8 +169,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/bio"
                     android:inputType="text"
-                    android:singleLine="true"
-                    android:text="@={edit_profile.bio}"
+                    android:text="@={EditProfile.bio}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"
@@ -208,7 +210,7 @@
                     android:hint="@string/email_address"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
-                    android:text="@={edit_profile.email}"
+                    android:text="@={EditProfile.email}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"
@@ -226,7 +228,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
-                    android:text="@={edit_profile.mobileNumber}"
+                    android:text="@={EditProfile.mobileNumber}"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
@@ -246,7 +248,7 @@
                     android:hint="@string/gender"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:text="@={edit_profile.gender}"
+                    android:text="@={EditProfile.gender}"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/colorHint"
                     android:textSize="@dimen/sp14"

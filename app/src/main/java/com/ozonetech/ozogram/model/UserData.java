@@ -1,20 +1,24 @@
 package com.ozonetech.ozogram.model;
 
 import android.widget.ImageView;
-
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import com.ozonetech.ozogram.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class User extends ViewModel {
+public class UserData extends ViewModel {
 
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -33,73 +37,67 @@ public class User extends ViewModel {
     @SerializedName("profile_picture")
     @Expose
     private String profilePicture;
+    @SerializedName("website")
+    @Expose
+    private Object website;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
     @SerializedName("joining_date")
     @Expose
     private String joiningDate;
     @SerializedName("posts")
     @Expose
-    private List<Object> posts = null;
+    private List<PostData> postData = null;
     @SerializedName("topup_status")
     @Expose
     private Integer topupStatus;
+    @SerializedName("posts_count")
+    @Expose
+    private Integer postsCount;
 
-    // profile meta fields are ObservableField, will update the UI
-    // whenever a new value is set
-    public ObservableField<Long> numberOfFollowers = new ObservableField<>();
-    public ObservableField<Long> numberOfPosts = new ObservableField<>();
-    public ObservableField<Long> numberOfFollowing = new ObservableField<>();
 
-    public User() {
+    public UserData() {
     }
 
-   // @Bindable
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
-      ///  notifyPropertyChanged(BR.userId);
     }
 
-    //@Bindable
     public String getFullname() {
         return fullname;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
-       // notifyPropertyChanged(BR.fullname);
     }
 
-   // @Bindable
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-      //  notifyPropertyChanged(BR.email);
     }
 
-   // @Bindable
     public String getMobile() {
         return mobile;
     }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-       // notifyPropertyChanged(BR.mobile);
     }
 
-   // @Bindable
     public String getBio() {
         return bio;
     }
 
     public void setBio(String bio) {
         this.bio = bio;
-       // notifyPropertyChanged(BR.bio);
     }
 
 
@@ -115,54 +113,77 @@ public class User extends ViewModel {
         // Picasso.with(view.getContext()).load(imageUrl).placeholder(R.drawable.placeholder).into(view);
     }
 
-  //  @Bindable
     public String getProfilePicture() {
         return profilePicture;
     }
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
-       // notifyPropertyChanged(BR.profilePicture);
     }
 
-   // @Bindable
     public String getJoiningDate() {
         return joiningDate;
     }
 
     public void setJoiningDate(String joiningDate) {
         this.joiningDate = joiningDate;
-       // notifyPropertyChanged(BR.joiningDate);
     }
 
-    public List<Object> getPosts() {
-        return posts;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPosts(List<Object> posts) {
-        this.posts = posts;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-   // @Bindable
+    public String getWebsite() {
+        String websiteString=convertObjToString(website);
+        return websiteString;
+    }
+
+    public void setWebsite(Object website) {
+        this.website = website;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public List<PostData> getPostDat() {
+        return postData;
+    }
+
+    public void setPostData(List<PostData> postData) {
+        this.postData = postData;
+    }
+
     public Integer getTopupStatus() {
         return topupStatus;
     }
 
     public void setTopupStatus(Integer topupStatus) {
         this.topupStatus = topupStatus;
-      //  notifyPropertyChanged(BR.topupStatus);
     }
 
-    public ObservableField<Long> getNumberOfFollowers() {
-        return numberOfFollowers;
+    public Integer getPostsCount() {
+        return postsCount;
     }
 
-    public ObservableField<Long> getNumberOfPosts() {
-        return numberOfPosts;
+    public void setPostsCount(Integer postsCount) {
+        this.postsCount = postsCount;
     }
 
-    public ObservableField<Long> getNumberOfFollowing() {
-        return numberOfFollowing;
+    public static String convertObjToString(Object clsObj) {
+        //convert object  to string json
+        String jsonSender = new Gson().toJson(clsObj, new TypeToken<Object>() {
+        }.getType());
+        return jsonSender;
     }
+
 
 }

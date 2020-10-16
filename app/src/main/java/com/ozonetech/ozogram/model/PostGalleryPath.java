@@ -5,10 +5,18 @@ import android.widget.ImageView;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.R;
 
-public class Post {
-    String imageUrl;
+public class PostGalleryPath {
+
+    @SerializedName("path")
+    @Expose
+    private String imageUrl;
+    @SerializedName("type")
+    @Expose
+    private String type;
 
     @BindingAdapter("imageUrl")
     public static void loadImage(ImageView view, String imageUrl) {
@@ -25,4 +33,13 @@ public class Post {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

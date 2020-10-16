@@ -3,6 +3,7 @@ package com.ozonetech.ozogram.app.web_api_services;
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.LoginResponseModel;
+import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.HashMap;
@@ -29,6 +30,9 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("user_profile")
     Call<UserProfileResponseModel> userProfile(@FieldMap Map<String, String> userProfileMap);
+
+    @POST("update_profile")
+    Call<UpdateDataResponseModel> updateProfile(@Body Map<String, String> updateProfileMap);
 
     @POST("get_posts")
     Call<GetPostResponseModel> getPostS();

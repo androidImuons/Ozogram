@@ -10,5 +10,4 @@ public interface LoginListener {
     void onLoginSuccess(LiveData<LoginResponseModel> loginResponse);
     void onLoginFailure(String message);
 
-
 }

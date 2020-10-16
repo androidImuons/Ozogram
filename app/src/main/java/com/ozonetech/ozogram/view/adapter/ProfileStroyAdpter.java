@@ -7,12 +7,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.ProfileStoryListItemBinding;
-import com.ozonetech.ozogram.model.Post;
+import com.ozonetech.ozogram.model.PostGalleryPath;
+
 import java.util.List;
 
 public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.MyViewHolder> {
 
-    private List<Post> postList;
+    private List<PostGalleryPath> postGalleryPathList;
     private LayoutInflater layoutInflater;
     private ProfileStroyAdpterListener listener;
 
@@ -26,8 +27,8 @@ public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.
         }
     }
 
-    public ProfileStroyAdpter(List<Post> postList, ProfileStroyAdpterListener listener) {
-        this.postList = postList;
+    public ProfileStroyAdpter(List<PostGalleryPath> postGalleryPathList, ProfileStroyAdpterListener listener) {
+        this.postGalleryPathList = postGalleryPathList;
         this.listener = listener;
     }
 
@@ -43,12 +44,12 @@ public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.binding.setPost(postList.get(position));
+        holder.binding.setPostGalleryPath(postGalleryPathList.get(position));
         holder.binding.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPostClicked(postList.get(position));
+                    listener.onPostClicked(postGalleryPathList.get(position));
                 }
             }
         });
@@ -56,10 +57,10 @@ public class ProfileStroyAdpter extends RecyclerView.Adapter<ProfileStroyAdpter.
 
     @Override
     public int getItemCount() {
-        return postList.size();
+        return postGalleryPathList.size();
     }
 
     public interface ProfileStroyAdpterListener {
-        void onPostClicked(Post post);
+        void onPostClicked(PostGalleryPath postGalleryPath);
     }
 }
