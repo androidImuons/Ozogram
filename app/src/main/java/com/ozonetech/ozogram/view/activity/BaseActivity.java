@@ -30,6 +30,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.ozonetech.ozogram.R;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -173,4 +176,7 @@ public class BaseActivity extends AppCompatActivity {
                 .build();
     }
 
+    public void loadImage(CircleImageView iv_user_image, ProgressBar pb_image, String s, Class<R.mipmap> mipmapClass) {
+
+    }
 }

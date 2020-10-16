@@ -5,15 +5,15 @@ import android.view.View;
 
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.base.AppBaseRecycleAdapter;
-import com.ozonetech.ozogram.model.GetPostDataModel;
+import com.ozonetech.ozogram.model.GetPostRecordModel;
 
 import java.util.List;
 
 public class StoryUserRecycleViewAdapter extends AppBaseRecycleAdapter {
     Context context;
-    List<GetPostDataModel> postDataModelList;
+    List<GetPostRecordModel> postDataModelList;
 
-    public StoryUserRecycleViewAdapter(Context applicationContext, List<GetPostDataModel> post) {
+    public StoryUserRecycleViewAdapter(Context applicationContext, List<GetPostRecordModel> post) {
         context = applicationContext;
         postDataModelList = post;
     }
@@ -29,10 +29,10 @@ public class StoryUserRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     @Override
     public int getDataCount() {
-         return postDataModelList == null ? 10 : postDataModelList.size();
+         return postDataModelList == null ? 0 : postDataModelList.size();
     }
 
-    public void updateList(List<GetPostDataModel> post) {
+    public void updateList(List<GetPostRecordModel> post) {
         postDataModelList=post;
         notifyDataSetChanged();
     }

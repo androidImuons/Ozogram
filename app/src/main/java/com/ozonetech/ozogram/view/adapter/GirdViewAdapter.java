@@ -58,6 +58,7 @@ PostGalleryFragment postGalleryFragment;
         if (position == 0) {
             postGalleryFragment.imageClick(position, file);
         }
+        Log.d("grid adpter", "----"+file);
         setImage(position, binding, file);
         setVisibility(binding);
 

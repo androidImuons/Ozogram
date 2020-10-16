@@ -6,7 +6,12 @@
     xmlns:fresco="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:weightSum="1">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/gray_line">
 
+    </View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -17,16 +22,16 @@
 
         <RelativeLayout
             android:layout_width="60dp"
+            android:gravity="center"
             android:background="@drawable/ic_circle_80"
             android:layout_height="60dp">
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/iv_user1"
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user_image"
                 android:layout_width="@dimen/dp50"
-                app:placeholderImage="@mipmap/ic_logo"
-                android:layout_centerInParent="true"
                 android:layout_height="@dimen/dp50"
-                fresco:progressBarAutoRotateInterval="1000"
-                fresco:roundAsCircle="true"/>
+                android:layout_centerVertical="true"
+                android:background="@mipmap/ic_logo" />
 
             <ProgressBar
                 android:id="@+id/pb_image"
@@ -42,6 +47,7 @@
             android:gravity="center_vertical">
 
             <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/txt_post_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:paddingLeft="@dimen/dp10"
@@ -61,6 +67,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_more"
                 android:layout_width="@dimen/dp20"
                 android:layout_height="@dimen/dp20"
                 android:background="@drawable/ic_more_new">
@@ -74,14 +81,11 @@
         android:background="@drawable/gray_line">
 
     </View>
-    <ImageView
-        android:id="@+id/iv_more"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/ic_post_temp"
-        android:layout_weight=".65"></ImageView>
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -175,10 +179,42 @@
         </LinearLayout>
     </LinearLayout>
     <com.ozonetech.ozogram.customeview.TypeTextView
+        android:id="@+id/txt_t_view"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/dp5"
-        android:text="Test Message Test Message Test Message Test Message Test Message Test Message Test Message "
-        android:layout_height="wrap_content">
+        android:textSize="@dimen/sp12"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        app:custom_font="@string/app_font_bold"
+        android:layout_height="20dp">
+
+    </com.ozonetech.ozogram.customeview.TypeTextView>
+    <com.ozonetech.ozogram.customeview.ReadMoreTextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@null"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/dp15"
+        app:colorClickableText="@color/colorBlue"
+        app:custom_font="@string/app_font_regular"
+        app:trimLength="150"
+        app:trimMode="trimModeLength" />
+    <com.ozonetech.ozogram.customeview.TypeTextView
+        android:id="@+id/txt_t_comment"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/dp5"
+        android:textSize="@dimen/sp12"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp5"
+        android:textColor="@color/text_color_gray"
+        android:textStyle="bold"
+        app:custom_font="@string/app_font_bold"
+        android:layout_height="20dp">
 
     </com.ozonetech.ozogram.customeview.TypeTextView>
 </LinearLayout>

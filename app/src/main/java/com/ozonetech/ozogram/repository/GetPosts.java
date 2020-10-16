@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.app.web_api_services.AppServices;
 import com.ozonetech.ozogram.app.web_api_services.ServiceGenerator;
@@ -28,7 +29,7 @@ public class GetPosts {
             @Override
             public void onResponse(Call<GetPostResponseModel> call, Response<GetPostResponseModel> response) {
                 if (response.isSuccessful()) {
-                    Log.d("get post", "--2-"+response.message());
+                    Log.d("get post", "--2-"+new Gson().toJson(response.body()));
                     getpostModel = response.body();
                     loginResponse.setValue(getpostModel);
                 } else {

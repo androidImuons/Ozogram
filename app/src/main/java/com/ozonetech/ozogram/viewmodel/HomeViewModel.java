@@ -6,18 +6,30 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ozonetech.ozogram.app.utils.SessionManager;
+import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
+import com.ozonetech.ozogram.model.LoginResponseModel;
 import com.ozonetech.ozogram.repository.GetPosts;
+import com.ozonetech.ozogram.repository.LikePost;
+import com.ozonetech.ozogram.repository.LoginRepository;
+import com.ozonetech.ozogram.repository.ProfileRepository;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.activity.ProfileActivity;
+import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
+import com.ozonetech.ozogram.view.listeners.UserProfileListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeViewModel extends ViewModel {
     public GetPostDataListener postDataListener;
     LiveData<GetPostResponseModel> getPosts;
-
+    public CommonResponseInterface commonResponseInterface;
     public void getPost(Context context) {
         postDataListener.onStarted();
         Log.d("HomeViewModel", "--1-");
@@ -31,6 +43,46 @@ public class HomeViewModel extends ViewModel {
             postDataListener.onSuccess(getPosts = new GetPosts().GetPost(context));
         }
     }
+
+    private LiveData<CommonResponse> commonResponseLiveData;
+
+    public void postLike(Context context,String post_id,String action) {
+
+
+        Map<String, String> likeparam = new HashMap<>();
+        likeparam.put("post_id", post_id);
+        likeparam.put("action",action);
+
+        //if the list is null
+        if (commonResponseLiveData == null) {
+            commonResponseLiveData = new MutableLiveData<CommonResponse>();
+            commonResponseLiveData = new LikePost().postLike(likeparam,context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        }else {
+            commonResponseLiveData = new LikePost().postLike(likeparam,context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        }
+    }
+
+    public void postComment(Context context,String post_id,String action) {
+
+        Map<String, String> likeparam = new HashMap<>();
+        likeparam.put("post_id", post_id);
+        likeparam.put("comment",action);
+
+        //if the list is null
+        if (commonResponseLiveData == null) {
+            commonResponseLiveData = new MutableLiveData<CommonResponse>();
+            commonResponseLiveData = new LikePost().postComment(likeparam,context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        }else {
+            commonResponseLiveData = new LikePost().postComment(likeparam,context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        }
+    }
+
+
+
 
     public void onClickHome(View view){
 

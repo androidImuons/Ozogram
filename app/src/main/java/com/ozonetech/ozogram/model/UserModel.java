@@ -10,6 +10,19 @@ public class UserModel {
     @SerializedName("fullname")
     @Expose
     private String fullname;
+
+    public String getProfile_picture() {
+        return profile_picture;
+    }
+
+    public void setProfile_picture(String profile_picture) {
+        this.profile_picture = profile_picture;
+    }
+
+    @SerializedName("profile_picture")
+    @Expose
+    private String profile_picture;
+
     @SerializedName("topup_status")
     @Expose
     private Integer topupStatus;
