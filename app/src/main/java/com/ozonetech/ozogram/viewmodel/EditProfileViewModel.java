@@ -20,6 +20,8 @@ import com.ozonetech.ozogram.view.listeners.EditProfileListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.RequestBody;
+
 public class EditProfileViewModel extends ViewModel {
 
     public String profilePicture;
@@ -108,41 +110,49 @@ public class EditProfileViewModel extends ViewModel {
     public EditProfileListener editProfileListener;
     public LiveData<UpdateDataResponseModel> updateDataResponseModel;
 
-    public void onUpdateProfile(Context context, EditProfileListener editProfileListener) {
+    public void onUpdateProfile(Context context, RequestBody requestBody,EditProfileListener editProfileListener) {
 
-        SessionManager sessionManager = new SessionManager(context);
+      /*  SessionManager sessionManager = new SessionManager(context);
         Map<String, String> updateProfielMap = new HashMap<>();
         String userid = sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME);
         updateProfielMap.put("user_id", userid);
         updateProfielMap.put("bio", bio);
         updateProfielMap.put("website", website);
 
-
+*/
         //if the list is null
         if (updateDataResponseModel == null) {
             updateDataResponseModel = new MutableLiveData<UpdateDataResponseModel>();
-            updateDataResponseModel = new ProfileRepository().updateUserProfile(updateProfielMap, context);
+            updateDataResponseModel = new ProfileRepository().updateUserProfile(requestBody, context);
             editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
         } else {
-            updateDataResponseModel = new ProfileRepository().updateUserProfile(updateProfielMap, context);
+            updateDataResponseModel = new ProfileRepository().updateUserProfile(requestBody, context);
             editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
         }
     }
 
-    public void onUpdateBio(Context context, EditProfileListener editProfileListener) {
-        SessionManager sessionManager = new SessionManager(context);
-        Map<String, String> updateProfielMap = new HashMap<>();
-        String userid = sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME);
-        updateProfielMap.put("user_id", userid);
-        updateProfielMap.put("bio", bio);
+    public void onUpdateProfilePic(Context context, RequestBody requestBody,EditProfileListener editProfileListener) {
 
         //if the list is null
         if (updateDataResponseModel == null) {
             updateDataResponseModel = new MutableLiveData<UpdateDataResponseModel>();
-            updateDataResponseModel = new ProfileRepository().updateUserProfile(updateProfielMap, context);
+            updateDataResponseModel = new ProfileRepository().updateUserProfilePic(requestBody, context);
             editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
         } else {
-            updateDataResponseModel = new ProfileRepository().updateUserProfile(updateProfielMap, context);
+            updateDataResponseModel = new ProfileRepository().updateUserProfilePic(requestBody, context);
+            editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
+        }
+    }
+
+
+    public void onUpdateBio(Context context, RequestBody requestBody, EditProfileListener editProfileListener) {
+        //if the list is null
+        if (updateDataResponseModel == null) {
+            updateDataResponseModel = new MutableLiveData<UpdateDataResponseModel>();
+            updateDataResponseModel = new ProfileRepository().updateUserProfile(requestBody, context);
+            editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
+        } else {
+            updateDataResponseModel = new ProfileRepository().updateUserProfile(requestBody, context);
             editProfileListener.onUpdateProfileDataSuccess(updateDataResponseModel);
         }
     }

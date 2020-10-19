@@ -21,6 +21,10 @@ import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.view.listeners.EditProfileListener;
 import com.ozonetech.ozogram.viewmodel.EditProfileViewModel;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 public class AddProfileActivity extends BaseActivity implements EditProfileListener {
 
     ActivityAddProfileBinding addProfileBinding;
@@ -100,8 +104,14 @@ public class AddProfileActivity extends BaseActivity implements EditProfileListe
     }
 
     private void updateBio() {
+
         showProgressDialog("Please wait...");
-        editProfileViewModel.onUpdateBio(AddProfileActivity.this, editProfileViewModel.editProfileListener = this);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME))
+                .addFormDataPart("bio", editProfileViewModel.bio);
+                       RequestBody requestBody = builder.build();
+        editProfileViewModel.onUpdateBio(AddProfileActivity.this, requestBody,editProfileViewModel.editProfileListener = this);
     }
 
     public void showSnackbar(View view, String message, int duration) {

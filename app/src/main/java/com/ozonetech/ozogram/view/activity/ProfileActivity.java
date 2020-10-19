@@ -1,5 +1,8 @@
 package com.ozonetech.ozogram.view.activity;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,10 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -25,24 +38,43 @@ import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.ActivityProfileBinding;
 import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
+import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
 import com.ozonetech.ozogram.view.fragment.GalleryFragment;
 import com.ozonetech.ozogram.view.fragment.StoryFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.ozonetech.ozogram.view.listeners.EditProfileListener;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
+import com.ozonetech.ozogram.viewmodel.EditProfileViewModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener {
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener , EditProfileListener {
 
     ActivityProfileBinding activityProfileBinding;
     UserProfileResponseModel userProfileResponseModel;
+    EditProfileViewModel editProfileViewModel;
     SessionManager session;
     RecyclerView rv_profile_story;
     private MyClickHandlers handlers;
     ProfileStroyAdpter profileStroyAdpter;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private Uri imageUri;
+    private File imageFile;
+    private RequestBody requestFile;
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
+
 
 
     private TabLayout tabLayout;
@@ -58,7 +90,10 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
         activityProfileBinding = DataBindingUtil.setContentView(ProfileActivity.this, R.layout.activity_profile);
         userProfileResponseModel = ViewModelProviders.of(ProfileActivity.this).get(UserProfileResponseModel.class);
+        editProfileViewModel = ViewModelProviders.of(ProfileActivity.this).get(EditProfileViewModel.class);
+
         activityProfileBinding.setUserprofiel(userProfileResponseModel);
+        activityProfileBinding.setEditProfile(editProfileViewModel);
         activityProfileBinding.executePendingBindings();
         activityProfileBinding.setLifecycleOwner(this);
         session = new SessionManager(getApplicationContext());
@@ -212,6 +247,31 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         snackbar.show();
     }
 
+    @Override
+    public void onUpdateProfileDataSuccess(LiveData<UpdateDataResponseModel> updateDataResponse) {
+        updateDataResponse.observe(ProfileActivity.this, new Observer<UpdateDataResponseModel>() {
+            @Override
+            public void onChanged(UpdateDataResponseModel updateDataResponseModel) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (updateDataResponse.getValue().getCode() == 200 && updateDataResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
+                        showSnackbar(activityProfileBinding.llUserProfile, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                       // sessionManager.setEditProfileData(editProfileViewModel.bio, editProfileViewModel.website, editProfileViewModel.gender);
+                        Log.d("ProfileActivity", "Response : Code" + updateDataResponse.getValue().getCode() + "\n Status : " + updateDataResponse.getValue().getStatus() + "\n Message : " + updateDataResponse.getValue().getMessage());
+                        renderProfile();
+                    } else {
+                        showSnackbar(activityProfileBinding.llUserProfile, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
+
+    }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -257,7 +317,28 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         }
 
         public void onProfileFabClicked(View view) {
-            Toast.makeText(getApplicationContext(), "Profile image pressed!", Toast.LENGTH_LONG).show();
+
+            if (!checkPermission()) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+            } else {
+                if (checkPermission()) {
+                    requestPermissionAndContinue();
+                } else {
+
+                    Intent i = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+                }
+            }
+
         }
 
         public boolean onProfileImageLongPressed(View view) {
@@ -267,21 +348,141 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
 
         public void onFollowersClicked(View view) {
-            Toast.makeText(context, "Followers is clicked!", Toast.LENGTH_SHORT).show();
+            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+           // Toast.makeText(context, "Followers coming soon!", Toast.LENGTH_SHORT).show();
         }
 
         public void onFollowingClicked(View view) {
-            Toast.makeText(context, "Following is clicked!", Toast.LENGTH_SHORT).show();
+            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+            //  Toast.makeText(context, "Following coming soon !", Toast.LENGTH_SHORT).show();
         }
 
         public void onPostsClicked(View view) {
-            Toast.makeText(context, "Posts is clicked!", Toast.LENGTH_SHORT).show();
+            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+            // Toast.makeText(context, "Posts is clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void goToEditProfileActivity() {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (selectedImage != null) {
+                imageUri = selectedImage;
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    imageFile = new File(picturePath);
+                    activityProfileBinding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    showSnackbar(activityProfileBinding.llUserProfile,imageFile.getName().toString(),Snackbar.LENGTH_SHORT);
+                    //tvChooseFile.setText(imageFile.getName());
+                    requestFile =
+                            RequestBody.create(
+                                    MediaType.parse(getContentResolver().getType(imageUri)),
+                                    imageFile
+                            );
+                    cursor.close();
+
+                    uploadProfilePic();
+                }
+            }
+            return;
+        }
+
+    }
+
+    private void uploadProfilePic() {
+        showProgressDialog("Please wait...");
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+        .addFormDataPart("user_id", session.getUserDetails().get(SessionManager.KEY_USERNAME) );
+        if (imageFile != null) {
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse(getContentResolver().getType(imageUri)),
+                            imageFile
+                    );
+            builder.addFormDataPart("profile_picture", imageFile.getName(), requestFile);
+            RequestBody requestBody = builder.build();
+            editProfileViewModel.onUpdateProfilePic(ProfileActivity.this,requestBody,editProfileViewModel.editProfileListener = this);
+        }
+    }
+
+    private boolean checkPermission() {
+
+        return ContextCompat.checkSelfPermission(ProfileActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(ProfileActivity.this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                ;
+    }
+
+    private void requestPermissionAndContinue() {
+        if (ContextCompat.checkSelfPermission(ProfileActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(ProfileActivity.this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this, WRITE_EXTERNAL_STORAGE)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this, READ_EXTERNAL_STORAGE)) {
+                android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(ProfileActivity.this);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle(getString(R.string.permission_necessary));
+                alertBuilder.setMessage(R.string.storage_permission_is_encessary_to_wrote_event);
+                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{WRITE_EXTERNAL_STORAGE
+                                , READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+                Log.e("", "permission denied, show dialog");
+            } else {
+                ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{WRITE_EXTERNAL_STORAGE,
+                        READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            //openActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (permissions.length > 0 && grantResults.length > 0) {
+
+                boolean flag = true;
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    //openActivity();
+                } else {
+                    //getActivity().finish();
+                }
+
+            } else {
+                //getActivity().finish();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override

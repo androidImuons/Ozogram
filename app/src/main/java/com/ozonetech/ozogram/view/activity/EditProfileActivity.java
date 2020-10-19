@@ -1,14 +1,27 @@
 package com.ozonetech.ozogram.view.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -21,11 +34,25 @@ import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.view.listeners.EditProfileListener;
 import com.ozonetech.ozogram.viewmodel.EditProfileViewModel;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class EditProfileActivity extends BaseActivity implements EditProfileListener, View.OnClickListener {
 
     ActivityEditProfileBinding activityEditProfileBinding;
     public EditProfileViewModel editProfileViewModel;
     SessionManager sessionManager;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private Uri imageUri;
+    private File imageFile=null;
+    private RequestBody requestFile;
+    private static final int PERMISSION_REQUEST_CODE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +65,6 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
         activityEditProfileBinding.setEditProfile(editProfileViewModel);
         sessionManager = new SessionManager(getApplicationContext());
         renderEditProfile();
-
     }
 
     private void renderEditProfile() {
@@ -54,14 +80,15 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
 
         activityEditProfileBinding.ivAccept.setOnClickListener(this);
         activityEditProfileBinding.ivCancel.setOnClickListener(this);
+        activityEditProfileBinding.tvUpdateProfilePic.setOnClickListener(this);
 
     }
 
-    private void updateProfiel() {
+  /*  private void updateProfiel() {
         showProgressDialog("Please wait...");
         editProfileViewModel.onUpdateProfile(EditProfileActivity.this, editProfileViewModel.editProfileListener = this);
     }
-
+*/
 
     @Override
     public void onUpdateProfileDataSuccess(LiveData<UpdateDataResponseModel> updateDataResponse) {
@@ -96,20 +123,172 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
         snackbar.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.iv_accept) {
-            updateProfiel();
-        }else if(view.getId() == R.id.iv_cancel){
-           finish();
+            updateProfile();
+
+        } else if (view.getId() == R.id.iv_cancel) {
+            goToProfileActivity();
+        }else if(view.getId() == R.id.tv_updateProfilePic){
+            if (!checkPermission()) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+            } else {
+                if (checkPermission()) {
+                    requestPermissionAndContinue();
+                } else {
+
+                    Intent i = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+                }
+            }
+
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (selectedImage != null) {
+                imageUri = selectedImage;
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    imageFile = new File(picturePath);
+                    activityEditProfileBinding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    showSnackbar(activityEditProfileBinding.llEditProfileData, imageFile.getName().toString(), Snackbar.LENGTH_SHORT);
+                    //tvChooseFile.setText(imageFile.getName());
+                    requestFile =
+                            RequestBody.create(
+                                    MediaType.parse(getContentResolver().getType(imageUri)),
+                                    imageFile
+                            );
+                    cursor.close();
+
+                }
+            }
+            return;
+        }
+
+    }
+
+
+    private void updateProfile() {
+        String website=editProfileViewModel.website.replace("\"","");
+        showProgressDialog("Please wait...");
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME))
+                .addFormDataPart("bio", editProfileViewModel.bio)
+                .addFormDataPart("website",website)
+                .addFormDataPart("gender", editProfileViewModel.gender.toLowerCase());
+
+        if (imageFile != null) {
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse(getContentResolver().getType(imageUri)),
+                            imageFile
+                    );
+            builder.addFormDataPart("profile_picture", imageFile.getName(), requestFile);
+        }
+        Log.d("EditProfileActivity", "Parameters : user_id" + sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME) +
+                "\n bio : " + editProfileViewModel.bio + "\n website : " + editProfileViewModel.website+
+                "\n gender : " + editProfileViewModel.gender.toLowerCase());
+
+        RequestBody requestBody = builder.build();
+        editProfileViewModel.onUpdateProfile(EditProfileActivity.this, requestBody, editProfileViewModel.editProfileListener = this);
+
+    }
+
+    private boolean checkPermission() {
+
+        return ContextCompat.checkSelfPermission(EditProfileActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(EditProfileActivity.this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                ;
+    }
+
+    private void requestPermissionAndContinue() {
+        if (ContextCompat.checkSelfPermission(EditProfileActivity.this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(EditProfileActivity.this, READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(EditProfileActivity.this, WRITE_EXTERNAL_STORAGE)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(EditProfileActivity.this, READ_EXTERNAL_STORAGE)) {
+                android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle(getString(R.string.permission_necessary));
+                alertBuilder.setMessage(R.string.storage_permission_is_encessary_to_wrote_event);
+                alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{WRITE_EXTERNAL_STORAGE
+                                , READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+                Log.e("", "permission denied, show dialog");
+            } else {
+                ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{WRITE_EXTERNAL_STORAGE,
+                        READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            //openActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (permissions.length > 0 && grantResults.length > 0) {
+
+                boolean flag = true;
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    //openActivity();
+                } else {
+                    //getActivity().finish();
+                }
+
+            } else {
+                //getActivity().finish();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private void goToProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goToProfileActivity();
+    }
 
 }

@@ -44,6 +44,10 @@
     <string name="save_path">save path : %s</string>
 
     <string name="iamutkarshtiwari_github_io_ananas_loading">Loading…</string>
+    <string name="permission_necessary">Allow Permission</string>
+    <string name="storage_permission_is_encessary_to_wrote_event">Please allow to access the device gallery.</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="read_more">more</string>

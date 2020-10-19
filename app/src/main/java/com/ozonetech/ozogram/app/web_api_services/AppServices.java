@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -32,7 +33,10 @@ public interface AppServices {
     Call<UserProfileResponseModel> userProfile(@FieldMap Map<String, String> userProfileMap);
 
     @POST("update_profile")
-    Call<UpdateDataResponseModel> updateProfile(@Body Map<String, String> updateProfileMap);
+    Call<UpdateDataResponseModel> updateProfile(@Body RequestBody post);
+
+    @POST("update_profile")
+    Call<UpdateDataResponseModel> updateProfilePic(@Body RequestBody post);
 
     @POST("get_posts")
     Call<GetPostResponseModel> getPostS();
