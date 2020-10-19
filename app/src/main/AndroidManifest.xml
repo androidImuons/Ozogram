@@ -40,7 +40,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".view.activity.FilterActivity"/>
         <provider
@@ -53,5 +52,4 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
     </application>
-
 </manifest>

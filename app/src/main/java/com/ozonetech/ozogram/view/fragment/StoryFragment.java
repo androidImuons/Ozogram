@@ -145,7 +145,6 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
                     if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
                         showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
                         Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
-                        Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
 
                         List<PostData> postDataArrayList=new ArrayList<>();
                         postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
