@@ -16,11 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
+import com.ozonetech.ozogram.view.adapter.UpLoadImageVideoPagerAdapter;
 import com.ozonetech.ozogram.viewmodel.PostGalleryViewModel;
+import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
+import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
+import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
+import com.volokh.danylo.video_player_manager.meta.MetaData;
+import com.volokh.danylo.video_player_manager.ui.SimpleMainThreadMediaPlayerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +51,6 @@ public class PostGalleryFragment extends Fragment {
     private View view;
     public boolean is_crop;
     private boolean is_check_open;
-    ArrayList<String> selected_image = new ArrayList<>();
     public int selected_position;
     public String selected_file_url;
     private GirdViewAdapter obj_adapter;
@@ -149,6 +156,7 @@ public class PostGalleryFragment extends Fragment {
     ArrayList<String> arrayList = new ArrayList<>();
 
     public void setList(ArrayList<String> arrayList, int type) {
+        selectedImageList.clear();
         this.arrayList = arrayList;
         if (obj_adapter != null) {
             obj_adapter.update(arrayList, type);
@@ -156,27 +164,84 @@ public class PostGalleryFragment extends Fragment {
             Log.d(tag, "--post obj null-");
         }
 
+
     }
 
     public HashMap<Integer, String> selectedImageList = new HashMap<>();
 
-    public void imageClick(int position, String url) {
+    public void imageClick(int position, String file) {
+        final String url = "file://" + file;
+
         Glide.with(getActivity()).load(url)
                 .into(fragmentPostGalleryBinding.ivImage);
         selected_file_url = url;
-        selectedImageList.put(position, url);
+        if (is_check_open) {
+            selectedImageList.put(position, file);
+        } else {
+            selectedImageList.clear();
+            selectedImageList.put(position, file);
+        }
+
         if (selected_position != position) {
             selected_position = position;
-            selected_image.add(url);
+        }
+        if (file.endsWith("mp4")){
+            fragmentPostGalleryBinding.videoPlayer.onVideoStoppedMainThread();
+
+            fragmentPostGalleryBinding.videoPlayer.setVisibility(View.VISIBLE);
+            videoLayer(url);
+            videoPlayerManager.playNewVideo(null, fragmentPostGalleryBinding.videoPlayer,url );
+        }else{
+            fragmentPostGalleryBinding.videoPlayer.onVideoStoppedMainThread();
+            fragmentPostGalleryBinding.videoPlayer.setVisibility(View.GONE);
         }
         fragmentPostGalleryBinding.nestedListGallery.scrollTo(0, 0);
     }
 
-    public void checkClick(int position, String url) {
-        selectedImageList.put(position, url);
+    public void checkClick(int position, String file, boolean checked) {
+        final String url = "file://" + file;
+        if (!checked) {
+            selectedImageList.remove(position);
+        } else {
+            selectedImageList.put(position, file);
+        }
         Glide.with(getActivity()).load(url)
                 .into(fragmentPostGalleryBinding.ivImage);
     }
+    private void videoLayer(String url){
 
+        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+        Glide.with(getActivity()).load(url)
+                .skipMemoryCache(false)
+                .apply(requestOptions)
+                .into(fragmentPostGalleryBinding.ivImage);
+
+        fragmentPostGalleryBinding.videoPlayer.addMediaPlayerListener(new SimpleMainThreadMediaPlayerListener(){
+            @Override
+            public void onVideoPreparedMainThread() {
+                // We hide the cover when video is prepared. Playback is about to start
+                fragmentPostGalleryBinding.ivImage.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onVideoStoppedMainThread() {
+                // We show the cover when video is stopped
+                fragmentPostGalleryBinding.ivImage.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onVideoCompletionMainThread() {
+                // We show the cover when video is completed
+                fragmentPostGalleryBinding.ivImage.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    VideoPlayerManager videoPlayerManager=new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+        @Override
+        public void onPlayerItemChanged(MetaData currentItemMetaData) {
+        }
+    });
 
 }

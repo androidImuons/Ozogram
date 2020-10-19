@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.ozonetech.ozogram.app.utils.SessionManager;
@@ -31,13 +33,14 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class PostUpload {
 
     private String tag="PostUpload";
-
-    public void postUpload(HashMap<String, RequestBody> param, ArrayList<String> filepath1, Context context) {
-
-        ArrayList<String> filepath = new ArrayList<>();
-        filepath.add("/storage/emulated/0/DCIM/Camera/20200911_181635.jpg");
-        filepath.add("/storage/emulated/0/DCIM/Camera/20200911_181618.jpg");
-        filepath.add("/storage/emulated/0/DCIM/Camera/20200903_153252.jpg");
+    CommonResponse commonResponse;
+    private MutableLiveData<CommonResponse> commonResponseMutableLiveData;
+    public LiveData<CommonResponse> postUpload(HashMap<String, RequestBody> param, ArrayList<String> filepath, Context context) {
+        commonResponseMutableLiveData = new MutableLiveData<>();
+//        ArrayList<String> filepath = new ArrayList<>();
+//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
+//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
+//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
 //        MultipartBody.Builder builder = new MultipartBody.Builder();
 //        builder.setType(MultipartBody.FORM);
 //        builder.addFormDataPart("caption", "Robert");
@@ -46,6 +49,7 @@ public class PostUpload {
         MultipartBody.Part body1 = null;
         List<MultipartBody.Part> parts = new ArrayList<>();
         for (int i = 0; i < filepath.size(); i++) {
+            Log.d(tag,"--upload url--"+filepath.get(i));
             parts.add(prepareFilePart(filepath.get(i)));
         }
 
@@ -69,9 +73,13 @@ public class PostUpload {
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
 
                 if (response.isSuccessful()) {
-                    Log.d(tag, "--------------" + new Gson().toJson(response.body()));
-                    CommonResponse responseState = response.body();
-
+                    commonResponse = response.body();
+                    commonResponseMutableLiveData.setValue(commonResponse);
+                    Log.d(tag,"- 200---"+new Gson().toJson(response.body()));
+                } else {
+                    commonResponse = response.body();
+                    Log.d(tag,"---fail-"+new Gson().toJson(response.body()));
+                    commonResponseMutableLiveData.setValue(commonResponse);
                 }
             }
 
@@ -80,6 +88,7 @@ public class PostUpload {
                 Log.d(tag, "--------------" + t.getMessage());
             }
         });
+        return commonResponseMutableLiveData;
     }
 
     private MultipartBody.Part prepareFilePart(String fileUri){

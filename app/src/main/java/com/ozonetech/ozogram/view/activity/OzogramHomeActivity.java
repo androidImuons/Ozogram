@@ -69,12 +69,8 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.setLifecycleOwner(OzogramHomeActivity.this);
         setupSwipLayout();
         init();
+//
 
-//        PostUpload postUpload=new PostUpload();
-//        RequestBody cpation = RequestBody.create(MediaType.parse("text/plain"), "Caption added");
-//        HashMap<String, RequestBody> map = new HashMap<>();
-//        map.put("caption", cpation);
-//        postUpload.postUpload(map,null,getApplicationContext());
 
     }
 
@@ -98,7 +94,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     }
 
     private void setupSwipLayout() {
-        homeViewModel.getPost(getApplicationContext());
+
         activityOzogramHomeBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -108,6 +104,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
+        homeViewModel.getPost(getApplicationContext());
+    }
 
     @Override
     public void onBackPressed() {

@@ -75,7 +75,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
         TextView txt_t_comment;
         ReadMoreTextView tv_message;
         ProgressBar pb_image;
-TextView txt_comment;
+        TextView txt_comment;
+
         public StoryUserListView(View itemView) {
             super(itemView);
             iv_user_image = itemView.findViewById(R.id.iv_user_image);
@@ -90,7 +91,7 @@ TextView txt_comment;
             txt_t_comment = itemView.findViewById(R.id.txt_t_comment);
             tv_message = itemView.findViewById(R.id.tv_message);
             pb_image = itemView.findViewById(R.id.pb_image);
-            txt_comment=itemView.findViewById(R.id.txt_comment);
+            txt_comment = itemView.findViewById(R.id.txt_comment);
 
         }
 
@@ -108,21 +109,21 @@ TextView txt_comment;
             activity.loadImage(context, iv_user_image, pb_image, model.getUser().getProfile_picture(), R.drawable.ic_profile);
 
             if (model.getLikesCount() > 0) {
-                if(model.getLikesCount()==1){
-                    txt_t_view.setText("Liked by "+model.getLikeUsers().get(0).getFullname());
-                }else{
-                    txt_t_view.setText("Liked by "+model.getLikeUsers().get(0).getFullname()+" and other "+model.getLikesCount());
+                if (model.getLikesCount() == 1) {
+                    txt_t_view.setText("Liked by " + model.getLikeUsers().get(0).getFullname());
+                } else {
+                    txt_t_view.setText("Liked by " + model.getLikeUsers().get(0).getFullname() + " and other " + model.getLikesCount());
                 }
-               } else {
+            } else {
                 txt_t_view.setVisibility(View.GONE);
             }
             if (model.getCommentsCount() > 0) {
-                if(model.getCommentsCount()==1){
-                    txt_comment.setText(model.getComments().get(0).getComment()+" Comment by "+model.getComments().get(0).getFullname());
-                    txt_t_comment.setText("View "+model.getCommentsCount() + " Comment");
-                }else{
-                    txt_comment.setText(model.getComments().get(0).getComment()+" Comment by "+model.getComments().get(0).getFullname());
-                    txt_t_comment.setText("View all "+model.getCommentsCount() + " Comments");
+                if (model.getCommentsCount() == 1) {
+                    txt_comment.setText(model.getComments().get(0).getComment() + " Comment by " + model.getComments().get(0).getFullname());
+                    txt_t_comment.setText("View " + model.getCommentsCount() + " Comment");
+                } else {
+                    txt_comment.setText(model.getComments().get(0).getComment() + " Comment by " + model.getComments().get(0).getFullname());
+                    txt_t_comment.setText("View all " + model.getCommentsCount() + " Comments");
                 }
 
             } else {
@@ -154,7 +155,7 @@ TextView txt_comment;
                 iv_heart.setBackgroundResource(R.drawable.ic_heart_fill);
                 iv_heart.setTag(1);
                 //iv_heart.setSelected(true);
-            }else{
+            } else {
                 iv_heart.setTag(0);
             }
 

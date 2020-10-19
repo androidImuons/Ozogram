@@ -59,7 +59,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/transparent_color"
                         android:gravity="left"
-                        android:hint="@string/name"
+                        android:hint="Write a Caption"
                         android:inputType="text"
                         android:scrollbars="vertical"
                         android:text="new comment"
@@ -76,8 +76,8 @@
 
                     <ImageView
                         android:id="@+id/iv_send"
-                        android:layout_width="@dimen/dp20"
-                        android:layout_height="@dimen/dp20"
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
                         android:layout_marginLeft="@dimen/dp5"
                         android:src="@drawable/ic_send"
                         app:tint="@color/colorBlack">

@@ -56,7 +56,7 @@ PostGalleryFragment postGalleryFragment;
         //   binding.imageview.setImageBitmap(listofImage[position]);
         final String file = "file://" + arrayList.get(position);
         if (position == 0) {
-            postGalleryFragment.imageClick(position, file);
+            postGalleryFragment.imageClick(position, arrayList.get(position));
         }
         Log.d("grid adpter", "----"+file);
         setImage(position, binding, file);
@@ -66,13 +66,14 @@ PostGalleryFragment postGalleryFragment;
         binding.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postGalleryFragment.imageClick(position, file);
+                postGalleryFragment.imageClick(position, arrayList.get(position));
             }
         });
         binding.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postGalleryFragment.checkClick(position, file);
+
+                postGalleryFragment.checkClick(position, arrayList.get(position),  binding.checkbox.isChecked());
 
             }
         });

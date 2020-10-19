@@ -33,6 +33,7 @@ import com.ozonetech.ozogram.databinding.ActivityGalleryBinding;
 import com.ozonetech.ozogram.model.ImageModel;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
 import com.ozonetech.ozogram.view.adapter.SpinnerBaseAdapter;
+import com.ozonetech.ozogram.view.dialog.UploadImagesDialogBoxs;
 import com.ozonetech.ozogram.view.fragment.PhotoFragment;
 import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
 import com.ozonetech.ozogram.view.fragment.VideoFragment;
@@ -43,6 +44,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -91,9 +93,10 @@ public class GalleryActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selected_type = al_images.get(i).getType();
+
                 postGalleryFrament.setList(al_images.get(i).getAl_imagepath(), al_images.get(i).getType());
 
-                selected_folder=i;
+                selected_folder = i;
 
             }
 
@@ -117,19 +120,22 @@ public class GalleryActivity extends BaseActivity {
                         showSnackbar(galleryBinding.galleryViewPager, "Select Images or Video...!", Snackbar.LENGTH_SHORT);
                     } else {
 
-                        if (postGalleryFrament.selectedImageList.size() < 1) {
-                            Log.d(tag, "----one image--");
-                        } else {
+                        if (postGalleryFrament.selectedImageList.size() < 1 || postGalleryFrament.selectedImageList.size() == 1) {
                             try {
                                 Log.d(tag, "----filter--");
                                 fillterImage();
                             } catch (Exception e) {
-                                Log.d(tag, "----exception--"+e.getMessage());
+                                Log.d(tag, "----exception--" + e.getMessage());
                                 e.printStackTrace();
                             }
+                        } else {
+                            Log.d(tag, "----multiple images--");
+                            uploadImagesDialogBox(postGalleryFrament.selectedImageList);
                         }
 
                     }
+                }else if(selected_type==1){
+                    uploadImagesDialogBox(postGalleryFrament.selectedImageList);
                 }
 
             }
@@ -142,11 +148,11 @@ public class GalleryActivity extends BaseActivity {
     private void fillterImage() throws Exception {
         if (postGalleryFrament.is_crop) {
             Bitmap resultbitmap = postGalleryFrament.fragmentPostGalleryBinding.cropImageView.getCroppedImage();
-            postGalleryFrament.selected_file_url = bitmapToUriConverter(resultbitmap).toString();
+            // postGalleryFrament.selected_file_url = bitmapToUriConverter(resultbitmap).toString();
         }
 
 
-        Intent intent = new ImageEditorIntentBuilder(this,al_images.get(selected_folder).getAl_imagepath().get(postGalleryFrament.selected_position), al_images.get(selected_folder).getAl_imagepath().get(postGalleryFrament.selected_position))
+        Intent intent = new ImageEditorIntentBuilder(this, al_images.get(selected_folder).getAl_imagepath().get(postGalleryFrament.selected_position), al_images.get(selected_folder).getAl_imagepath().get(postGalleryFrament.selected_position))
                 .withAddText()
                 .withFilterFeature()
                 .withRotateFeature()
@@ -306,17 +312,6 @@ public class GalleryActivity extends BaseActivity {
         }
     }
 
-//    @Override
-//    public void imageClickEvent(int position, String url) {
-//        postGalleryFrament.imageClick(position,url);
-//    }
-//
-//    @Override
-//    public void checkBokClickEvent(int position, String url) {
-//     postGalleryFrament.checkClick(position,url);
-//    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -326,8 +321,15 @@ public class GalleryActivity extends BaseActivity {
             if (isImageEdit) {
                 Toast.makeText(this, getString(R.string.save_path, newFilePath), Toast.LENGTH_LONG).show();
                 Log.d(tag, "----save edit image--" + getString(R.string.save_path, newFilePath));
+
+                HashMap<Integer, String> list = new HashMap<>();
+                list.put(0, newFilePath);
+                uploadImagesDialogBox(list);
             } else {
                 newFilePath = data.getStringExtra(ImageEditorIntentBuilder.SOURCE_PATH);
+                HashMap<Integer, String> list = new HashMap<>();
+                list.put(0, newFilePath);
+                uploadImagesDialogBox(list);
                 Log.d(tag, "----save edit image  false--" + getString(R.string.save_path, newFilePath));
             }
 
@@ -341,6 +343,18 @@ public class GalleryActivity extends BaseActivity {
                 Exception error = result.getError();
             }
         }
+
+    }
+
+    private void uploadImagesDialogBox(HashMap<Integer, String> newFilePath) {
+        ArrayList<String> list_of_images_video = new ArrayList<>();
+        for (String value : newFilePath.values()) {
+            list_of_images_video.add(value);
+        }
+        Bundle bundle = new Bundle();
+        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle,GalleryActivity.this);
+        bundle.putStringArrayList("list", list_of_images_video);
+        instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
 
     }
 }
