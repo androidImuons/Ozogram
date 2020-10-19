@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -56,7 +58,12 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
     protected void hideProgressDialog() {
         try {
             if (progressDialog != null && progressDialog.isShowing()) {

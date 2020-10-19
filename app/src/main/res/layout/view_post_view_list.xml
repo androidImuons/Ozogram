@@ -84,6 +84,7 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
+        android:layout_margin="@dimen/dp5"
         android:layout_width="match_parent"
         android:layout_height="400dp" />
     <LinearLayout
@@ -181,7 +182,8 @@
     <com.ozonetech.ozogram.customeview.TypeTextView
         android:id="@+id/txt_t_view"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/dp5"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/dp5"
         android:textSize="@dimen/sp12"
         android:textStyle="bold"
         android:textColor="@color/colorBlack"
@@ -194,20 +196,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginTop="@dimen/dp5"
-        android:layout_marginRight="@dimen/dp10"
         android:background="@null"
         android:textColor="@color/colorBlack"
+     android:layout_margin="@dimen/dp5"
         android:textSize="@dimen/dp15"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/dp5"
         app:colorClickableText="@color/colorBlue"
         app:custom_font="@string/app_font_regular"
         app:trimLength="150"
         app:trimMode="trimModeLength" />
     <com.ozonetech.ozogram.customeview.TypeTextView
+        android:id="@+id/txt_comment"
+        android:layout_width="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/dp5"
+        android:textSize="@dimen/sp12"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp5"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        app:custom_font="@string/app_font_bold"
+        android:layout_height="20dp">
+
+    </com.ozonetech.ozogram.customeview.TypeTextView>
+    <com.ozonetech.ozogram.customeview.TypeTextView
         android:id="@+id/txt_t_comment"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/dp5"
+      android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/dp5"
         android:textSize="@dimen/sp12"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp5"

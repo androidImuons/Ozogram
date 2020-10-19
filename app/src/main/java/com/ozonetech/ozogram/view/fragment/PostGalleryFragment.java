@@ -1,5 +1,6 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,17 +10,20 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
 import com.ozonetech.ozogram.viewmodel.PostGalleryViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,11 +41,11 @@ public class PostGalleryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View view;
-    private boolean is_crop;
+    public boolean is_crop;
     private boolean is_check_open;
     ArrayList<String> selected_image = new ArrayList<>();
-    int selected_position;
-    String selected_file_url;
+    public int selected_position;
+    public String selected_file_url;
     private GirdViewAdapter obj_adapter;
     private String tag = "PostGalleryFragment";
 
@@ -77,7 +81,7 @@ public class PostGalleryFragment extends Fragment {
         }
     }
 
-    FragmentPostGalleryBinding fragmentPostGalleryBinding;
+    public FragmentPostGalleryBinding fragmentPostGalleryBinding;
     PostGalleryViewModel postGalleryViewModel;
 
     @Override
@@ -98,9 +102,15 @@ public class PostGalleryFragment extends Fragment {
         setListner();
         StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         fragmentPostGalleryBinding.recycleGallery.setLayoutManager(sglm);
+        fragmentPostGalleryBinding.recycleGallery.addItemDecoration(new GridSpacingItemDecoration(4, dpToPx(4), true));
         obj_adapter = new GirdViewAdapter(getContext(), arrayList, PostGalleryFragment.this);
         fragmentPostGalleryBinding.recycleGallery.setAdapter(obj_adapter);
         fragmentPostGalleryBinding.nestedListGallery.scrollTo(0, 0);
+    }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     private void setListner() {
@@ -112,6 +122,7 @@ public class PostGalleryFragment extends Fragment {
                     fragmentPostGalleryBinding.ivImage.setVisibility(View.GONE);
                     fragmentPostGalleryBinding.cropImageView.setVisibility(View.VISIBLE);
                     fragmentPostGalleryBinding.cropImageView.setImageUriAsync(Uri.parse(selected_file_url));
+
                 } else {
                     is_crop = false;
                     fragmentPostGalleryBinding.ivImage.setVisibility(View.VISIBLE);
@@ -140,17 +151,20 @@ public class PostGalleryFragment extends Fragment {
     public void setList(ArrayList<String> arrayList, int type) {
         this.arrayList = arrayList;
         if (obj_adapter != null) {
-            obj_adapter.update(arrayList,type);
+            obj_adapter.update(arrayList, type);
         } else {
             Log.d(tag, "--post obj null-");
         }
 
     }
 
+    public HashMap<Integer, String> selectedImageList = new HashMap<>();
+
     public void imageClick(int position, String url) {
         Glide.with(getActivity()).load(url)
                 .into(fragmentPostGalleryBinding.ivImage);
         selected_file_url = url;
+        selectedImageList.put(position, url);
         if (selected_position != position) {
             selected_position = position;
             selected_image.add(url);
@@ -159,11 +173,10 @@ public class PostGalleryFragment extends Fragment {
     }
 
     public void checkClick(int position, String url) {
+        selectedImageList.put(position, url);
         Glide.with(getActivity()).load(url)
                 .into(fragmentPostGalleryBinding.ivImage);
     }
-
-
 
 
 }
