@@ -204,14 +204,9 @@ public class PostGalleryFragment extends BaseFragment {
         if (!checked) {
             selectedImageList.remove(position);
         } else {
-            if(selectedImageList.size()<11){
-                selectedImageList.put(position, file);
-                Glide.with(getActivity()).load(url)
-                        .into(fragmentPostGalleryBinding.ivImage);
-            }else{
-                showSnackbar(fragmentPostGalleryBinding.recycleGallery,"Max 10 file allowed...!", Snackbar.LENGTH_SHORT);
-            }
-
+            selectedImageList.put(position, file);
+            Glide.with(getActivity()).load(url)
+                    .into(fragmentPostGalleryBinding.ivImage);
         }
 
     }

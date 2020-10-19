@@ -3,6 +3,7 @@ package com.ozonetech.ozogram.view.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,11 +71,12 @@ public class UpLoadImageVideoPagerAdapter extends PagerAdapter {
         if(postGalleryPathModelList.size()==1){
             viewHolder.iv_delete.setVisibility(View.GONE);
         }else{
-            viewHolder.iv_delete.setVisibility(View.VISIBLE);
+            viewHolder.iv_delete.setVisibility(View.GONE);
         }
         viewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("file delet","------"+position);
                 deleteItem(position);
             }
         });
@@ -90,8 +92,7 @@ public class UpLoadImageVideoPagerAdapter extends PagerAdapter {
     }
 
     private void deleteItem(int position) {
-       postGalleryPathModelList.remove(position);
-       notifyDataSetChanged();
+       //postGalleryPathModelList.remove(position);
     }
 
     private void setData(ViewHolder viewHolder, String url, int position) {

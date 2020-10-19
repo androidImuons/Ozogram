@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
@@ -72,8 +73,14 @@ PostGalleryFragment postGalleryFragment;
         binding.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(postGalleryFragment.selectedImageList.size()<10){
+                    postGalleryFragment.checkClick(position, arrayList.get(position),  binding.checkbox.isChecked());
 
-                postGalleryFragment.checkClick(position, arrayList.get(position),  binding.checkbox.isChecked());
+                }else{
+                    binding.checkbox.setChecked(false);
+                    postGalleryFragment.showSnackbar(postGalleryFragment.fragmentPostGalleryBinding.recycleGallery,"Max 10 file allowed...!", Snackbar.LENGTH_SHORT);
+                }
+
 
             }
         });
