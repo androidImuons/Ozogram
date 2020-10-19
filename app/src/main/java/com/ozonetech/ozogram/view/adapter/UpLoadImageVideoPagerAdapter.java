@@ -39,12 +39,12 @@ public class UpLoadImageVideoPagerAdapter extends PagerAdapter {
 
     private Context context;
     List<String> postGalleryPathModelList;
-GalleryActivity uploadImagesDialogBoxs;
+    GalleryActivity uploadImagesDialogBoxs;
 
     public UpLoadImageVideoPagerAdapter(BaseActivity activity, ArrayList<String> arraList, GalleryActivity uploadImagesDialogBoxs, FragmentActivity activity1) {
-        context=activity;
-        postGalleryPathModelList=arraList;
-        this.uploadImagesDialogBoxs=uploadImagesDialogBoxs;
+        context = activity;
+        postGalleryPathModelList = arraList;
+        this.uploadImagesDialogBoxs = uploadImagesDialogBoxs;
 
     }
 
@@ -52,7 +52,6 @@ GalleryActivity uploadImagesDialogBoxs;
     public int getCount() {
         return postGalleryPathModelList.size();
     }
-
 
 
     @Override
@@ -68,16 +67,31 @@ GalleryActivity uploadImagesDialogBoxs;
             viewHolder = (ViewHolder) view.getTag();
         }
 
+        if(postGalleryPathModelList.size()==1){
+            viewHolder.iv_delete.setVisibility(View.GONE);
+        }else{
+            viewHolder.iv_delete.setVisibility(View.VISIBLE);
+        }
+        viewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteItem(position);
+            }
+        });
 
-
-        if(postGalleryPathModelList.get(position).endsWith("jpg") || postGalleryPathModelList.get(position).endsWith("png")){
+        if (postGalleryPathModelList.get(position).endsWith("jpg") || postGalleryPathModelList.get(position).endsWith("png")) {
             setData(viewHolder, postGalleryPathModelList.get(position), position);
-        }else {
-            videoLayer(viewHolder,position);
+        } else {
+            videoLayer(viewHolder, position);
         }
 
 
         return view;
+    }
+
+    private void deleteItem(int position) {
+       postGalleryPathModelList.remove(position);
+       notifyDataSetChanged();
     }
 
     private void setData(ViewHolder viewHolder, String url, int position) {
@@ -99,15 +113,15 @@ GalleryActivity uploadImagesDialogBoxs;
         return object == view;
     }
 
-    private void videoLayer(ViewHolder viewHolder, int position){
+    private void videoLayer(ViewHolder viewHolder, int position) {
 
         RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
-        Glide.with(context).load( postGalleryPathModelList.get(position))
+        Glide.with(context).load(postGalleryPathModelList.get(position))
                 .skipMemoryCache(false)
                 .apply(requestOptions)
                 .into(viewHolder.iv_post_image);
 
-        viewHolder.vv_video.addMediaPlayerListener(new SimpleMainThreadMediaPlayerListener(){
+        viewHolder.vv_video.addMediaPlayerListener(new SimpleMainThreadMediaPlayerListener() {
             @Override
             public void onVideoPreparedMainThread() {
                 // We hide the cover when video is prepared. Playback is about to start
@@ -129,7 +143,7 @@ GalleryActivity uploadImagesDialogBoxs;
         viewHolder.iv_post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                videoPlayerManager.playNewVideo(null, viewHolder.vv_video,postGalleryPathModelList.get(position) );
+                videoPlayerManager.playNewVideo(null, viewHolder.vv_video, postGalleryPathModelList.get(position));
             }
         });
     }
@@ -138,15 +152,17 @@ GalleryActivity uploadImagesDialogBoxs;
         ImageView iv_post_image;
         VideoPlayerView vv_video;
         ProgressBar pb_bar;
+        public ImageView iv_delete;
 
         public ViewHolder(View itemView) {
             vv_video = itemView.findViewById(R.id.video_player);
             iv_post_image = itemView.findViewById(R.id.iv_post_image);
             pb_bar = itemView.findViewById(R.id.pb_bar);
+            iv_delete = itemView.findViewById(R.id.iv_delete);
         }
     }
 
-    VideoPlayerManager videoPlayerManager=new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+    VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
         @Override
         public void onPlayerItemChanged(MetaData currentItemMetaData) {
         }
