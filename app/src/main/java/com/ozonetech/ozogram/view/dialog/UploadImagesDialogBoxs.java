@@ -44,7 +44,7 @@ import me.relex.circleindicator.CircleIndicator;
 public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonResponseInterface {
     private ViewPager view_pager;
     private CircleIndicator circle;
-    private String tag="UploadImagesDialogBoxs";
+    private String tag = "UploadImagesDialogBoxs";
 
 
     @Override
@@ -91,6 +91,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
     public EditText et_comment;
     public ImageView iv_send;
 
+
     @Override
     public void initializeComponent() {
         super.initializeComponent();
@@ -102,6 +103,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
         iv_send = getView().findViewById(R.id.iv_send);
         view_pager = getView().findViewById(R.id.view_pager_upload_images);
         circle = getView().findViewById(R.id.circle);
+
         iv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +116,8 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                 commonViewModel.uploadPost(getContext(), caption, getArraList());
             }
         });
+
+
 
         setData();
     }
@@ -170,7 +174,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                     }
                 } catch (Exception e) {
                 } finally {
-                   dismiss();
+                    dismiss();
                 }
             }
         });

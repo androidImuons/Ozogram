@@ -9,9 +9,9 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:behavior_peekHeight="500dp"
         android:background="@color/transparent_color"
         app:behavior_hideable="true"
+        app:behavior_peekHeight="550dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
         <!--app:layout_behavior="android.support.design.widget.BottomSheetBehavior"-->
 
@@ -20,33 +20,40 @@
             android:id="@+id/cv_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="@dimen/dp15">
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
+                android:layout_height="550dp"
                 android:background="@drawable/ll_top_round_corner_blue"
-                android:layout_height="500dp">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/dp80"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent">
+                    android:orientation="vertical">
+
+
+
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/view_pager_upload_images"
                         android:layout_width="match_parent"
-                        android:layout_weight="0.9"
-                        android:layout_margin="@dimen/dp10"
-                        android:layout_height="0dp">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginBottom="@dimen/dp30">
 
                     </androidx.viewpager.widget.ViewPager>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_weight="0.1"
-                        android:layout_height="0dp">
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="@dimen/dp10">
+
                         <me.relex.circleindicator.CircleIndicator
                             android:id="@+id/circle"
                             android:layout_width="match_parent"
@@ -55,7 +62,8 @@
                             app:ci_drawable="@drawable/white_circle"
                             app:ci_drawable_unselected="@drawable/white_circle" />
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp60"
@@ -119,7 +127,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
-
 
 
         </androidx.cardview.widget.CardView>

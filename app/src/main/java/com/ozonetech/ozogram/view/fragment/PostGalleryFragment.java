@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
@@ -38,7 +39,7 @@ import java.util.HashMap;
  * Use the {@link PostGalleryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostGalleryFragment extends Fragment {
+public class PostGalleryFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -203,10 +204,16 @@ public class PostGalleryFragment extends Fragment {
         if (!checked) {
             selectedImageList.remove(position);
         } else {
-            selectedImageList.put(position, file);
+            if(selectedImageList.size()<11){
+                selectedImageList.put(position, file);
+                Glide.with(getActivity()).load(url)
+                        .into(fragmentPostGalleryBinding.ivImage);
+            }else{
+                showSnackbar(fragmentPostGalleryBinding.recycleGallery,"Max 10 file allowed...!", Snackbar.LENGTH_SHORT);
+            }
+
         }
-        Glide.with(getActivity()).load(url)
-                .into(fragmentPostGalleryBinding.ivImage);
+
     }
     private void videoLayer(String url){
 
@@ -241,6 +248,7 @@ public class PostGalleryFragment extends Fragment {
     VideoPlayerManager videoPlayerManager=new SingleVideoPlayerManager(new PlayerItemChangeListener() {
         @Override
         public void onPlayerItemChanged(MetaData currentItemMetaData) {
+
         }
     });
 
