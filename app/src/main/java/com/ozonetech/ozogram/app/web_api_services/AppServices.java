@@ -7,6 +7,7 @@ import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
@@ -23,7 +24,10 @@ public interface AppServices {
     Call<UserProfileResponseModel> userProfile(@FieldMap Map<String, String> userProfileMap);
 
     @POST("update_profile")
-    Call<UpdateDataResponseModel> updateProfile(@Body Map<String, String> updateProfileMap);
+    Call<UpdateDataResponseModel> updateProfile(@Body RequestBody post);
+
+    @POST("update_profile")
+    Call<UpdateDataResponseModel> updateProfilePic(@Body RequestBody post);
 
     @POST("get_posts")
     Call<GetPostResponseModel> getPostS();

@@ -1,38 +1,52 @@
 package com.ozonetech.ozogram.view.fragment;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
 import com.ozonetech.ozogram.databinding.StoryFragmentBinding;
+import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.activity.AddProfileActivity;
 import com.ozonetech.ozogram.view.activity.EditProfileActivity;
 import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
+import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
+import com.ozonetech.ozogram.view.listeners.UserProfileListener;
+import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapterListener {
+public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAdapterListener , UserProfileListener {
 
     public StoryFragmentBinding storyFragmentBinding;
+    UserProfileResponseModel userProfileResponseModel;
     private StoryViewModel mViewModel;
     RecyclerView rv_profile_story_gallery;
     private MyClickHandlers handlers;
@@ -45,7 +59,9 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        userProfileResponseModel = ViewModelProviders.of(getActivity()).get(UserProfileResponseModel.class);
         storyFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.story_fragment, container, false);
+        storyFragmentBinding.setUserprofiel(userProfileResponseModel);
         View view = storyFragmentBinding.getRoot();
         storyFragmentBinding.setLifecycleOwner(this);
         handlers = new MyClickHandlers(getActivity());
@@ -57,11 +73,20 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
     }
 
     private void renderStroryFragment(View view) {
-        storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        mAdapter = new PostsAdapter(getPosts(), this);
-        storyFragmentBinding.rvProfileStoryGallery.setAdapter(mAdapter);
-        storyFragmentBinding.setHandlers(handlers);
+       // storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+        storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        storyFragmentBinding.rvProfileStoryGallery.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(4), true));
+        storyFragmentBinding.rvProfileStoryGallery.setItemAnimator(new DefaultItemAnimator());
+        renderProfile();
     }
+
+    private void renderProfile() {
+
+        showProgressDialog("Please wait...");
+        userProfileResponseModel.fetchUserProfileData(getActivity(), userProfileResponseModel.userProfileListener=this);
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -70,16 +95,23 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
         // TODO: Use the ViewModel
     }
 
-    private ArrayList<PostGalleryPath> getPosts() {
+    private void setRecyclerView(List<PostGalleryPath> postGalleryPathsArraylist) {
+        mAdapter = new PostsAdapter(getPosts(postGalleryPathsArraylist),this);
+        storyFragmentBinding.rvProfileStoryGallery.setAdapter(mAdapter);
+        storyFragmentBinding.setHandlers(handlers);
+    }
+
+    private ArrayList<PostGalleryPath> getPosts(List<PostGalleryPath> postGalleryPathsArraylist) {
         ArrayList<PostGalleryPath> postGalleryPaths = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
+        for(int i=0;i<postGalleryPathsArraylist.size();i++){
             PostGalleryPath postGalleryPath = new PostGalleryPath();
-            postGalleryPath.setImageUrl("https://api.androidhive.info/images/nature/" + i + ".jpg");
+            postGalleryPath.setImageUrl(postGalleryPathsArraylist.get(i).getImageUrl());
             postGalleryPaths.add(postGalleryPath);
         }
 
         return postGalleryPaths;
     }
+
 
     /**
      * Converting dp to pixel
@@ -91,7 +123,70 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
 
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath) {
-        Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
+        showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+        //Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStarted() {
+        showProgressDialog("Please wait...");
+    }
+
+    @Override
+    public void onUserProfileSuccess(LiveData<UserProfileResponseModel> userProfileResponse) {
+        userProfileResponse.observe(getViewLifecycleOwner(), new Observer<UserProfileResponseModel>() {
+            @Override
+            public void onChanged(UserProfileResponseModel userProfileResponseModel) {
+
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
+                        showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
+                        Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
+
+                        List<PostData> postDataArrayList=new ArrayList<>();
+                        postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
+                        if(postDataArrayList.size() != 0 ){
+                            List<PostGalleryPath> postGalleryPathsArraylist=new ArrayList<>();
+                            for(int i=0;i<postDataArrayList.size();i++){
+                                if(postDataArrayList.get(i).getPostGalleryPath().size() != 0){
+
+                                    for (int j=0;j<postDataArrayList.get(i).getPostGalleryPath().size();j++){
+                                        postGalleryPathsArraylist.add(postDataArrayList.get(i).getPostGalleryPath().get(j));
+                                    }
+
+                                }
+                            }
+
+                            setRecyclerView(postGalleryPathsArraylist);
+
+                        }
+
+                    } else {
+                        showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onFailure(String message) {
+        showSnackbar(storyFragmentBinding.flStoryFragment, message, Snackbar.LENGTH_SHORT);
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
     public class MyClickHandlers {
@@ -107,11 +202,14 @@ public class StoryFragment extends Fragment implements PostsAdapter.PostsAdapter
         }
 
         public void onEditNameClick(View view) {
-            goToAddProfileActivity("editName");
+            showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+//            goToAddProfileActivity("editName");
         }
 
         public void onFindMoreClick(View view){
-            Toast.makeText(getActivity(), "Find More Firends clicked! ", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Find More Firends clicked! ", Toast.LENGTH_SHORT).show();
+            showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
 
         }
 
