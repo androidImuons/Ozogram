@@ -3,9 +3,7 @@ package com.ozonetech.ozogram.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class GetPostResponseModel {
+public class CommonResponse {
     @SerializedName("code")
     @Expose
     private Integer code;
@@ -17,7 +15,8 @@ public class GetPostResponseModel {
     private String message;
     @SerializedName("data")
     @Expose
-    private List<GetPostRecordModel> data;
+    private Object data;
+    private final static long serialVersionUID = 4292008774130415517L;
 
     public Integer getCode() {
         return code;
@@ -43,11 +42,11 @@ public class GetPostResponseModel {
         this.message = message;
     }
 
-    public List<GetPostRecordModel> getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(List<GetPostRecordModel> data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

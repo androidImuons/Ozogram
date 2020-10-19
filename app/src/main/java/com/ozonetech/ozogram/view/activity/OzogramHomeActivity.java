@@ -13,32 +13,43 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.ozonetech.ozogram.R;
-import com.ozonetech.ozogram.app.utils.Gallery;
 import com.ozonetech.ozogram.app.utils.ItemClickSupport;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.ActivityOzogramHomeBinding;
-import com.ozonetech.ozogram.model.GetPostDataModel;
+import com.ozonetech.ozogram.model.CommonResponse;
+import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
+import com.ozonetech.ozogram.repository.PostUpload;
 import com.ozonetech.ozogram.view.adapter.PostRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.StoryUserRecycleViewAdapter;
+import com.ozonetech.ozogram.view.dialog.EditCommentDialog;
+import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
 import com.ozonetech.ozogram.viewmodel.HomeViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
-public class OzogramHomeActivity extends BaseActivity implements GetPostDataListener {
+
+public class OzogramHomeActivity extends BaseActivity implements GetPostDataListener,
+        CommonResponseInterface, PostRecycleViewAdapter.PostViewInterface, EditCommentDialog.SendCallBack {
     // Session Manager Class
     SessionManager session;
     ActivityOzogramHomeBinding activityOzogramHomeBinding;
     HomeViewModel homeViewModel;
-  //  BottomTabViewModel bottomTabViewModel;
-    private List<GetPostDataModel> post=new ArrayList<>();
+    //  BottomTabViewModel bottomTabViewModel;
+    private List<GetPostRecordModel> post = new ArrayList<>();
     private StoryUserRecycleViewAdapter storyUserRecycleViewAdapter;
     private PostRecycleViewAdapter postRecycelAdapter;
+    private String tag = "OzogramHomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +62,15 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.setHome(homeViewModel);
 
         homeViewModel.postDataListener = OzogramHomeActivity.this;
-
+        homeViewModel.commonResponseInterface = OzogramHomeActivity.this;
         // Session class instance
         session = new SessionManager(getApplicationContext());
         activityOzogramHomeBinding.executePendingBindings();
         activityOzogramHomeBinding.setLifecycleOwner(OzogramHomeActivity.this);
         setupSwipLayout();
         init();
+//
+
 
     }
 
@@ -69,36 +82,19 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.recycleStoryUser.setNestedScrollingEnabled(true);
         activityOzogramHomeBinding.recycleStoryUser.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         activityOzogramHomeBinding.recycleStoryUser.setAdapter(storyUserRecycleViewAdapter);
-        ItemClickSupport.addTo(activityOzogramHomeBinding.recycleStoryUser).
-                getmOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-            }
-        });
 
 
-
-
-
-        postRecycelAdapter = new PostRecycleViewAdapter(getApplicationContext(), post);
+        postRecycelAdapter = new PostRecycleViewAdapter(getApplicationContext(), post, OzogramHomeActivity.this);
         activityOzogramHomeBinding.recyclePostList.setHasFixedSize(true);
         activityOzogramHomeBinding.recyclePostList.setNestedScrollingEnabled(true);
-        activityOzogramHomeBinding.recyclePostList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        activityOzogramHomeBinding.recyclePostList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         activityOzogramHomeBinding.recyclePostList.setAdapter(postRecycelAdapter);
-        ItemClickSupport.addTo(activityOzogramHomeBinding.recyclePostList).
-                getmOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-                    }
-                });
 
 
     }
 
     private void setupSwipLayout() {
-        homeViewModel.getPost(getApplicationContext());
+
         activityOzogramHomeBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -108,6 +104,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
+        homeViewModel.getPost(getApplicationContext());
+    }
 
     @Override
     public void onBackPressed() {
@@ -118,6 +120,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     public void onStarted() {
         Log.d("Home", "On start");
     }
+
 
     @Override
     public void onSuccess(LiveData<GetPostResponseModel> postResponse) {
@@ -156,7 +159,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         snackbar.show();
     }
 
-    public void setPost(List<GetPostDataModel> post) {
+    public void setPost(List<GetPostRecordModel> post) {
         this.post = post;
         activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
         storyUserRecycleViewAdapter.updateList(post);
@@ -164,7 +167,69 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     }
 
-    public List<GetPostDataModel> getPost() {
+    public List<GetPostRecordModel> getPost() {
         return post;
+    }
+
+    @Override
+    public void onCommoStarted() {
+
+    }
+
+    @Override
+    public void onCommonSuccess(LiveData<CommonResponse> commonResponseLiveData) {
+        commonResponseLiveData.observe(OzogramHomeActivity.this, new Observer<CommonResponse>() {
+            @Override
+            public void onChanged(CommonResponse responseModel) {
+                hideProgressDialog();
+                try {
+                    if (responseModel.getCode() == 200 && responseModel.getStatus().equalsIgnoreCase("OK")) {
+                        Log.d(tag, "like Response : Code" + responseModel.getCode());
+
+                    } else {
+                        activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
+                        Log.d(tag, "like Response fail: Code" + responseModel.getCode());
+                        showSnackbar(activityOzogramHomeBinding.nestedList, responseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
+                    hideProgressDialog();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onCommonFailure(String message) {
+        Log.d(tag, "----like post fail--");
+    }
+
+    @Override
+    public void clickLike(int pos, String action) {
+        Log.d(tag, "----click like pos--" + pos);
+        homeViewModel.postLike(getApplicationContext(), String.valueOf(post.get(pos).getId()), action);
+
+    }
+
+    @Override
+    public void clickComment(int pos) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id", String.valueOf(post.get(pos).getId()));
+        EditCommentDialog instance = EditCommentDialog.getInstance(bundle);
+        instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
+        instance.sendCallBack = (EditCommentDialog.SendCallBack) OzogramHomeActivity.this;
+
+    }
+
+    @Override
+    public void sendMessage(String msg,String id) {
+        homeViewModel.postComment(getApplicationContext(), id, msg);
+    }
+
+    @Override
+    public void sendError(String err) {
+        showSnackbar(activityOzogramHomeBinding.nestedList, err, Snackbar.LENGTH_SHORT);
     }
 }

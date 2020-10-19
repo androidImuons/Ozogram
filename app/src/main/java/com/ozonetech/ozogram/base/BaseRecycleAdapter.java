@@ -94,8 +94,7 @@ public abstract class BaseRecycleAdapter extends RecyclerView.Adapter<BaseRecycl
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                     }
-                })
-                        .onItemClicked(itemClickSupport.getmRecyclerView(), position, view);
+                }).onItemClicked(itemClickSupport.getmRecyclerView(), position, view);
             }
         }
 

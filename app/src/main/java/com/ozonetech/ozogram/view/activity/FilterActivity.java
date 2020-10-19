@@ -127,6 +127,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
     private void editImageClick() {
         File outputFile = FileUtils.genEditFile();
         try {
+
             Intent intent = new ImageEditorIntentBuilder(this, path, outputFile.getAbsolutePath())
                     .withAddText()
 

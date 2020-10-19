@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ozonetech.ozogram.app.utils.Contrants;
 
 public class CommentModel {
     @SerializedName("user_id")
@@ -32,7 +33,7 @@ public class CommentModel {
     }
 
     public String getComment() {
-        return comment;
+        return Contrants.getValidString(comment);
     }
 
     public void setComment(String comment) {

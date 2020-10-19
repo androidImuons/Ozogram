@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ozonetech.ozogram.app.utils.Contrants;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class GetPostRecordModel {
     private Integer uid;
     @SerializedName("caption")
     @Expose
-    private Object caption;
+    private String caption;
     @SerializedName("no_of_images")
     @Expose
     private Integer noOfImages;
@@ -25,7 +26,7 @@ public class GetPostRecordModel {
     private String entryTime;
     @SerializedName("post_gallery_path")
     @Expose
-    private List<String> postGalleryPath = null;
+    private List<PostGalleryPathModel> postGalleryPath = null;
     @SerializedName("user")
     @Expose
     private UserModel user;
@@ -42,6 +43,7 @@ public class GetPostRecordModel {
     @Expose
     private List<CommentModel> comments = null;
     private final static long serialVersionUID = 1199271569860148076L;
+    private boolean readMore;
 
     public Integer getId() {
         return id;
@@ -59,11 +61,11 @@ public class GetPostRecordModel {
         this.uid = uid;
     }
 
-    public Object getCaption() {
-        return caption;
+    public String getCaption() {
+        return Contrants.getValidString(caption);
     }
 
-    public void setCaption(Object caption) {
+    public void setCaption(String caption) {
         this.caption = caption;
     }
 
@@ -83,11 +85,11 @@ public class GetPostRecordModel {
         this.entryTime = entryTime;
     }
 
-    public List<String> getPostGalleryPath() {
+    public List<PostGalleryPathModel> getPostGalleryPath() {
         return postGalleryPath;
     }
 
-    public void setPostGalleryPath(List<String> postGalleryPath) {
+    public void setPostGalleryPath(List<PostGalleryPathModel> postGalleryPath) {
         this.postGalleryPath = postGalleryPath;
     }
 
@@ -130,5 +132,11 @@ public class GetPostRecordModel {
     public void setComments(List<CommentModel> comments) {
         this.comments = comments;
     }
+    public boolean isReadMore() {
+        return readMore;
+    }
 
+    public void setReadMore(boolean readMore) {
+        this.readMore = readMore;
+    }
 }

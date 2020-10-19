@@ -33,7 +33,13 @@
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:layout_centerInParent="true" />
-
+                <com.volokh.danylo.video_player_manager.ui.VideoPlayerView
+                    android:id="@+id/video_player"
+                    android:visibility="gone"
+                    android:layout_height="300dp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/dp300"
+                    />
                 <com.theartofdev.edmodo.cropper.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/cropImageView"
                     android:layout_width="@dimen/dp300"

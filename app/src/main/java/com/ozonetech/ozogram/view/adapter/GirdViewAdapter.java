@@ -56,8 +56,9 @@ PostGalleryFragment postGalleryFragment;
         //   binding.imageview.setImageBitmap(listofImage[position]);
         final String file = "file://" + arrayList.get(position);
         if (position == 0) {
-            postGalleryFragment.imageClick(position, file);
+            postGalleryFragment.imageClick(position, arrayList.get(position));
         }
+        Log.d("grid adpter", "----"+file);
         setImage(position, binding, file);
         setVisibility(binding);
 
@@ -65,13 +66,14 @@ PostGalleryFragment postGalleryFragment;
         binding.imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postGalleryFragment.imageClick(position, file);
+                postGalleryFragment.imageClick(position, arrayList.get(position));
             }
         });
         binding.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postGalleryFragment.checkClick(position, file);
+
+                postGalleryFragment.checkClick(position, arrayList.get(position),  binding.checkbox.isChecked());
 
             }
         });
@@ -82,6 +84,10 @@ PostGalleryFragment postGalleryFragment;
         if(type==0){
             RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
             Glide.with(context).load(file)
+                    .placeholder(R.mipmap.ic_logo)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.ic_close)
                     .thumbnail(0.25f)
                     .apply(requestOptions)
                     .into(binding.imageview);
@@ -108,7 +114,12 @@ PostGalleryFragment postGalleryFragment;
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        if(arrayList.size()<=300){
+            return arrayList.size();
+        }else{
+            return 300;
+        }
+
     }
 
 
