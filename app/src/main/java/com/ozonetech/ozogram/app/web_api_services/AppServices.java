@@ -4,6 +4,7 @@ import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.LoginResponseModel;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.HashMap;
@@ -37,6 +38,9 @@ public interface AppServices {
 
     @POST("update_profile")
     Call<UpdateDataResponseModel> updateProfilePic(@Body RequestBody post);
+
+    @POST("get_users")
+    Call<UnfollowUsersResponseModel> getUnFollowers();
 
     @POST("get_posts")
     Call<GetPostResponseModel> getPostS();

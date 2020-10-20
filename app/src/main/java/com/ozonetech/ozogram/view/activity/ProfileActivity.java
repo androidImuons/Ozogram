@@ -165,7 +165,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 hideProgressDialog();
                 try {
                     if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
-                        showSnackbar(activityProfileBinding.llUserProfile, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                      //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
                         Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
                         Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
 
@@ -342,7 +342,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         }
 
         public boolean onProfileImageLongPressed(View view) {
-            Toast.makeText(getApplicationContext(), "Profile image long pressed!", Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(), "Profile image long pressed!", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -389,7 +389,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                     String picturePath = cursor.getString(columnIndex);
                     imageFile = new File(picturePath);
                     activityProfileBinding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    showSnackbar(activityProfileBinding.llUserProfile,imageFile.getName().toString(),Snackbar.LENGTH_SHORT);
+                   // showSnackbar(activityProfileBinding.llUserProfile,imageFile.getName().toString(),Snackbar.LENGTH_SHORT);
                     //tvChooseFile.setText(imageFile.getName());
                     requestFile =
                             RequestBody.create(

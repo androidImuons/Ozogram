@@ -193,6 +193,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/rl_find_people"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp150"
                         android:layout_margin="@dimen/dp5"

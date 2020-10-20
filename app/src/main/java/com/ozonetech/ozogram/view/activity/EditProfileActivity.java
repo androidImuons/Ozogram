@@ -92,10 +92,12 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
 
     @Override
     public void onUpdateProfileDataSuccess(LiveData<UpdateDataResponseModel> updateDataResponse) {
+       // Log.d("UpdateDataResponseModel", "UpdateDataResponseModel : "+updateDataResponse.getValue().getCode() +"\n Message "+updateDataResponse.getValue().getMessage());
 
         updateDataResponse.observe(EditProfileActivity.this, new Observer<UpdateDataResponseModel>() {
             @Override
             public void onChanged(UpdateDataResponseModel updateDataResponseModel) {
+
                 //save access token
                 hideProgressDialog();
                 try {
@@ -108,6 +110,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
                         showSnackbar(activityEditProfileBinding.llEditProfileData, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
+                    Log.d("EditProfileActivity",e.getMessage());
                 } finally {
                     hideProgressDialog();
                 }
@@ -173,7 +176,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
                     String picturePath = cursor.getString(columnIndex);
                     imageFile = new File(picturePath);
                     activityEditProfileBinding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                    showSnackbar(activityEditProfileBinding.llEditProfileData, imageFile.getName().toString(), Snackbar.LENGTH_SHORT);
+                   // showSnackbar(activityEditProfileBinding.llEditProfileData, imageFile.getName().toString(), Snackbar.LENGTH_SHORT);
                     //tvChooseFile.setText(imageFile.getName());
                     requestFile =
                             RequestBody.create(
@@ -290,5 +293,12 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
         super.onBackPressed();
         goToProfileActivity();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityEditProfileBinding=null;
+    }
+
 
 }

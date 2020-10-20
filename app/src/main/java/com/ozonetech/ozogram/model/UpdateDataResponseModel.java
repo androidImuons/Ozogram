@@ -13,9 +13,9 @@ public class UpdateDataResponseModel {
     @SerializedName("message")
     @Expose
     private String message;
-   /* @SerializedName("data")
+    @SerializedName("data")
     @Expose
-    private Data data;*/
+    private ResponseData data;
 
     public Integer getCode() {
         return code;
@@ -41,12 +41,14 @@ public class UpdateDataResponseModel {
         this.message = message;
     }
 
-  /*  public Data getData() {
+    public ResponseData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(ResponseData data) {
         this.data = data;
-    }*/
+    }
 
+    private class ResponseData {
+    }
 }

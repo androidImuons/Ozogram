@@ -1,10 +1,19 @@
-package com.ozonetech.ozogram.model;
+package com.ozonetech.ozogram.viewmodel;
 
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.model.PostData;
 
-public class PostUser {
+import java.util.List;
 
+public class UnFollowerData {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -14,6 +23,9 @@ public class PostUser {
     @SerializedName("fullname")
     @Expose
     private String fullname;
+    @SerializedName("posts")
+    @Expose
+    private List<PostData> posts = null;
     @SerializedName("followers_count")
     @Expose
     private Integer followersCount;
@@ -54,6 +66,14 @@ public class PostUser {
         this.fullname = fullname;
     }
 
+    public List<PostData> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<PostData> posts) {
+        this.posts = posts;
+    }
+
     public Integer getFollowersCount() {
         return followersCount;
     }
@@ -86,6 +106,19 @@ public class PostUser {
         this.postsCount = postsCount;
     }
 
+    @BindingAdapter({"profilePicture"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.profile_icon)
+                .into(view);
+
+        // If you consider Picasso, follow the below
+        // Picasso.with(view.getContext()).load(imageUrl).placeholder(R.drawable.placeholder).into(view);
+    }
+
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -93,4 +126,5 @@ public class PostUser {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
 }
