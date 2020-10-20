@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.app.web_api_services;
 
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
+import com.ozonetech.ozogram.model.GetUnfollowUserResponse;
 import com.ozonetech.ozogram.model.LoginResponseModel;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
@@ -45,6 +46,7 @@ public interface AppServices {
     @POST("upload_post")
     Call<CommonResponse> postUpload(@Header("Authorization") String authHeader, @PartMap() HashMap<String, RequestBody> param,
                                     @Part List<MultipartBody.Part> file);
+
     @FormUrlEncoded
     @POST("like_post")
     Call<CommonResponse> postLike(@FieldMap Map<String, String> param);
@@ -52,4 +54,22 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("comment_on_post")
     Call<CommonResponse> postComment(@FieldMap Map<String, String> param);
+
+    //    user_id -> required (Follower user id whom you want to follow)
+// action -> required (follow , unfollow)
+    @FormUrlEncoded
+    @POST("follow_user")
+    Call<CommonResponse> followUnfollow(@FieldMap Map<String, String> param);
+
+    //search
+    @FormUrlEncoded
+    @POST("get_users")
+    Call<GetUnfollowUserResponse> getUser(@FieldMap Map<String, String> param);
+
+    //user_id ->required
+//post_id ->required
+//message ->optional
+    @FormUrlEncoded
+    @POST("share_post")
+    Call<CommonResponse> postShare(@FieldMap Map<String, String> param);
 }

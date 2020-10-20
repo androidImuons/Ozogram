@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_color"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        <!--app:layout_behavior="android.support.design.widget.BottomSheetBehavior"-->
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dp10"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/dp15">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp80"
+                        android:layout_margin="@dimen/dp5"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_profile_image"
+                            android:layout_width="@dimen/dp60"
+                            android:layout_height="@dimen/dp60"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dp20"
+                            android:background="@drawable/profile_pic">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                        <com.ozonetech.ozogram.customeview.TypeEditTextView
+                            android:id="@+id/edt_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp50"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/dp20"
+                            android:background="@color/colorWhite"
+                            app:custom_font="@string/app_font_regular"
+                            android:hint="@string/type_here"
+                            android:textColorHint="@color/colorHint">
+
+                        </com.ozonetech.ozogram.customeview.TypeEditTextView>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp2"
+                        android:background="@drawable/gray_line">
+
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="@dimen/dp5"
+                        android:background="@drawable/ll_white_round_corner_new"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp5"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:background="@drawable/ic_search"
+                                android:backgroundTint="@color/colorHint"></ImageView>
+
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.8">
+                            <com.ozonetech.ozogram.customeview.TypeEditTextView
+                               android:id="@+id/edt_search"
+                                android:layout_width="match_parent"
+                                android:hint="Search.."
+                                android:layout_marginStart="@dimen/dp10"
+                                android:background="@color/white"
+                                android:gravity="center_vertical"
+                                android:textSize="@dimen/dp15"
+                                app:custom_font="@string/app_font_regular"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/colorHint"
+                                android:layout_height="match_parent">
+
+                            </com.ozonetech.ozogram.customeview.TypeEditTextView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp30"
+                                android:layout_height="@dimen/dp30"
+                                android:background="@drawable/ic_add_peopel">
+
+                            </ImageView>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_follower_list"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp10"
+                        tools:listitem="@layout/view_follow_list"
+                        android:layout_height="match_parent">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

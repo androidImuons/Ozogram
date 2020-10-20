@@ -2,12 +2,10 @@ package com.ozonetech.ozogram.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.ozonetech.ozogram.app.utils.Contrants;
 
 import java.util.List;
 
-public class GetPostRecordModel {
-
+public class PostUserDataData {
 
     @SerializedName("id")
     @Expose
@@ -26,24 +24,22 @@ public class GetPostRecordModel {
     private String entryTime;
     @SerializedName("post_gallery_path")
     @Expose
-    private List<PostGalleryPathModel> postGalleryPath = null;
+    private List<PostGalleryPath> postGalleryPath = null;
     @SerializedName("user")
     @Expose
-    private UserModel user;
+    private PostUser user;
     @SerializedName("likes_count")
     @Expose
     private Integer likesCount;
     @SerializedName("like_users")
     @Expose
-    private List<LikeUserModel> likeUsers = null;
+    private List<Object> likeUsers = null;
     @SerializedName("comments_count")
     @Expose
     private Integer commentsCount;
     @SerializedName("comments")
     @Expose
-    private List<CommentModel> comments = null;
-    private final static long serialVersionUID = 1199271569860148076L;
-    private boolean readMore=true;
+    private List<Object> comments = null;
 
     public Integer getId() {
         return id;
@@ -62,7 +58,7 @@ public class GetPostRecordModel {
     }
 
     public String getCaption() {
-        return Contrants.getValidString(caption);
+        return caption;
     }
 
     public void setCaption(String caption) {
@@ -85,19 +81,19 @@ public class GetPostRecordModel {
         this.entryTime = entryTime;
     }
 
-    public List<PostGalleryPathModel> getPostGalleryPath() {
+    public List<PostGalleryPath> getPostGalleryPath() {
         return postGalleryPath;
     }
 
-    public void setPostGalleryPath(List<PostGalleryPathModel> postGalleryPath) {
+    public void setPostGalleryPath(List<PostGalleryPath> postGalleryPath) {
         this.postGalleryPath = postGalleryPath;
     }
 
-    public UserModel getUser() {
+    public PostUser getUser() {
         return user;
     }
 
-    public void setUser(UserModel user) {
+    public void setUser(PostUser user) {
         this.user = user;
     }
 
@@ -109,11 +105,11 @@ public class GetPostRecordModel {
         this.likesCount = likesCount;
     }
 
-    public List<LikeUserModel> getLikeUsers() {
+    public List<Object> getLikeUsers() {
         return likeUsers;
     }
 
-    public void setLikeUsers(List<LikeUserModel> likeUsers) {
+    public void setLikeUsers(List<Object> likeUsers) {
         this.likeUsers = likeUsers;
     }
 
@@ -125,18 +121,12 @@ public class GetPostRecordModel {
         this.commentsCount = commentsCount;
     }
 
-    public List<CommentModel> getComments() {
+    public List<Object> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentModel> comments) {
+    public void setComments(List<Object> comments) {
         this.comments = comments;
     }
-    public boolean isReadMore() {
-        return readMore;
-    }
 
-    public void setReadMore(boolean readMore) {
-        this.readMore = readMore;
-    }
 }

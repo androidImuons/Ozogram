@@ -3,45 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/iv_delete"
         android:layout_width="@dimen/dp20"
         android:layout_height="@dimen/dp20"
-        android:visibility="gone"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/dp10"
         android:layout_marginEnd="@dimen/dp10"
-        android:background="@drawable/cancel_icon">
+        android:background="@drawable/cancel_icon"
+        android:visibility="gone">
 
     </ImageView>
-<ImageView
-    android:id="@+id/iv_post_image"
-    android:adjustViewBounds="true"
-    android:layout_width="match_parent"
-    android:layout_height="400dp">
 
-</ImageView>
-<!--<VideoView-->
-<!--    android:id="@+id/vv_video"-->
-<!--    android:visibility="gone"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="400dp">-->
+    <ImageView
+        android:id="@+id/iv_post_image"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:adjustViewBounds="true">
 
-<!--</VideoView>-->
+    </ImageView>
 
     <com.volokh.danylo.video_player_manager.ui.VideoPlayerView
         android:id="@+id/video_player"
-        android:layout_height="400dp"
         android:layout_width="match_parent"
-        />
+        android:layout_height="400dp" />
 
 
     <ProgressBar
         android:id="@+id/pb_bar"
         android:layout_width="@dimen/dp100"
-        android:visibility="gone"
+        android:layout_height="@dimen/dp100"
         android:layout_centerInParent="true"
-        android:layout_height="@dimen/dp100">
+        android:visibility="gone">
 
     </ProgressBar>
 </RelativeLayout>

@@ -85,6 +85,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
             view_pager = itemView.findViewById(R.id.view_pager);
             iv_heart = itemView.findViewById(R.id.iv_heart);
             iv_commit = itemView.findViewById(R.id.iv_commit);
+            iv_share=itemView.findViewById(R.id.iv_share);
             circle = itemView.findViewById(R.id.circle);
             iv_tag = itemView.findViewById(R.id.iv_tag);
             txt_t_view = itemView.findViewById(R.id.txt_t_view);
@@ -96,7 +97,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
         }
 
         @Override
-        public void setData(int position) {
+        public void setData(int index) {
+            int position=(postDataModelList.size()-1)-index;
 
             final int pos = position;
 
@@ -198,6 +200,12 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                     postViewInterface.clickComment(pos);
                 }
             });
+            iv_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    postViewInterface.sendPost(pos);
+                }
+            });
             iv_tag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -217,8 +225,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     public interface PostViewInterface {
         public void clickLike(int pos, String flag);
-
         public void clickComment(int pos);
+        public void sendPost(int pos);
 
     }
 }

@@ -33,14 +33,14 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp50"
-                    android:layout_weight="0.1"
+                    android:layout_weight="0.2"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_profile_image"
-                        android:layout_width="@dimen/dp40"
-                        android:layout_height="@dimen/dp40"
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
                         android:layout_marginRight="@dimen/dp10"
                         android:background="@drawable/ic_profile">
 
@@ -50,7 +50,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.65"
                     android:background="@drawable/ll_white_round_corner_new">
 
                     <EditText
@@ -62,7 +62,6 @@
                         android:hint="Write a Caption"
                         android:inputType="text"
                         android:scrollbars="vertical"
-                        android:text="new comment"
                         android:textColor="@color/colorBlack"
                         android:textColorHint="@color/colorHint"
                         android:textSize="@dimen/sp14" />
@@ -71,12 +70,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.1"
-                    android:gravity="center">
+                    android:layout_weight="0.15"
+                    android:gravity="right|center_vertical">
 
                     <ImageView
                         android:id="@+id/iv_send"
-                        android:layout_width="@dimen/dp30"
+                        android:layout_width="@dimen/dp40"
                         android:layout_height="@dimen/dp30"
                         android:layout_marginLeft="@dimen/dp5"
                         android:src="@drawable/ic_send"

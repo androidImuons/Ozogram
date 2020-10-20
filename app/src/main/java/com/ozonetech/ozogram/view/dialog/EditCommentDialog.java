@@ -15,9 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.base.AppBaseDialog;
 import com.ozonetech.ozogram.model.UserModel;
 import com.ozonetech.ozogram.view.fragment.BaseFragment;
@@ -25,9 +28,11 @@ import com.ozonetech.ozogram.view.fragment.BaseFragment;
 public class EditCommentDialog extends AppBaseDialog {
     public ImageView iv_send;
     public SendCallBack sendCallBack;
+    private SessionManager sessionManager;
 
     public interface SendCallBack {
-        public void sendMessage(String msg,String pos);
+        public void sendMessage(String msg, String pos);
+
         public void sendError(String err);
     }
 
@@ -39,6 +44,7 @@ public class EditCommentDialog extends AppBaseDialog {
     public static EditCommentDialog getInstance(Bundle bundle) {
         EditCommentDialog dialog = new EditCommentDialog();
         dialog.setArguments(bundle);
+
         return dialog;
     }
 
@@ -55,7 +61,7 @@ public class EditCommentDialog extends AppBaseDialog {
         wlmp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wlmp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlmp.dimAmount = 0.8f;
-
+        sessionManager = new SessionManager(getContext());
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
     }
@@ -83,7 +89,7 @@ public class EditCommentDialog extends AppBaseDialog {
             public void onClick(View view) {
                 if (!et_comment.getText().toString().isEmpty()) {
 
-                    sendCallBack.sendMessage(et_comment.getText().toString(),getPostId());
+                    sendCallBack.sendMessage(et_comment.getText().toString(), getPostId());
                     dismiss();
                 } else {
                     sendCallBack.sendError("Enter Comment...!");
@@ -91,8 +97,14 @@ public class EditCommentDialog extends AppBaseDialog {
             }
         });
 
+        Glide.with(getContext())
+                .load(sessionManager.getUserDetails().get(SessionManager.KEY_PROFILE_PICTURE))
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.profile_icon)
+                .into(iv_profile);
 
     }
+
     private String getPostId() {
         Bundle extras = getArguments();
         return (extras == null ? "0" : extras.getString("id", "0"));

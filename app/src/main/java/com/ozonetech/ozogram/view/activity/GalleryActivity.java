@@ -319,7 +319,7 @@ public class GalleryActivity extends BaseActivity {
             String newFilePath = data.getStringExtra(ImageEditorIntentBuilder.OUTPUT_PATH);
             boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IS_IMAGE_EDITED, false);
             if (isImageEdit) {
-                Toast.makeText(this, getString(R.string.save_path, newFilePath), Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, getString(R.string.save_path, newFilePath), Toast.LENGTH_LONG).show();
                 Log.d(tag, "----save edit image--" + getString(R.string.save_path, newFilePath));
 
                 HashMap<Integer, String> list = new HashMap<>();
