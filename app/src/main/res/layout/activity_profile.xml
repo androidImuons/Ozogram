@@ -157,7 +157,7 @@
                         android:layout_margin="@dimen/dp2"
                         android:gravity="center"
                         android:textColor="@color/colorBlack"
-                        android:text="0"
+                        android:text="@{BindingUtils.convertToSuffix(user.followersCount),default=0}"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold"
                         app:custom_font="@string/app_font_bold" />
@@ -192,7 +192,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/dp2"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@{BindingUtils.convertToSuffix(user.followingCount),default=0}"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold"

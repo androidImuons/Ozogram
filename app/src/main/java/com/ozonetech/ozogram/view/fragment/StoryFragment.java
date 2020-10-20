@@ -34,6 +34,7 @@ import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.activity.AddProfileActivity;
 import com.ozonetech.ozogram.view.activity.EditProfileActivity;
+import com.ozonetech.ozogram.view.activity.FindMorePeopleActivity;
 import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
@@ -143,9 +144,8 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
                 hideProgressDialog();
                 try {
                     if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
-                        showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                      //  showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
                         Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
-                        Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
 
                         List<PostData> postDataArrayList=new ArrayList<>();
                         postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
@@ -209,10 +209,18 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
 
         public void onFindMoreClick(View view){
            // Toast.makeText(getActivity(), "Find More Firends clicked! ", Toast.LENGTH_SHORT).show();
-            showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+           // showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+            gotoFindMorePeopleActivity();
 
         }
 
+    }
+
+    private void gotoFindMorePeopleActivity() {
+        Intent intent=new Intent(getActivity(), FindMorePeopleActivity.class);
+        getActivity().startActivity(intent);
+        getActivity().finish();
     }
 
     private void goToAddProfileActivity(String type) {

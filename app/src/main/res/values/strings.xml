@@ -52,4 +52,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="read_more">more</string>
     <string name="read_less"> less</string>
+    <string name="discover_people">Discover People</string>
+    <string name="new_suggestions">New Suggestions</string>
+    <string name="all_suggestions">All Suggestions</string>
+    <string name="follow">Follow</string>
 </resources>

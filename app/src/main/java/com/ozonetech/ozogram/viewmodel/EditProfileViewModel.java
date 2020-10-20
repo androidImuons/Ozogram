@@ -108,7 +108,7 @@ public class EditProfileViewModel extends ViewModel {
     }
 
     public EditProfileListener editProfileListener;
-    public LiveData<UpdateDataResponseModel> updateDataResponseModel;
+    public LiveData<UpdateDataResponseModel> updateDataResponseModel = null;
 
     public void onUpdateProfile(Context context, RequestBody requestBody,EditProfileListener editProfileListener) {
 

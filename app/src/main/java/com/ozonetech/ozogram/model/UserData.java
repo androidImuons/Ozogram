@@ -55,6 +55,12 @@ public class UserData extends ViewModel {
     @SerializedName("posts_count")
     @Expose
     private Integer postsCount;
+    @SerializedName("followers_count")
+    @Expose
+    private Integer followersCount;
+    @SerializedName("following_count")
+    @Expose
+    private Integer followingCount;
 
 
     public UserData() {
@@ -176,6 +182,22 @@ public class UserData extends ViewModel {
 
     public void setPostsCount(Integer postsCount) {
         this.postsCount = postsCount;
+    }
+
+    public Integer getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(Integer followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public Integer getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(Integer followingCount) {
+        this.followingCount = followingCount;
     }
 
     public static String convertObjToString(Object clsObj) {

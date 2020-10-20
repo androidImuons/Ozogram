@@ -2,8 +2,6 @@ package com.ozonetech.ozogram.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostData {
@@ -34,13 +32,13 @@ public class PostData {
     private Integer likesCount;
     @SerializedName("like_users")
     @Expose
-    private List<Object> likeUsers = null;
+    private List<LikeUserModel> likeUsers = null;
     @SerializedName("comments_count")
     @Expose
     private Integer commentsCount;
     @SerializedName("comments")
     @Expose
-    private List<Object> comments = null;
+    private List<Comment> comments = null;
 
     public Integer getId() {
         return id;
@@ -106,11 +104,11 @@ public class PostData {
         this.likesCount = likesCount;
     }
 
-    public List<Object> getLikeUsers() {
+    public List<LikeUserModel> getLikeUsers() {
         return likeUsers;
     }
 
-    public void setLikeUsers(List<Object> likeUsers) {
+    public void setLikeUsers(List<LikeUserModel> likeUsers) {
         this.likeUsers = likeUsers;
     }
 
@@ -122,11 +120,11 @@ public class PostData {
         this.commentsCount = commentsCount;
     }
 
-    public List<Object> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Object> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 

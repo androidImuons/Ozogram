@@ -10,6 +10,7 @@ import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.app.web_api_services.AppServices;
 import com.ozonetech.ozogram.app.web_api_services.ServiceGenerator;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
 import java.util.Map;
@@ -26,6 +27,9 @@ public class ProfileRepository {
 
     private MutableLiveData<UpdateDataResponseModel> updateDataResponse;
     UpdateDataResponseModel updateDataResponseModel;
+
+    private MutableLiveData<UnfollowUsersResponseModel> unfollowUsersResponse;
+    UnfollowUsersResponseModel unfollowUsersResponseModel;
 
 
     public LiveData<UserProfileResponseModel> fetchUserProfileData(Map<String, String> userProfileMap,Context context) {
@@ -104,5 +108,31 @@ public class ProfileRepository {
         });
         return updateDataResponse;
     }
+
+    public LiveData<UnfollowUsersResponseModel> fetchUnFollowUsers(Context context) {
+
+        unfollowUsersResponse = new MutableLiveData<>();
+        SessionManager session = new SessionManager(context);
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
+        apiService.getUnFollowers().enqueue(new Callback<UnfollowUsersResponseModel>() {
+            @Override
+            public void onResponse(Call<UnfollowUsersResponseModel> call, Response<UnfollowUsersResponseModel> response) {
+                if (response.isSuccessful()) {
+                    unfollowUsersResponseModel = response.body();
+                    unfollowUsersResponse.setValue(unfollowUsersResponseModel);
+                } else {
+                    unfollowUsersResponseModel = response.body();
+                    unfollowUsersResponse.setValue(unfollowUsersResponseModel);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnfollowUsersResponseModel> call, Throwable t) {
+                //Toast.makeText(UserRepository.this.getClass(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return unfollowUsersResponse;
+    }
+
 
 }
