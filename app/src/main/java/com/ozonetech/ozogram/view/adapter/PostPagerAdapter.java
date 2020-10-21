@@ -111,7 +111,6 @@ public class PostPagerAdapter extends PagerAdapter {
                     .into(viewHolder.iv_post_image);
         }
 
-
     }
 
     private void videoLayer(ViewHolder viewHolder, int position) {
@@ -143,12 +142,11 @@ public class PostPagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
                 if (last_video_play!=null){
-                    last_video_play.stop();
+                    videoPlayerManager.stopAnyPlayback();
                     last_video_play=viewHolder.vv_video;
                 }else{
                     last_video_play=viewHolder.vv_video;
                 }
-
                 Log.d(tag, "---vidoe play---" + postGalleryPathModelList.get(position).getPath());
                 videoPlayerManager.playNewVideo(null, viewHolder.vv_video, postGalleryPathModelList.get(position).getPath());
             }
@@ -167,6 +165,8 @@ public class PostPagerAdapter extends PagerAdapter {
     }
 
 
+
+
     public class ViewHolder {
         ImageView iv_post_image;
         VideoPlayerView vv_video;
@@ -181,7 +181,7 @@ public class PostPagerAdapter extends PagerAdapter {
     }
 
 
-    VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+    public VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
         @Override
         public void onPlayerItemChanged(MetaData currentItemMetaData) {
         }

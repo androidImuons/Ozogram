@@ -163,7 +163,7 @@ public class UpLoadImageVideoPagerAdapter extends PagerAdapter {
         }
     }
 
-    VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+  public  VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
         @Override
         public void onPlayerItemChanged(MetaData currentItemMetaData) {
         }

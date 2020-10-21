@@ -18,6 +18,9 @@ import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.LikeUserModel;
 import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
+import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
+import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
+import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
 
 import java.util.List;
 
@@ -59,7 +62,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     public void updateList(List<GetPostRecordModel> post) {
         postDataModelList = post;
-        is_like=false;
+        is_like = false;
         notifyDataSetChanged();
     }
 
@@ -87,7 +90,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
             view_pager = itemView.findViewById(R.id.view_pager);
             iv_heart = itemView.findViewById(R.id.iv_heart);
             iv_commit = itemView.findViewById(R.id.iv_commit);
-            iv_share=itemView.findViewById(R.id.iv_share);
+            iv_share = itemView.findViewById(R.id.iv_share);
             circle = itemView.findViewById(R.id.circle);
             iv_tag = itemView.findViewById(R.id.iv_tag);
             txt_t_view = itemView.findViewById(R.id.txt_t_view);
@@ -100,16 +103,12 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
         @Override
         public void setData(int index) {
-            int position=(postDataModelList.size()-1)-index;
+            int position = (postDataModelList.size() - 1) - index;
 
             final int pos = position;
 
+            setViewPager(this, position);
             GetPostRecordModel model = postDataModelList.get(position);
-            PostPagerAdapter postPagerAdapter = new PostPagerAdapter(context, postDataModelList.get(position).getPostGalleryPath(),
-                    PostRecycleViewAdapter.this, activity);
-            view_pager.setAdapter(postPagerAdapter);
-            circle.setViewPager(view_pager);
-
             activity.loadImage(context, iv_user_image, pb_image, model.getUser().getProfile_picture(), R.drawable.ic_profile);
 
             if (model.getLikesCount() > 0) {
@@ -145,7 +144,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 tv_message.setText(model.getCaption(), TextView.BufferType.NORMAL);
             }
             List<LikeUserModel> likeUserModellist = model.getLikeUsers();
-           is_like = false;
+            is_like = false;
 
             for (int i = 0; i < likeUserModellist.size(); i++) {
                 if (likeUserModellist.get(i).getUserId().equals(session.getUserDetails().get(session.KEY_USERID))) {
@@ -225,10 +224,37 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     }
 
+    private void setViewPager(StoryUserListView viewmodel, int position) {
+        GetPostRecordModel model = postDataModelList.get(position);
+        PostPagerAdapter postPagerAdapter = new PostPagerAdapter(context, postDataModelList.get(position).getPostGalleryPath(),
+                PostRecycleViewAdapter.this, activity);
+        viewmodel.view_pager.setAdapter(postPagerAdapter);
+        viewmodel.circle.setViewPager(viewmodel.view_pager);
+        viewmodel.view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                postPagerAdapter.videoPlayerManager.stopAnyPlayback();
+            }
+
+            @Override
+            public void onPageSelected(int pagePosition) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
 
     public interface PostViewInterface {
         public void clickLike(int pos, String flag);
+
         public void clickComment(int pos);
+
         public void sendPost(int pos);
 
     }

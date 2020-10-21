@@ -127,6 +127,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                 .placeholder(R.drawable.profile_icon)
                 .into(iv_profile);
 
+
         setData();
     }
 
@@ -136,6 +137,26 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                 activity, getActivity());
         view_pager.setAdapter(postPagerAdapter);
         circle.setViewPager(view_pager);
+
+
+        view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                postPagerAdapter.videoPlayerManager.stopAnyPlayback();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
     }
 
     private void initializeBottomSheet() {
