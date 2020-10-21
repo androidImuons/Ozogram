@@ -30,7 +30,7 @@ public class CommonViewModel extends ViewModel {
         HashMap<String, okhttp3.RequestBody> map = new HashMap<>();
         map.put("caption", message);
 
-
+        commonResponseInterface.onCommoStarted();
         //if the list is null
         if (commonResponseLiveData == null) {
             commonResponseLiveData = new MutableLiveData<CommonResponse>();

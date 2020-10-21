@@ -119,7 +119,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                 commonViewModel.uploadPost(getContext(), caption, getArraList());
             }
         });
-        SessionManager sessionManager=new SessionManager(getContext());
+        SessionManager sessionManager = new SessionManager(getContext());
 
         Glide.with(getContext())
                 .load(sessionManager.getUserDetails().get(SessionManager.KEY_PROFILE_PICTURE))
@@ -159,7 +159,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
 
     @Override
     public void onCommoStarted() {
-
+        displayProgressBar(false);
     }
 
     @Override
@@ -170,19 +170,20 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
                 try {
                     if (responseModel.getCode() == 200 && responseModel.getStatus().equalsIgnoreCase("OK")) {
                         Log.d(tag, "like Response : Code" + responseModel.getCode());
-                        showSnackbar(view_pager, responseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        showSnackbar(et_comment, responseModel.getMessage(), Snackbar.LENGTH_LONG);
+                        dismissProgressBar();
                         dismiss();
                         activity.finish();
                     } else {
 
                         Log.d(tag, "like Response fail: Code" + responseModel.getCode());
-                        showSnackbar(view_pager, responseModel.getMessage(), Snackbar.LENGTH_SHORT);
-                        dismiss();
-                        activity.finish();
+                        showSnackbar(et_comment, responseModel.getMessage(), Snackbar.LENGTH_LONG);
+                        dismissProgressBar();
+                       // dismissProgressBar();
+//                        dismiss();
+//                        activity.finish();
                     }
                 } catch (Exception e) {
-                } finally {
-                    dismiss();
                 }
             }
         });
@@ -190,7 +191,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
 
     @Override
     public void onCommonFailure(String message) {
-        showSnackbar(view_pager, message, Snackbar.LENGTH_SHORT);
+        showSnackbar(et_comment, message, Snackbar.LENGTH_SHORT);
     }
 
     public void showSnackbar(View view, String message, int duration) {

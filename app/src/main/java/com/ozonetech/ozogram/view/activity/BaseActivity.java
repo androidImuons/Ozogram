@@ -36,7 +36,7 @@ import com.ozonetech.ozogram.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
     @Override
@@ -139,7 +139,7 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             return false;
                         }
-                    }).into(imageView);
+                    }).centerCrop().into(imageView);
 
         } catch (Exception e) {
 
@@ -183,7 +183,5 @@ public class BaseActivity extends AppCompatActivity {
                 .build();
     }
 
-    public void loadImage(CircleImageView iv_user_image, ProgressBar pb_image, String s, Class<R.mipmap> mipmapClass) {
 
-    }
 }
