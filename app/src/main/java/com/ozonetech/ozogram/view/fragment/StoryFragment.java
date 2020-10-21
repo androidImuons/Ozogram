@@ -67,7 +67,6 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
         storyFragmentBinding.setLifecycleOwner(this);
         handlers = new MyClickHandlers(getActivity());
 
-
         renderStroryFragment(view);
         return view;
 
@@ -75,7 +74,6 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
 
     private void renderStroryFragment(View view) {
        // storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
         storyFragmentBinding.rvProfileStoryGallery.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         storyFragmentBinding.rvProfileStoryGallery.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(4), true));
         storyFragmentBinding.rvProfileStoryGallery.setItemAnimator(new DefaultItemAnimator());
@@ -83,7 +81,6 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
     }
 
     private void renderProfile() {
-
         showProgressDialog("Please wait...");
         userProfileResponseModel.fetchUserProfileData(getActivity(), userProfileResponseModel.userProfileListener=this);
     }

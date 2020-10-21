@@ -6,10 +6,13 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.app.web_api_services.AppServices;
 import com.ozonetech.ozogram.app.web_api_services.ServiceGenerator;
+import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
@@ -22,6 +25,8 @@ import retrofit2.Response;
 
 public class ProfileRepository {
 
+    private String tag="ProfileRepository";
+
     private MutableLiveData<UserProfileResponseModel> userProfileResponse;
     UserProfileResponseModel userProfileResponseModel;
 
@@ -30,6 +35,15 @@ public class ProfileRepository {
 
     private MutableLiveData<UnfollowUsersResponseModel> unfollowUsersResponse;
     UnfollowUsersResponseModel unfollowUsersResponseModel;
+
+    private MutableLiveData<CommonResponse> commonResponse;
+    CommonResponse commonResponseModel;
+
+    private MutableLiveData<FollowerResponseModel> followerResponse;
+    FollowerResponseModel followerResponseModel;
+
+    private MutableLiveData<FollowerResponseModel> followingResponse;
+    FollowerResponseModel followingResponseModel;
 
 
     public LiveData<UserProfileResponseModel> fetchUserProfileData(Map<String, String> userProfileMap,Context context) {
@@ -135,4 +149,85 @@ public class ProfileRepository {
     }
 
 
+
+    public LiveData<CommonResponse> followUnFollow(Map<String, String> param, Context context){
+
+        commonResponse = new MutableLiveData<>();
+        SessionManager session = new SessionManager(context);
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
+        apiService.followUnfollow(param).enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                if (response.isSuccessful()) {
+                    commonResponseModel = response.body();
+                    commonResponse.setValue(commonResponseModel);
+                    Log.d(tag,"- 200---"+new Gson().toJson(response.body()));
+                } else {
+                    commonResponseModel = response.body();
+                    commonResponse.setValue(commonResponseModel);
+                    Log.d(tag,"---fail-"+new Gson().toJson(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                Log.d(tag,"----"+t.getMessage());
+            }
+        });
+        return commonResponse;
+    }
+
+    public LiveData<FollowerResponseModel> getFollowers(Map<String, String> followerMap, Context context){
+
+        followerResponse = new MutableLiveData<>();
+        SessionManager session = new SessionManager(context);
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
+        apiService.getFollowers(followerMap).enqueue(new Callback<FollowerResponseModel>() {
+            @Override
+            public void onResponse(Call<FollowerResponseModel> call, Response<FollowerResponseModel> response) {
+                if (response.isSuccessful()) {
+                    followerResponseModel = response.body();
+                    followerResponse.setValue(followerResponseModel);
+                    Log.d(tag,"- 200---"+new Gson().toJson(response.body()));
+                } else {
+                    followerResponseModel = response.body();
+                    followerResponse.setValue(followerResponseModel);
+                    Log.d(tag,"---fail-"+new Gson().toJson(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FollowerResponseModel> call, Throwable t) {
+                Log.d(tag,"----"+t.getMessage());
+            }
+        });
+        return followerResponse;
+    }
+
+    public LiveData<FollowerResponseModel> getFollowings(Map<String, String> followerMap, Context context){
+
+        followingResponse = new MutableLiveData<>();
+        SessionManager session = new SessionManager(context);
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
+        apiService.getFollowings(followerMap).enqueue(new Callback<FollowerResponseModel>() {
+            @Override
+            public void onResponse(Call<FollowerResponseModel> call, Response<FollowerResponseModel> response) {
+                if (response.isSuccessful()) {
+                    followingResponseModel = response.body();
+                    followingResponse.setValue(followingResponseModel);
+                    Log.d(tag,"- 200---"+new Gson().toJson(response.body()));
+                } else {
+                    followingResponseModel = response.body();
+                    followingResponse.setValue(followingResponseModel);
+                    Log.d(tag,"---fail-"+new Gson().toJson(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FollowerResponseModel> call, Throwable t) {
+                Log.d(tag,"----"+t.getMessage());
+            }
+        });
+        return followingResponse;
+    }
 }

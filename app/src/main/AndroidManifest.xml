@@ -22,11 +22,14 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.FindMorePeopleActivity">
+        <activity android:name=".view.activity.FollowersNFollowingsActivity"></activity>
+        <activity android:name=".view.activity.FindMorePeopleActivity"></activity>
+        <activity android:name=".view.activity.AddProfileActivity" />
+        <activity android:name=".view.activity.EditProfileActivity" />
+        <activity
+            android:name=".view.activity.ProfileActivity"
+            android:launchMode="singleTop" >
         </activity>
-        <activity android:name=".view.activity.AddProfileActivity"></activity>
-        <activity android:name=".view.activity.EditProfileActivity"></activity>
-        <activity android:name=".view.activity.ProfileActivity"></activity>
         <activity android:name=".view.activity.GalleryActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
@@ -39,7 +42,6 @@
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

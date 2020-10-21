@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.ActivityFindMorePeopleBinding;
+import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.adapter.UnFollowUserAdapter;
@@ -24,7 +25,9 @@ import com.ozonetech.ozogram.viewmodel.UnFollowerData;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FindMorePeopleActivity extends BaseActivity implements UnFollowUserListener,UnFollowUserAdapter.UnFollowUserAdapterListener {
 
@@ -89,6 +92,29 @@ public class FindMorePeopleActivity extends BaseActivity implements UnFollowUser
         });
     }
 
+    @Override
+    public void onGetFollowUnFollowUserResponse(LiveData<CommonResponse> commonResponse) {
+        commonResponse.observe(FindMorePeopleActivity.this, new Observer<CommonResponse>() {
+            @Override
+            public void onChanged(CommonResponse commonResponse) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (commonResponse.getCode() == 200 && commonResponse.getStatus().equalsIgnoreCase("OK")) {
+                        showSnackbar(activityFindMorePeopleBinding.llFindFollowers, commonResponse.getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("FindMorePeopleActivity", "Response : Code" + commonResponse.getCode() + "\n Status : " + commonResponse.getStatus() + "\n Message : " + commonResponse.getMessage());
+                        renderFindMorePeople();
+                    } else {
+                        showSnackbar(activityFindMorePeopleBinding.llFindFollowers, commonResponse.getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
+    }
+
     private void setRecyclerView(List<UnFollowerData> unFollowUserArrayList) {
         unFollowUserAdapter=new UnFollowUserAdapter(unFollowUserArrayList,this);
         activityFindMorePeopleBinding.rvNewSuggestions.setAdapter(unFollowUserAdapter);
@@ -97,7 +123,14 @@ public class FindMorePeopleActivity extends BaseActivity implements UnFollowUser
 
     @Override
     public void onFollowRequestClicked(UnFollowerData unFollowerData) {
-        Toast.makeText(getApplicationContext(), "Follow clicked! " + unFollowerData.getFullname(), Toast.LENGTH_SHORT).show();
+        showProgressDialog("Please wait...");
+
+        Map<String, String> followUnfollowMap = new HashMap<>();
+        followUnfollowMap.put("user_id", unFollowerData.getUserId());
+        followUnfollowMap.put("action", "follow");            //follow , unfollow
+        unfollowUsersResponseModel.sendfollowUnFollow(FindMorePeopleActivity.this, followUnfollowMap,unfollowUsersResponseModel.unFollowUserListener=this);
+
+       // Toast.makeText(getApplicationContext(), "Follow clicked! " + unFollowerData.getFullname() + "user id : "+unFollowerData.getUserId() , Toast.LENGTH_SHORT).show();
     }
 
     @Override
