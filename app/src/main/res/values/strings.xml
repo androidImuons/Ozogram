@@ -56,4 +56,6 @@
     <string name="new_suggestions">New Suggestions</string>
     <string name="all_suggestions">All Suggestions</string>
     <string name="follow">Follow</string>
+    <string name="remove">Remove</string>
+    <string name="unfollow">Unfollow</string>
 </resources>

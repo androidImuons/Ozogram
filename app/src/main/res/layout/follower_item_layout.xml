@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="unFollowUser"
-            type="com.ozonetech.ozogram.viewmodel.UnFollowerData" />
+            name="follower"
+            type="com.ozonetech.ozogram.model.Follower" />
     </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,8 +26,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/profile_icon"
             app:civ_border_color="#7e3c62"
-            app:civ_border_width="0dp"
-            bind:profilePicture="@{unFollowUser.profilePicture}" />
+            app:civ_border_width="1dp"
+            bind:profilePicture="@{follower.profilePicture}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,27 +43,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp2"
-                android:text="@{unFollowUser.fullname,default= UserFullName}"
+                android:text="@{follower.fullname,default= UserFullName}"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp12"
                 app:custom_font="@string/app_font_bold" />
 
-            <com.ozonetech.ozogram.customeview.TypeTextView
-                android:id="@+id/tvuserbio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp2"
-                android:text="@{`Following ` + unFollowUser.followingCount +` People. `,default= `Following 0 friends ` }"
-                android:textColor="@color/colorHint"
-                android:textSize="@dimen/sp12"
-                app:custom_font="@string/app_font_bold" />
 
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:id="@+id/tvUserSuggestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp2"
-                android:text="@{`Followed by ` + unFollowUser.followersCount +` followers.` ,default= `Followed by 0 followers `}"
+                android:text="@{follower.fullname ,default= fullname}"
                 android:textColor="@color/colorHint"
                 android:textSize="@dimen/sp12"
                 app:custom_font="@string/app_font_bold" />
@@ -71,27 +62,23 @@
         </LinearLayout>
 
         <com.ozonetech.ozogram.customeview.TypeTextView
-            android:id="@+id/tvFollow"
+            android:id="@+id/tvRemove"
             android:layout_width="@dimen/dp80"
             android:layout_height="@dimen/dp30"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/dp5"
-            android:background="@drawable/profile_enable_btn"
+            android:layout_margin="@dimen/dp10"
+            android:background="@drawable/profile_disable_btn"
             android:gravity="center"
-            android:text="@string/follow"
-            android:textColor="@color/white"
+            android:text="@string/remove"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/sp12"
-            android:textStyle="bold"
             app:custom_font="@string/app_font_bold" />
 
-        <ImageView
-            android:id="@+id/iv_remove"
-            android:layout_width="@dimen/dp10"
-            android:layout_height="@dimen/dp10"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:layout_margin="@dimen/dp10"
-            android:background="@drawable/cancel_icon_grey" />
 
     </LinearLayout>
+
 </layout>
+
+
+
+

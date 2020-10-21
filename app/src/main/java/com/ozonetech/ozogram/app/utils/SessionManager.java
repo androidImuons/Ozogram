@@ -45,7 +45,8 @@ public class SessionManager {
     public static final String KEY_GENDER="gender";
     public static final String KEY_WEBSITE = "website";
     public static final String KEY_POST_COUNT="postCount";
-
+    public static final String KEY_FOLLOWERS_COUNT="followersCount";
+    public static final String KEY_FOLLOWINGS_COUNT="followingCount";
 
     // Constructor
     public SessionManager(Context context){
@@ -121,6 +122,8 @@ public class SessionManager {
         user.put(KEY_GENDER,pref.getString(KEY_GENDER,null));
         user.put(KEY_JOINING_DATE,pref.getString(KEY_JOINING_DATE,null));
         user.put(KEY_POST_COUNT,pref.getString(KEY_POST_COUNT,"0"));
+        user.put(KEY_FOLLOWERS_COUNT,pref.getString(KEY_FOLLOWERS_COUNT,"0"));
+        user.put(KEY_FOLLOWINGS_COUNT,pref.getString(KEY_FOLLOWINGS_COUNT,"0"));
         // return user
         return user;
     }
@@ -153,10 +156,11 @@ public class SessionManager {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void saveUserProfileData(String id,String userId, String fullname, String email, String mobile, String bio,
-                                    String profilePicture,String website,String gender, String joiningDate,String postCount) {
+    public void saveUserProfileData(int id,String userId, String fullname, String email, String mobile, String bio,
+                                    String profilePicture,String website,String gender, String joiningDate,
+                                    int postCount,int followersCount,int followingCount) {
         // Storing name in pref
-        editor.putString(KEY_ID,id);
+        editor.putString(KEY_ID,String.valueOf(id));
         editor.putString(KEY_USERID, userId);
         editor.putString(KEY_FULL_NAME,fullname);
         editor.putString(KEY_EMAIL, email);
@@ -166,7 +170,9 @@ public class SessionManager {
         editor.putString(KEY_WEBSITE,website);
         editor.putString(KEY_GENDER,gender);
         editor.putString(KEY_JOINING_DATE, joiningDate);
-        editor.putString(KEY_POST_COUNT,postCount);
+        editor.putString(KEY_POST_COUNT, String.valueOf(postCount));
+        editor.putString(KEY_FOLLOWERS_COUNT, String.valueOf(followersCount));
+        editor.putString(KEY_FOLLOWINGS_COUNT, String.valueOf(followingCount));
         // commit changes
         editor.commit();
     }

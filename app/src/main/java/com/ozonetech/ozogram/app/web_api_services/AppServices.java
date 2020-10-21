@@ -5,6 +5,7 @@ import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.GetUnfollowUserResponse;
 import com.ozonetech.ozogram.model.LoginResponseModel;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
@@ -46,6 +47,16 @@ public interface AppServices {
     @POST("get_posts")
     Call<GetPostResponseModel> getPostS();
 
+    /*Parameters :
+1) search -> optional (it can be user_id or name)*/
+    @FormUrlEncoded
+    @POST("get_followers")
+    Call<FollowerResponseModel> getFollowers(@FieldMap Map<String , String> followersMap);
+
+    @FormUrlEncoded
+    @POST("get_followings")
+    Call<FollowerResponseModel> getFollowings(@FieldMap Map<String , String> followingsMap);
+
     @Multipart
     @POST("upload_post")
     Call<CommonResponse> postUpload(@Header("Authorization") String authHeader, @PartMap() HashMap<String, RequestBody> param,
@@ -77,3 +88,6 @@ public interface AppServices {
     @POST("share_post")
     Call<CommonResponse> postShare(@FieldMap Map<String, String> param);
 }
+
+
+

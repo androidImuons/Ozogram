@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.app.utils.SessionManager;
+import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.UserData;
 import com.ozonetech.ozogram.repository.ProfileRepository;
 import com.ozonetech.ozogram.view.listeners.UnFollowUserListener;
@@ -65,6 +66,7 @@ public class UnfollowUsersResponseModel extends ViewModel {
     }
 
     private LiveData<UnfollowUsersResponseModel> unfollowUsersResponse;
+    private LiveData<CommonResponse> commonResponse;
     public UnFollowUserListener unFollowUserListener;
 
     public void fetchUnFollowUsersList(Context context, UnFollowUserListener unFollowUserListener) {
@@ -77,6 +79,17 @@ public class UnfollowUsersResponseModel extends ViewModel {
             unfollowUsersResponse = new ProfileRepository().fetchUnFollowUsers(context);
             unFollowUserListener.onGetUnFollowUserSuccess(unfollowUsersResponse);
         }
+    }
+
+    public void sendfollowUnFollow(Context context,Map<String, String> followDataMap,UnFollowUserListener unFollowUserListener){
+        if (commonResponse == null) {
+            commonResponse = new MutableLiveData<CommonResponse>();
+            //we will load it asynchronously from server in this method
+            commonResponse = new ProfileRepository().followUnFollow(followDataMap,context);
+            unFollowUserListener.onGetFollowUnFollowUserResponse(commonResponse);
+        }else{
+            commonResponse = new ProfileRepository().followUnFollow(followDataMap,context);
+            unFollowUserListener.onGetFollowUnFollowUserResponse(commonResponse);        }
     }
 
 }

@@ -34,7 +34,7 @@
         tools:context=".view.activity.ProfileActivity">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginTop="@dimen/dp15"
@@ -49,15 +49,26 @@
 
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:id="@+id/tvProfileName1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp5"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:gravity="center|start"
                 android:text="@{user.fullname,default=ProfileName}"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp12"
                 app:custom_font="@string/app_font_bold" />
+
+            <ImageView
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:layout_gravity="center|right"
+                android:onClick="@{handlers::onLogoutClicked}"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="@drawable/ic_logout" />
+
 
 
         </LinearLayout>

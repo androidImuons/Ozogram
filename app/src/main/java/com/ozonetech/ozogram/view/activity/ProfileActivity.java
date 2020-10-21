@@ -75,8 +75,6 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
     private static final int PERMISSION_REQUEST_CODE = 200;
 
 
-
-
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private int[] tabIcons = {
@@ -100,14 +98,6 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         handlers = new MyClickHandlers(this);
         renderProfile();
         initRecyclerView();
-
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        setupTabIcons();
 
     }
 
@@ -164,33 +154,35 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 //save access token
                 hideProgressDialog();
                 try {
-                    if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
-                      //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
-                        Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
-                        Log.d("ProfileActivity", "User Data" + userProfileResponse.getValue().getUser().getFullname());
+                    if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
+                      //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("ProfileActivity", "Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
+                        Log.d("ProfileActivity", "User Data" + userProfileResponseModel.getUser().getFullname());
 
                         session.saveUserProfileData(
-                                String.valueOf(userProfileResponse.getValue().getUser().getId()),
-                                userProfileResponse.getValue().getUser().getUserId(),
-                                userProfileResponse.getValue().getUser().getFullname(),
-                                userProfileResponse.getValue().getUser().getEmail(),
-                                userProfileResponse.getValue().getUser().getMobile(),
-                                userProfileResponse.getValue().getUser().getBio(),
-                                userProfileResponse.getValue().getUser().getProfilePicture(),
-                                userProfileResponse.getValue().getUser().getWebsite(),
-                                userProfileResponse.getValue().getUser().getGender(),
-                                userProfileResponse.getValue().getUser().getJoiningDate(),
-                                String.valueOf(userProfileResponse.getValue().getUser().getPostsCount()));
+                                userProfileResponseModel.getUser().getId(),
+                                userProfileResponseModel.getUser().getUserId(),
+                                userProfileResponseModel.getUser().getFullname(),
+                                userProfileResponseModel.getUser().getEmail(),
+                                userProfileResponseModel.getUser().getMobile(),
+                                userProfileResponseModel.getUser().getBio(),
+                                userProfileResponseModel.getUser().getProfilePicture(),
+                                userProfileResponseModel.getUser().getWebsite(),
+                                userProfileResponseModel.getUser().getGender(),
+                                userProfileResponseModel.getUser().getJoiningDate(),
+                                userProfileResponseModel.getUser().getPostsCount(),
+                                userProfileResponseModel.getUser().getFollowersCount(),
+                                userProfileResponseModel.getUser().getFollowingCount());
 
                         // display user
-                        activityProfileBinding.setUser(userProfileResponse.getValue().getUser());
+                        activityProfileBinding.setUser(userProfileResponseModel.getUser());
 
                         // assign click handlers
                         activityProfileBinding.setHandlers(handlers);
 
 
                         List<PostData> postDataArrayList=new ArrayList<>();
-                        postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
+                        postDataArrayList=userProfileResponseModel.getUser().getPostDat();
                         if(postDataArrayList.size() != 0 ){
                             List<PostGalleryPath> postGalleryPathsArraylist=new ArrayList<>();
                             for(int i=0;i<postDataArrayList.size();i++){
@@ -208,7 +200,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                         }
 
                     } else {
-                        showSnackbar(activityProfileBinding.llUserProfile, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                        showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
                 } finally {
@@ -316,6 +308,10 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
             goToEditProfileActivity();
         }
 
+        public void onLogoutClicked(View view){
+            goToLogout();
+        }
+
         public void onProfileFabClicked(View view) {
 
             if (!checkPermission()) {
@@ -348,13 +344,17 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
 
         public void onFollowersClicked(View view) {
-            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+
+            gotoFollowersNFollowingsActivity("followers");
+            //showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
 
            // Toast.makeText(context, "Followers coming soon!", Toast.LENGTH_SHORT).show();
         }
 
         public void onFollowingClicked(View view) {
-            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+            gotoFollowersNFollowingsActivity("followings");
+
+           // showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
 
             //  Toast.makeText(context, "Following coming soon !", Toast.LENGTH_SHORT).show();
         }
@@ -366,9 +366,34 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         }
     }
 
+    private void goToLogout() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProfileActivity.this);
+        alertDialog.setTitle("Confirm Logout...");
+        alertDialog.setMessage("Are you sure you want to logout?");
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                session.logoutUser();
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void gotoFollowersNFollowingsActivity(String type) {
+        Intent intent=new Intent(ProfileActivity.this,FollowersNFollowingsActivity.class);
+        intent.putExtra("type",type);
+        startActivity(intent);
+        finish();
+    }
+
     private void goToEditProfileActivity() {
         Intent intent = new Intent(this, EditProfileActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
