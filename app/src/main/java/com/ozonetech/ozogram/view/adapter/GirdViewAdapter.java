@@ -3,6 +3,7 @@ package com.ozonetech.ozogram.view.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,9 +23,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.FragmentPostGalleryBinding;
+import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class GirdViewAdapter extends RecyclerView.Adapter<GirdViewAdapter.GridView> {
@@ -57,8 +63,12 @@ PostGalleryFragment postGalleryFragment;
         //   binding.imageview.setImageBitmap(listofImage[position]);
         final String file = "file://" + arrayList.get(position);
         if (position == 0) {
+            if(is_check_open){
+                binding.checkbox.setChecked(true);
+            }
             postGalleryFragment.imageClick(position, arrayList.get(position));
         }
+
         Log.d("grid adpter", "----"+file);
         setImage(position, binding, file);
         setVisibility(binding);
@@ -89,15 +99,17 @@ PostGalleryFragment postGalleryFragment;
     private void setImage(int position, GridView binding, String file) {
 
         if(type==0){
-            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
-            Glide.with(context).load(file)
-                    .placeholder(R.mipmap.ic_logo)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .error(R.drawable.ic_close)
-                    .thumbnail(0.25f)
-                    .apply(requestOptions)
-                    .into(binding.imageview);
+//            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+//            Glide.with(context).load(file)
+//                    .placeholder(R.mipmap.ic_logo)
+//                    .centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .error(R.mipmap.ic_logo)
+//                    .thumbnail(0.1f)
+//                    .apply(requestOptions)
+//                    .into(binding.imageview);
+            ( (BaseActivity)context).loadImage(context,binding.imageview,binding.pb_image,arrayList.get(position),R.mipmap.ic_logo);
+
         }else if(type==1){
             RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
             Glide.with(context).load(file)
@@ -108,6 +120,11 @@ PostGalleryFragment postGalleryFragment;
 
 
         binding.id = position;
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull GridView holder) {
+        super.onViewRecycled(holder);
     }
 
     private void setVisibility(GridView binding) {
@@ -154,11 +171,13 @@ PostGalleryFragment postGalleryFragment;
         public ImageView imageview;
         public CheckBox checkbox;
         public int id;
+        ProgressBar pb_image;
 
         public GridView(@NonNull View itemView) {
             super(itemView);
             imageview = itemView.findViewById(R.id.iv_show_image);
             checkbox = itemView.findViewById(R.id.ch_image_check);
+            pb_image=itemView.findViewById(R.id.pb_image);
         }
     }
 

@@ -80,7 +80,6 @@ public class GalleryActivity extends BaseActivity {
         galleryBinding.setGallery(galleryViewModel);
         galleryBinding.executePendingBindings();
         galleryBinding.setLifecycleOwner(GalleryActivity.this);
-
         setupViewPager();
         checkPermission();
 

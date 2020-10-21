@@ -125,22 +125,6 @@ public class HomeViewModel extends ViewModel {
     }
 
 
-    public void sharePost(Context context, String user_id, String post_id, String message) {
-        commonResponseInterface.onCommoStarted();
-        Map<String, String> likeparam = new HashMap<>();
-        likeparam.put("user_id", user_id);
-        likeparam.put("post_id", post_id);
-        likeparam.put("message", message);
-        //if the list is null
-        if (commonResponseLiveData == null) {
-            commonResponseLiveData = new MutableLiveData<CommonResponse>();
-            commonResponseLiveData = new SharePost().sharePost(likeparam, context);
-            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
-        } else {
-            commonResponseLiveData = new SharePost().sharePost(likeparam, context);
-            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
-        }
-    }
 
     public void onClickHome(View view) {
 

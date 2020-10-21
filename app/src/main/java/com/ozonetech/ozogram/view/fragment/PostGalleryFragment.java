@@ -114,6 +114,7 @@ public class PostGalleryFragment extends BaseFragment {
         obj_adapter = new GirdViewAdapter(getContext(), arrayList, PostGalleryFragment.this);
         fragmentPostGalleryBinding.recycleGallery.setAdapter(obj_adapter);
         fragmentPostGalleryBinding.nestedListGallery.scrollTo(0, 0);
+
     }
 
     private int dpToPx(int dp) {
@@ -145,9 +146,12 @@ public class PostGalleryFragment extends BaseFragment {
             public void onClick(View view) {
                 if (!is_check_open) {
                     is_check_open = true;
+                    selectedImageList.clear();
                     obj_adapter.update(is_check_open);
+
                 } else {
                     is_check_open = false;
+                    selectedImageList.clear();
                     obj_adapter.update(is_check_open);
                 }
             }
@@ -210,9 +214,20 @@ public class PostGalleryFragment extends BaseFragment {
         }
 
     }
-    private void videoLayer(String url){
 
-        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        fragmentPostGalleryBinding.recycleGallery.setAdapter(null);
+        fragmentPostGalleryBinding.recycleGallery.setLayoutManager(null);
+        fragmentPostGalleryBinding.recycleGallery.clearOnScrollListeners();
+        fragmentPostGalleryBinding.recycleGallery.addItemDecoration(null);
+
+    }
+
+    private void videoLayer(String url){
+Log.d(tag,"----video player--");
+        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC);
         Glide.with(getActivity()).load(url)
                 .skipMemoryCache(false)
                 .apply(requestOptions)

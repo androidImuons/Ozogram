@@ -32,6 +32,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
     private SessionManager session;
     PostViewInterface postViewInterface;
     private String tag = "PostRecycleViewAdapter";
+    private boolean is_like;
 
     public PostRecycleViewAdapter(Context applicationContext, List<GetPostRecordModel> post, OzogramHomeActivity ozogramHomeActivity) {
         context = applicationContext;
@@ -58,6 +59,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     public void updateList(List<GetPostRecordModel> post) {
         postDataModelList = post;
+        is_like=false;
         notifyDataSetChanged();
     }
 
@@ -143,7 +145,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 tv_message.setText(model.getCaption(), TextView.BufferType.NORMAL);
             }
             List<LikeUserModel> likeUserModellist = model.getLikeUsers();
-            boolean is_like = false;
+           is_like = false;
 
             for (int i = 0; i < likeUserModellist.size(); i++) {
                 if (likeUserModellist.get(i).getUserId().equals(session.getUserDetails().get(session.KEY_USERID))) {
@@ -158,6 +160,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 iv_heart.setTag(1);
                 //iv_heart.setSelected(true);
             } else {
+                iv_heart.setBackgroundResource(R.drawable.ic_heart);
                 iv_heart.setTag(0);
             }
 

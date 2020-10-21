@@ -47,6 +47,7 @@ public class PostPagerAdapter extends PagerAdapter {
     PostRecycleViewAdapter postRecycleViewAdapter;
     OzogramHomeActivity activity;
     private String tag = "PostPagerAdapter";
+    private VideoPlayerView last_video_play;
 
     public PostPagerAdapter(Context context, List<PostGalleryPathModel> postGalleryPath, PostRecycleViewAdapter postRecycleViewAdapter, OzogramHomeActivity activity) {
         this.context = context;
@@ -72,6 +73,7 @@ public class PostPagerAdapter extends PagerAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
+
         if (postGalleryPathModelList.get(position).getType().equals("image")) {
             setData(viewHolder, postGalleryPathModelList.get(position), position);
             Log.d(tag, "---image---");
@@ -85,39 +87,22 @@ public class PostPagerAdapter extends PagerAdapter {
     }
 
     private void setData(ViewHolder viewHolder, PostGalleryPathModel postGalleryPathModel, int position) {
-//        if (postGalleryPathModel.getType().equals("image")) {
-//            viewHolder.iv_post_image.setVisibility(View.VISIBLE);
-//            viewHolder.vv_video.setVisibility(View.GONE);
-//           activity.loadImage(context, viewHolder.iv_post_image, viewHolder.pb_bar, postGalleryPathModel.getPath(), R.drawable.ic_profile);
-//        }else{
-//            viewHolder.iv_post_image.setVisibility(View.GONE);
-//            viewHolder.vv_video.setVisibility(View.VISIBLE);
-//            MediaController mediaController= new MediaController(context);
-//            mediaController.setAnchorView(viewHolder.vv_video);
-//
-//            //specify the location of media file
-//            Uri uri=Uri.parse(postGalleryPathModel.getPath());
-//
-//            //Setting MediaController and URI, then starting the videoView
-//            viewHolder.vv_video.setMediaController(mediaController);
-//            viewHolder.vv_video.setVideoURI(uri);
-//            //viewHolder.vv_video.requestFocus();
-//            //viewHolder.vv_video.start();
-//        }
+
 
 
         if (postGalleryPathModel.getType().equals("image")) {
             viewHolder.iv_post_image.setVisibility(View.VISIBLE);
             viewHolder.vv_video.setVisibility(View.GONE);
-            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
-            Glide.with(context).load(postGalleryPathModel.getPath())
-                    .placeholder(R.mipmap.ic_logo)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .error(R.drawable.ic_close)
-                    .thumbnail(0.25f)
-                    .apply(requestOptions)
-                    .into(viewHolder.iv_post_image);
+//            RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+//            Glide.with(context).load(postGalleryPathModel.getPath())
+//                    .placeholder(R.mipmap.ic_logo)
+//                    .centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .error(R.mipmap.ic_logo)
+//                    .thumbnail(0.25f)
+//                    .apply(requestOptions)
+//                    .into(viewHolder.iv_post_image);
+          activity.loadImage(context,viewHolder.iv_post_image,viewHolder.pb_bar,postGalleryPathModel.getPath(),R.mipmap.ic_logo);
         } else if (postGalleryPathModel.getType().equals("video")) {
             RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
             Glide.with(context).load(postGalleryPathModel.getPath())
@@ -130,7 +115,7 @@ public class PostPagerAdapter extends PagerAdapter {
     }
 
     private void videoLayer(ViewHolder viewHolder, int position) {
-        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.ALL);
+        RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC);
         Glide.with(context).load(postGalleryPathModelList.get(position).getPath())
                 .skipMemoryCache(false)
                 .apply(requestOptions)
@@ -157,6 +142,13 @@ public class PostPagerAdapter extends PagerAdapter {
         viewHolder.iv_post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (last_video_play!=null){
+                    last_video_play.stop();
+                    last_video_play=viewHolder.vv_video;
+                }else{
+                    last_video_play=viewHolder.vv_video;
+                }
+
                 Log.d(tag, "---vidoe play---" + postGalleryPathModelList.get(position).getPath());
                 videoPlayerManager.playNewVideo(null, viewHolder.vv_video, postGalleryPathModelList.get(position).getPath());
             }
@@ -165,6 +157,7 @@ public class PostPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object view) {
+
         container.removeView((View) view);
     }
 

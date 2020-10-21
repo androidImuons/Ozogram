@@ -19,7 +19,7 @@ public abstract  class AppBaseDialog extends BaseDialogFragment {
     }
 
     public void displayProgressBar(boolean isCancellable) {
-        displayProgressBar(isCancellable, "");
+        displayProgressBar(isCancellable, "Please Wait...!");
     }
 
     public void displayProgressBar(boolean isCancellable, String loaderMsg) {

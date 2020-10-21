@@ -1,10 +1,12 @@
 package com.ozonetech.ozogram.app.web_api_services;
 
 import com.ozonetech.ozogram.model.CommonResponse;
+import com.ozonetech.ozogram.model.FollowingUserResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.GetUnfollowUserResponse;
 import com.ozonetech.ozogram.model.LoginResponseModel;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
+import com.ozonetech.ozogram.view.adapter.FollowingUserList;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
@@ -76,4 +78,9 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("share_post")
     Call<CommonResponse> postShare(@FieldMap Map<String, String> param);
+
+    //search
+    @FormUrlEncoded
+    @POST("get_followings")
+    Call<FollowingUserResponse> getFollowing(@FieldMap Map<String, String> param);
 }

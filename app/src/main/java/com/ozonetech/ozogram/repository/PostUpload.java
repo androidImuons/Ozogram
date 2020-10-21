@@ -32,18 +32,13 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public class PostUpload {
 
+    double file_size;
     private String tag="PostUpload";
     CommonResponse commonResponse;
     private MutableLiveData<CommonResponse> commonResponseMutableLiveData;
     public LiveData<CommonResponse> postUpload(HashMap<String, RequestBody> param, ArrayList<String> filepath, Context context) {
         commonResponseMutableLiveData = new MutableLiveData<>();
-//        ArrayList<String> filepath = new ArrayList<>();
-//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
-//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
-//        filepath.add("/storage/emulated/0/WhatsApp/Media/WhatsApp Video/VID-20200822-WA0064.mp4");
-//        MultipartBody.Builder builder = new MultipartBody.Builder();
-//        builder.setType(MultipartBody.FORM);
-//        builder.addFormDataPart("caption", "Robert");
+
 
 
         MultipartBody.Part body1 = null;
@@ -53,13 +48,17 @@ public class PostUpload {
             parts.add(prepareFilePart(filepath.get(i)));
         }
 
-//        try {
-//            File file = new File(m_selectedPath);
-//            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//            body = MultipartBody.Part.createFormData("post_gallery_arr", file.getName().replace(" ", "_"), requestFile);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        if (file_size>10000){
+            Log.d(tag,"-----size send--"+file_size);
+            commonResponse=new CommonResponse();
+            commonResponse.setCode(404);
+            commonResponse.setMessage("Maximum 10 MB Size Allowed");
+            commonResponseMutableLiveData.setValue(commonResponse);
+            return commonResponseMutableLiveData;
+        }else{
+            Log.d(tag,"-----size send--"+file_size);
+        }
+
 
         SessionManager session = new SessionManager(context);
         AppServices apiService = ServiceGenerator.getApiService();
@@ -95,6 +94,9 @@ public class PostUpload {
 
         File file = new File(fileUri);
         MultipartBody.Part body = null;
+        long length = file.length();
+        length = length/1024;
+        file_size=file_size+length;
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
          body = MultipartBody.Part.createFormData("post_gallery_arr[]", file.getName().replace(" ", "_"), requestFile);
         return body;
