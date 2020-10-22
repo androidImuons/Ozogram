@@ -68,7 +68,7 @@ public class UserProfileResponseModel extends ViewModel {
     public void fetchUserProfileData(Context context, UserProfileListener userProfileListener) {
         SessionManager session = new SessionManager(context);
         Map<String, String> userProfileMap = new HashMap<>();
-        userProfileMap.put("user_id", session.getUserDetails().get(SessionManager.KEY_USERNAME));
+        userProfileMap.put("user_id", session.getUserDetails().get(SessionManager.KEY_USERID));
 
         if (userProfileResponse == null) {
             userProfileResponse = new MutableLiveData<UserProfileResponseModel>();

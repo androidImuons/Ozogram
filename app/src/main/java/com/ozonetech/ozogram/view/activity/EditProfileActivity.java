@@ -70,7 +70,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
     private void renderEditProfile() {
         editProfileViewModel.setProfilePicture(sessionManager.getUserDetails().get(SessionManager.KEY_PROFILE_PICTURE));
         editProfileViewModel.setFullName(sessionManager.getUserDetails().get(SessionManager.KEY_FULL_NAME));
-        editProfileViewModel.setUserName(sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME));
+        editProfileViewModel.setUserName(sessionManager.getUserDetails().get(SessionManager.KEY_USERID));
         editProfileViewModel.setBio(sessionManager.getUserDetails().get(SessionManager.KEY_BIO));
         editProfileViewModel.setEmail(sessionManager.getUserDetails().get(SessionManager.KEY_EMAIL));
         editProfileViewModel.setMobileNumber(sessionManager.getUserDetails().get(SessionManager.KEY_MOBILE));
@@ -198,7 +198,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
         showProgressDialog("Please wait...");
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME))
+                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERID))
                 .addFormDataPart("bio", editProfileViewModel.bio)
                 .addFormDataPart("website",website)
                 .addFormDataPart("gender", editProfileViewModel.gender.toLowerCase());
@@ -211,7 +211,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
                     );
             builder.addFormDataPart("profile_picture", imageFile.getName(), requestFile);
         }
-        Log.d("EditProfileActivity", "Parameters : user_id" + sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME) +
+        Log.d("EditProfileActivity", "Parameters : user_id" + sessionManager.getUserDetails().get(SessionManager.KEY_USERID) +
                 "\n bio : " + editProfileViewModel.bio + "\n website : " + editProfileViewModel.website+
                 "\n gender : " + editProfileViewModel.gender.toLowerCase());
 

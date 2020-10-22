@@ -32,13 +32,14 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
 
     // User name (make variable public to access from outside)
-    public static final String KEY_USERNAME = "username";
+    //public static final String KEY_USERNAME = "username";
     public static final String KEY_ACCESS_TOKEN="accessToken";
     public static final String KEY_ID ="id";
     public static final String KEY_USERID = "userId";
     public static final String KEY_FULL_NAME="fullname";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_MOBILE="mobile";
+    public static final String KEY_TRANSACTION="transaction";
     public static final String KEY_BIO = "bio";
     public static final String KEY_PROFILE_PICTURE="profilePicture";
     public static final String KEY_JOINING_DATE = "joiningDate";
@@ -57,13 +58,17 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String username,String accessToken){
+    public void createLoginSession(String userId,String accessToken,String mobileNo,String email,String transaction,String fullname){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
-        editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_USERID, userId);
         editor.putString(KEY_ACCESS_TOKEN,accessToken);
+        editor.putString(KEY_MOBILE,mobileNo);
+        editor.putString(KEY_EMAIL,email);
+        editor.putString(KEY_TRANSACTION,transaction);
+        editor.putString(KEY_FULL_NAME,fullname);
 
         // commit changes
         editor.commit();
@@ -111,7 +116,7 @@ public class SessionManager {
         // user name
         user.put(KEY_ID,pref.getString(KEY_ID,"0"));
         user.put(KEY_USERID,pref.getString(KEY_USERID,null));
-        user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
+        //user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
         user.put(KEY_ACCESS_TOKEN,pref.getString(KEY_ACCESS_TOKEN,null));
         user.put(KEY_FULL_NAME,pref.getString(KEY_FULL_NAME,null));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));

@@ -28,6 +28,15 @@ public class LoginDataModel {
     @SerializedName("transaction_mode")
     @Expose
     private String transactionMode;
+    @SerializedName("user_id")
+    @Expose
+    private String userId;
+    @SerializedName("fullname")
+    @Expose
+    private String fullname;
+    @SerializedName("email")
+    @Expose
+    private String email;
 
     public String getOtpmode() {
         return otpmode;
@@ -93,4 +102,27 @@ public class LoginDataModel {
         this.transactionMode = transactionMode;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

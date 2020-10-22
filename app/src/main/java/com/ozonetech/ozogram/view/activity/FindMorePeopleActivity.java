@@ -82,7 +82,7 @@ public class FindMorePeopleActivity extends BaseActivity implements UnFollowUser
 
 
                     } else {
-                        showSnackbar(activityFindMorePeopleBinding.llFindFollowers, unfollowUsersResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        showSnackbar(activityFindMorePeopleBinding.llFindFollowers,"People are not available to discover.", Snackbar.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
                 } finally {
