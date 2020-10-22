@@ -108,7 +108,7 @@ public class AddProfileActivity extends BaseActivity implements EditProfileListe
         showProgressDialog("Please wait...");
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERNAME))
+                .addFormDataPart("user_id", sessionManager.getUserDetails().get(SessionManager.KEY_USERID))
                 .addFormDataPart("bio", editProfileViewModel.bio);
                        RequestBody requestBody = builder.build();
         editProfileViewModel.onUpdateBio(AddProfileActivity.this, requestBody,editProfileViewModel.editProfileListener = this);

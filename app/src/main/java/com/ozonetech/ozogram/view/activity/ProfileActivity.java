@@ -344,25 +344,21 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
 
         public void onFollowersClicked(View view) {
+            if(!activityProfileBinding.tvTotalFollowersCount.getText().toString().equalsIgnoreCase("0")){
+                gotoFollowersNFollowingsActivity("followers");
+            }
 
-            gotoFollowersNFollowingsActivity("followers");
-            //showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
-
-           // Toast.makeText(context, "Followers coming soon!", Toast.LENGTH_SHORT).show();
         }
 
         public void onFollowingClicked(View view) {
-            gotoFollowersNFollowingsActivity("followings");
+            if (!activityProfileBinding.tvTotalFollowingCount.getText().toString().equalsIgnoreCase("0")) {
+                gotoFollowersNFollowingsActivity("followings");
+            }
 
-           // showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
-
-            //  Toast.makeText(context, "Following coming soon !", Toast.LENGTH_SHORT).show();
         }
 
         public void onPostsClicked(View view) {
-            showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
-
-            // Toast.makeText(context, "Posts is clicked!", Toast.LENGTH_SHORT).show();
+          //  showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -435,7 +431,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         showProgressDialog("Please wait...");
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-        .addFormDataPart("user_id", session.getUserDetails().get(SessionManager.KEY_USERNAME) );
+        .addFormDataPart("user_id", session.getUserDetails().get(SessionManager.KEY_USERID) );
         if (imageFile != null) {
             RequestBody requestFile =
                     RequestBody.create(

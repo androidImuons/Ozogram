@@ -85,8 +85,8 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
                                 followerList=followerResponseModel.getData();
                                 setRecyclerView(followerList);
                             }else{
-                                showSnackbar(databinding.flFollowerFragment, followerResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
-                            }
+                            showSnackbar(databinding.flFollowerFragment,"Nobody is your Follower", Snackbar.LENGTH_SHORT);
+                        }
 
                     } else {
                         showSnackbar(databinding.flFollowerFragment, followerResponseModel.getMessage(), Snackbar.LENGTH_SHORT);

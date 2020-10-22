@@ -56,7 +56,12 @@ public class LoginActivity extends BaseActivity implements LoginListener {
                 try {
                     if (loginResponse.getValue().getCode() == 200 && loginResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
                         showSnackbar(loginBinding.llLogin, loginResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
-                        session.createLoginSession(loginViewModel.username,loginResponse.getValue().getData().getAccessToken());
+                        session.createLoginSession(loginResponseModel.getData().getUserId(),
+                                loginResponseModel.getData().getAccessToken(),
+                                loginResponseModel.getData().getMobile(),
+                                loginResponseModel.getData().getEmail(),
+                                loginResponseModel.getData().getTransactionMode(),
+                                loginResponseModel.getData().getFullname());
                         goToOzogramHomeActivity();
                         Log.d("LoginActivity", "Response : Code" + loginResponse.getValue().getCode() + "\n Status : " + loginResponse.getValue().getStatus() + "\n Message : " + loginResponse.getValue().getMessage());
 

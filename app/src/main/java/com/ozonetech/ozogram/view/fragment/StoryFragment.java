@@ -140,12 +140,12 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
                 //save access token
                 hideProgressDialog();
                 try {
-                    if (userProfileResponse.getValue().getCode() == 200 && userProfileResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
-                      //  showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
-                        Log.d("ProfileActivity", "Response : Code" + userProfileResponse.getValue().getCode() + "\n Status : " + userProfileResponse.getValue().getStatus() + "\n Message : " + userProfileResponse.getValue().getMessage());
+                    if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
+                      //  showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("ProfileActivity", "Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
 
                         List<PostData> postDataArrayList=new ArrayList<>();
-                        postDataArrayList=userProfileResponse.getValue().getUser().getPostDat();
+                        postDataArrayList=userProfileResponseModel.getUser().getPostDat();
                         if(postDataArrayList.size() != 0 ){
                             List<PostGalleryPath> postGalleryPathsArraylist=new ArrayList<>();
                             for(int i=0;i<postDataArrayList.size();i++){
@@ -160,10 +160,12 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
 
                             setRecyclerView(postGalleryPathsArraylist);
 
+                        }else{
+                            showSnackbar(storyFragmentBinding.flStoryFragment, "Create Post.Record not found", Snackbar.LENGTH_SHORT);
                         }
 
                     } else {
-                        showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
+                        showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
                     }
                 } catch (Exception e) {
                 } finally {
