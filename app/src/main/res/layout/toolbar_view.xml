@@ -20,11 +20,12 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_weight=".6">
+            android:layout_weight=".5">
             <ImageView
-                android:layout_width="30dp"
+                android:layout_width="@dimen/dp30"
+                android:scaleType="center"
                 android:background="@drawable/ic_camer"
-                android:layout_height="30dp">
+                android:layout_height="@dimen/dp30">
 
             </ImageView>
         </LinearLayout>
@@ -34,18 +35,19 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_weight="0.8">
+            android:layout_weight="1">
             <ImageView
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:background="@drawable/ozogram_text"
-                android:layout_height="18dp">
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:background="@drawable/ozotex"
+                android:layout_height="@dimen/dp20">
 
             </ImageView>
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:text="OZOGRAM"
+                android:visibility="gone"
                 android:textSize="25dp"
                 app:custom_font="@string/app_font_bold_italic"
                 android:textColor="#ffffff"
@@ -57,33 +59,35 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".6"
+            android:layout_weight=".5"
             android:weightSum="1">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:gravity="center"
+
                 android:layout_height="match_parent"
-                android:layout_weight=".5">
+                android:layout_weight=".6">
 
                 <ImageView
-                    android:layout_width="30dp"
+                    android:layout_width="25dp"
                     android:background="@drawable/ic_search"
-                    android:layout_height="30dp">
+                    android:layout_height="25dp">
 
                 </ImageView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
                 android:layout_height="match_parent"
                 android:layout_weight=".5">
 
                 <ImageView
-                    android:layout_width="30dp"
+                    android:layout_width="25dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:background="@drawable/ic_rocket"
-                    android:layout_height="30dp">
+                    android:layout_height="25dp">
 
                 </ImageView>
             </LinearLayout>
