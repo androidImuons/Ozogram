@@ -9,11 +9,84 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_data"
-        android:layout_width="@dimen/dp300"
-        android:layout_height="400dp"
+        android:layout_width="250dp"
+        android:layout_height="300dp"
         android:layout_margin="@dimen/dp10"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="@dimen/dp15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/dp20"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Report"
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Turn on Post Notification"
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/dp20"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Copy Link"
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/dp20"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Share to..."
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/dp20"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Unfollow"
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/dp20"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:layout_width="match_parent"
+                android:text="Mute"
+                android:textStyle="normal"
+                app:custom_font="@string/app_font_bold"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/dp20"
+                android:textSize="@dimen/sp16"
+                android:layout_height="wrap_content">
+
+            </com.ozonetech.ozogram.customeview.TypeTextView>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>
