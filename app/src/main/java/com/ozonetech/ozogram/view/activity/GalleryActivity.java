@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.Contrants;
 import com.ozonetech.ozogram.app.utils.Gallery;
 import com.ozonetech.ozogram.databinding.ActivityGalleryBinding;
 import com.ozonetech.ozogram.model.ImageModel;
@@ -222,11 +223,11 @@ public class GalleryActivity extends BaseActivity {
 
     private void checkPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
+int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED && permissionWrite!=PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Contrants.REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
         } else {
-
             getImages();
         }
     }
@@ -235,9 +236,18 @@ public class GalleryActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == REQUEST_READ_EXTERNAL_STORAGE_PERMISSION) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getImages();
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults.length > 0 && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    getImages();
+                } else {
+                    Toast.makeText(GalleryActivity.this, "The app was not allowed to read or write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
+                }
             }
+
+//
+//            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+//
+//            }
         }
     }
 

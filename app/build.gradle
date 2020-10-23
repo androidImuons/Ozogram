@@ -74,4 +74,6 @@ dependencies {
 implementation 'com.github.danylovolokh:video-player-manager:0.2.0'
     implementation 'com.github.danylovolokh:list-visibility-utils:0.2.0'
 //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+
 }

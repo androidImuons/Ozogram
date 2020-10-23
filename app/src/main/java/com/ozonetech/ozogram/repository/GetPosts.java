@@ -11,6 +11,8 @@ import com.ozonetech.ozogram.app.web_api_services.AppServices;
 import com.ozonetech.ozogram.app.web_api_services.ServiceGenerator;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,13 +21,13 @@ public class GetPosts {
     private MutableLiveData<GetPostResponseModel> loginResponse;
     GetPostResponseModel getpostModel;
 
-    public MutableLiveData<GetPostResponseModel> GetPost(Context context) {
+    public MutableLiveData<GetPostResponseModel> GetPost(Context context,HashMap<String,String> param) {
 
         loginResponse = new MutableLiveData<>();
         SessionManager session = new SessionManager(context);
         Log.d("get post", "--1-");
         AppServices apiService = ServiceGenerator.createService(AppServices.class, session.getUserDetails().get(session.KEY_ACCESS_TOKEN));
-        apiService.getPostS().enqueue(new Callback<GetPostResponseModel>() {
+        apiService.getPostS(param).enqueue(new Callback<GetPostResponseModel>() {
             @Override
             public void onResponse(Call<GetPostResponseModel> call, Response<GetPostResponseModel> response) {
                 if (response.isSuccessful()) {

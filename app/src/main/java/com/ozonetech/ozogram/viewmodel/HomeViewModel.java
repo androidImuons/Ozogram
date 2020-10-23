@@ -38,16 +38,17 @@ public class HomeViewModel extends ViewModel {
     public GetUserInterface getUserInterface;
 
     public void getPost(Context context) {
+        HashMap<String,String> param=new HashMap<>();
         postDataListener.onStarted();
         Log.d("HomeViewModel", "--1-");
         if (getPosts == null) {
             Log.d("HomeViewModel", "--2-");
 //            getPosts = new MutableLiveData<GetPostResponseModel>();
-            getPosts = new GetPosts().GetPost(context);
+            getPosts = new GetPosts().GetPost(context,param);
             postDataListener.onSuccess(getPosts);
         } else {
             Log.d("HomeViewModel", "--3-");
-            postDataListener.onSuccess(getPosts = new GetPosts().GetPost(context));
+            postDataListener.onSuccess(getPosts = new GetPosts().GetPost(context,param));
         }
     }
 
@@ -124,6 +125,23 @@ public class HomeViewModel extends ViewModel {
         }
     }
 
+    public void savePost(Context context, String id) {
+
+        Map<String, String> likeparam = new HashMap<>();
+        likeparam.put("post_id", id);
+        commonResponseInterface.onCommoStarted();
+        //if the list is null
+        //if the list is null
+        if (commonResponseLiveData == null) {
+            commonResponseLiveData = new MutableLiveData<CommonResponse>();
+            commonResponseLiveData = new LikePost().savePost(likeparam, context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        } else {
+            commonResponseLiveData = new LikePost().savePost(likeparam, context);
+            commonResponseInterface.onCommonSuccess(commonResponseLiveData);
+        }
+    }
+
 
 
     public void onClickHome(View view) {
@@ -141,6 +159,10 @@ public class HomeViewModel extends ViewModel {
 
     public void onClickFav(View view) {
 
+    }
+    public void onClickCamera(View view){
+        Intent intent = new Intent(view.getContext(), GalleryActivity.class);
+        view.getContext().startActivity(intent);
     }
 
     public void onClickProfile(View view) {

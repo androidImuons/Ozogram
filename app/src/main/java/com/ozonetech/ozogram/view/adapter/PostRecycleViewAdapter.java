@@ -1,6 +1,7 @@
 package com.ozonetech.ozogram.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.LikeUserModel;
 import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
+import com.ozonetech.ozogram.view.activity.ViewAllCommentActivity;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
 import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
 import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
@@ -103,8 +105,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
         @Override
         public void setData(int index) {
-            int position = (postDataModelList.size() - 1) - index;
-
+            //int position = (postDataModelList.size() - 1) - index;
+            int position = index;
             final int pos = position;
 
             setViewPager(this, position);
@@ -164,6 +166,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
             }
 
             setClick(pos);
+
         }
 
         @Override
@@ -211,18 +214,28 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
             iv_tag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    postViewInterface.savePOST(pos);
                 }
             });
             iv_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    activity.moreaction();
+                }
+            });
+            txt_t_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ViewAllCommentActivity.class);
+                    intent.putExtra("post_id", postDataModelList.get(pos).getId());
+                    //    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
                 }
             });
         }
 
     }
+
 
     private void setViewPager(StoryUserListView viewmodel, int position) {
         GetPostRecordModel model = postDataModelList.get(position);
@@ -249,6 +262,10 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     }
 
+    public void insert(int position, GetPostRecordModel data) {
+        postDataModelList.add(position, data);
+        notifyItemInserted(position);
+    }
 
     public interface PostViewInterface {
         public void clickLike(int pos, String flag);
@@ -256,6 +273,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
         public void clickComment(int pos);
 
         public void sendPost(int pos);
+
+        public void savePOST(int pos);
 
     }
 }

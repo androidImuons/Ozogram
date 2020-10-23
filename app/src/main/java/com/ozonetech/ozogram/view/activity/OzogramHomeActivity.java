@@ -28,6 +28,7 @@ import com.ozonetech.ozogram.view.adapter.PostRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.StoryUserRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.UnFollowUserListAdapter;
 import com.ozonetech.ozogram.view.dialog.EditCommentDialog;
+import com.ozonetech.ozogram.view.dialog.PostMoreOptionDialog;
 import com.ozonetech.ozogram.view.dialog.SendPostDialog;
 import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
@@ -49,7 +50,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     // Session Manager Class
     SessionManager session;
     ActivityOzogramHomeBinding activityOzogramHomeBinding;
-  public  HomeViewModel homeViewModel;
+    public HomeViewModel homeViewModel;
     //  BottomTabViewModel bottomTabViewModel;
     private List<GetPostRecordModel> post = new ArrayList<>();
     private StoryUserRecycleViewAdapter storyUserRecycleViewAdapter;
@@ -57,6 +58,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     private String tag = "OzogramHomeActivity";
     private List<UnfollowUserRecordDataModel> unFollowUserList = new ArrayList<>();
     private UnFollowUserListAdapter unFollowUserAdapter;
+    private int action_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +99,6 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.recyclePostList.setNestedScrollingEnabled(true);
         activityOzogramHomeBinding.recyclePostList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         activityOzogramHomeBinding.recyclePostList.setAdapter(postRecycelAdapter);
-
-
 
 
     }
@@ -207,6 +207,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
             storyUserRecycleViewAdapter.updateList(post);
             postRecycelAdapter.updateList(post);
+            postRecycelAdapter.insert(action_position, post.get(action_position));
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.VISIBLE);
@@ -233,7 +234,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
                 try {
                     if (responseModel.getCode() == 200 && responseModel.getStatus().equalsIgnoreCase("OK")) {
                         Log.d(tag, "like Response : Code" + responseModel.getCode());
-
+                        homeViewModel.getPost(getApplicationContext());
                     } else {
                         activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
                         Log.d(tag, "like Response fail: Code" + responseModel.getCode());
@@ -256,6 +257,8 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     @Override
     public void clickLike(int pos, String action) {
+
+        action_position = pos;
         Log.d(tag, "----click like pos--" + pos);
         homeViewModel.postLike(getApplicationContext(), String.valueOf(post.get(pos).getId()), action);
 
@@ -263,7 +266,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     @Override
     public void clickComment(int pos) {
-
+        action_position = pos;
         Bundle bundle = new Bundle();
         bundle.putString("id", String.valueOf(post.get(pos).getId()));
         EditCommentDialog instance = EditCommentDialog.getInstance(bundle);
@@ -274,10 +277,16 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     @Override
     public void sendPost(int pos) {
+        action_position = pos;
         Bundle bundle = new Bundle();
         bundle.putString("id", String.valueOf(post.get(pos).getId()));
         SendPostDialog instance = SendPostDialog.getInstance(bundle, OzogramHomeActivity.this);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
+    }
+
+    @Override
+    public void savePOST(int pos) {
+        homeViewModel.savePost(getApplicationContext(), post.get(pos).getId().toString());
     }
 
     @Override
@@ -291,5 +300,11 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     }
 
 
+    public void moreaction() {
+        Bundle bundle = new Bundle();
+//        bundle.putString("id", String.valueOf(post.get(pos).getId()));
+        PostMoreOptionDialog instance = PostMoreOptionDialog.getInstance(bundle, OzogramHomeActivity.this);
+        instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
+    }
 }
 

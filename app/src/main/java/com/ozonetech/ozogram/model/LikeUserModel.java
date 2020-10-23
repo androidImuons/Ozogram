@@ -10,6 +10,18 @@ public class LikeUserModel {
     @SerializedName("fullname")
     @Expose
     private String fullname;
+
+    public String getProfile_picture() {
+        return profile_picture;
+    }
+
+    public void setProfile_picture(String profile_picture) {
+        this.profile_picture = profile_picture;
+    }
+
+    @SerializedName("profile_picture")
+    @Expose
+    private String profile_picture;
     private final static long serialVersionUID = -1204597011390242925L;
 
     public String getUserId() {

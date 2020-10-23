@@ -46,18 +46,19 @@ public interface AppServices {
     @POST("get_users")
     Call<UnfollowUsersResponseModel> getUnFollowers();
 
+    @FormUrlEncoded
     @POST("get_posts")
-    Call<GetPostResponseModel> getPostS();
+    Call<GetPostResponseModel> getPostS(@FieldMap Map<String, String> param);
 
     /*Parameters :
 1) search -> optional (it can be user_id or name)*/
     @FormUrlEncoded
     @POST("get_followers")
-    Call<FollowerResponseModel> getFollowers(@FieldMap Map<String , String> followersMap);
+    Call<FollowerResponseModel> getFollowers(@FieldMap Map<String, String> followersMap);
 
     @FormUrlEncoded
     @POST("get_followings")
-    Call<FollowerResponseModel> getFollowings(@FieldMap Map<String , String> followingsMap);
+    Call<FollowerResponseModel> getFollowings(@FieldMap Map<String, String> followingsMap);
 
     @Multipart
     @POST("upload_post")
@@ -94,6 +95,22 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("get_followings")
     Call<FollowingUserResponse> getFollowing(@FieldMap Map<String, String> param);
+
+
+    @FormUrlEncoded
+    @POST("like_comment")
+    Call<CommonResponse> like_comment(@FieldMap Map<String, String> param);
+//1) post_id -> required
+    @FormUrlEncoded
+    @POST("save_post")
+    Call<CommonResponse> savePost(@FieldMap Map<String, String> param);
+
+//
+//    1) comment_id -> required
+//2) comment -> required
+    @FormUrlEncoded
+    @POST("reply_to_comment")
+    Call<CommonResponse> replyToComment(@FieldMap Map<String, String> param);
 }
 
 

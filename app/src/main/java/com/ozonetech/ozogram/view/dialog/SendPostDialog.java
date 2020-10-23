@@ -41,6 +41,7 @@ import com.ozonetech.ozogram.model.FollowingUserResponse;
 import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
+import com.ozonetech.ozogram.view.activity.ViewAllCommentActivity;
 import com.ozonetech.ozogram.view.adapter.FollowingUserList;
 import com.ozonetech.ozogram.view.adapter.PostRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.UpLoadImageVideoPagerAdapter;
@@ -71,6 +72,11 @@ public class SendPostDialog extends AppBaseDialog implements CommonResponseInter
 
 
     public static SendPostDialog getInstance(Bundle bundle, OzogramHomeActivity galleryActivity) {
+        SendPostDialog dialog = new SendPostDialog();
+        dialog.setArguments(bundle);
+        return dialog;
+    }
+    public static SendPostDialog getInstance(Bundle bundle, ViewAllCommentActivity galleryActivity) {
         SendPostDialog dialog = new SendPostDialog();
         dialog.setArguments(bundle);
         return dialog;
