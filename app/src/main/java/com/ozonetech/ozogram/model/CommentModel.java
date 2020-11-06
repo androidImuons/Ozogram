@@ -1,15 +1,51 @@
 package com.ozonetech.ozogram.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.app.utils.Contrants;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CommentModel {
+public class CommentModel implements Parcelable {
     @SerializedName("user_id")
     @Expose
     private String userId;
+
+    protected CommentModel(Parcel in) {
+        userId = in.readString();
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        fullname = in.readString();
+        comment = in.readString();
+        time = in.readString();
+        if (in.readByte() == 0) {
+            comment_likes_count = null;
+        } else {
+            comment_likes_count = in.readInt();
+        }
+        replyList = in.createTypedArrayList(CommentModel.CREATOR);
+        readMore = in.readByte() != 0;
+        profile_picture = in.readString();
+    }
+
+    public static final Creator<CommentModel> CREATOR = new Creator<CommentModel>() {
+        @Override
+        public CommentModel createFromParcel(Parcel in) {
+            return new CommentModel(in);
+        }
+
+        @Override
+        public CommentModel[] newArray(int size) {
+            return new CommentModel[size];
+        }
+    };
 
     public Integer getId() {
         return id;
@@ -43,6 +79,10 @@ public class CommentModel {
         return comment_like_users;
     }
 
+
+
+
+
     public void setComment_like_users(List<LikeUserModel> comment_like_users) {
         this.comment_like_users = comment_like_users;
     }
@@ -50,6 +90,20 @@ public class CommentModel {
     @SerializedName("comment_like_users")
     @Expose
     private List<LikeUserModel> comment_like_users;
+
+    public List<CommentModel> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(ArrayList<CommentModel> replyList) {
+        this.replyList = replyList;
+    }
+
+    @SerializedName("replies")
+    @Expose
+    private ArrayList<CommentModel> replyList;
+
+
 
     public String getTime() {
         return time;
@@ -115,4 +169,31 @@ public class CommentModel {
         this.readMore = readMore;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userId);
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(id);
+        }
+        parcel.writeString(fullname);
+        parcel.writeString(comment);
+        parcel.writeString(time);
+        if (comment_likes_count == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(comment_likes_count);
+        }
+        parcel.writeTypedList(replyList);
+        parcel.writeByte((byte) (readMore ? 1 : 0));
+        parcel.writeString(profile_picture);
+    }
 }

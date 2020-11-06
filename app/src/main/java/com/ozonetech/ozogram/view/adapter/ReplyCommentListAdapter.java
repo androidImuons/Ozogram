@@ -1,11 +1,9 @@
 package com.ozonetech.ozogram.view.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,46 +11,35 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.databinding.adapters.AdapterViewBindingAdapter;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.base.AppBaseRecycleAdapter;
-import com.ozonetech.ozogram.base.BaseRecycleAdapter;
 import com.ozonetech.ozogram.customeview.ReadMoreTextView;
-import com.ozonetech.ozogram.databinding.PostRowItemBinding;
 import com.ozonetech.ozogram.model.CommentModel;
 import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.LikeUserModel;
+import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.ViewAllCommentActivity;
 import com.ozonetech.ozogram.view.dialog.ReplyCommentDialog;
-import com.ozonetech.ozogram.view.dialog.SendPostDialog;
-import com.ozonetech.ozogram.viewmodel.ShareUserListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
-    private final ViewAllCommentActivity allCommentActivity;
-    private GetPostRecordModel postObject;
+public class ReplyCommentListAdapter extends AppBaseRecycleAdapter {
     private List<CommentModel> commentList;
-    ViewDataBinding bindingAdapter;
     Context context;
     private boolean is_like;
     private SessionManager session;
-    private String tag = "AllCommentViewAdapter";
+    ReplyCommentDialog replyCommentDialog;
+    private String tag = "ReplyCommentListAdapter";
 
 
-    public AllCommentViewAdapter(Context applicationContext, GetPostRecordModel comments, ViewAllCommentActivity viewAllCommentActivity) {
-        this.allCommentActivity = viewAllCommentActivity;
+    public ReplyCommentListAdapter(Context applicationContext, ArrayList<CommentModel> reply, ReplyCommentDialog replyCommentDialog) {
         this.context = applicationContext;
-        postObject = comments;
-        commentList = comments.getComments();
+        commentList=reply;
+        this.replyCommentDialog=replyCommentDialog;
         session = new SessionManager(context);
     }
 
@@ -72,19 +59,16 @@ public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
         return 0;
     }
 
-    public void update(GetPostRecordModel postDataObject) {
-        this.postObject = postDataObject;
+
+
+    public void updatePostion(int action_position, List<CommentModel> commentModelList) {
         is_like = false;
-        commentList = postDataObject.getComments();
+        this.commentList=commentModelList;
         notifyDataSetChanged();
+        notifyItemChanged(action_position, commentModelList.get(action_position));
     }
 
-    public void updatePostion(int action_position, CommentModel commentModel) {
-        is_like = false;
-        notifyItemChanged(action_position, commentModel);
-    }
-
-    public class ViewHolder extends BaseRecycleAdapter.BaseViewHolder implements ReadMoreTextView.ReadMoreTextViewListener {
+    public class ViewHolder extends BaseViewHolder implements ReadMoreTextView.ReadMoreTextViewListener {
         ImageView iv_profile;
         TextView txt_user_name;
         ImageView iv_heart;
@@ -141,8 +125,8 @@ public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
                 tv_message.setText(commentModel.getComment(), TextView.BufferType.NORMAL);
             }
 
-            allCommentActivity.loadImage(context, viewHolder.iv_profile, pb_image, commentModel.getProfile_picture(), R.drawable.ic_profile);
-            allCommentActivity.loadImage(context, viewHolder.iv_user_photo, pb_image, session.getUserDetails().get(session.KEY_PROFILE_PICTURE), R.drawable.ic_profile);
+            ((BaseActivity)context).loadImage(context, viewHolder.iv_profile, pb_image, commentModel.getProfile_picture(), R.drawable.ic_profile);
+            ((BaseActivity)context).loadImage(context, viewHolder.iv_user_photo, pb_image, session.getUserDetails().get(session.KEY_PROFILE_PICTURE), R.drawable.ic_profile);
 
         }
 
@@ -180,7 +164,7 @@ public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
                 public void onClick(View view) {
                     Log.d(tag, "---like click--");
                     if ((Integer) view.getTag() == 0) {
-                        allCommentActivity.likeComment(position, commentList.get(position).getId());
+                        replyCommentDialog.shareUserListViewMode.likeComment(getContext(), commentList.get(position).getId().toString());
                     }
                 }
             });
@@ -188,12 +172,26 @@ public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
         }
 
         private void repy(int position, ViewHolder viewHolder) {
-
             viewHolder.txt_reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   allCommentActivity.getallComment(commentList.get(position),position);
-                    }
+//                    if ((Integer) view.getTag() == 0) {
+//                        viewHolder.txt_reply.setTag(1);
+//                        viewHolder.ll_edit_layer.setVisibility(View.VISIBLE);
+//                    } else {
+//                        viewHolder.txt_reply.setTag(0);
+//                        viewHolder.ll_edit_layer.setVisibility(View.GONE);
+//                    }
+
+
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("id", String.valueOf(commentList.get(position).getId().toString()));
+//                    bundle.putParcelable("comment",commentList.get(position));
+//                    bundle.putParcelableArrayList("reply", (ArrayList<? extends Parcelable>) commentList.get(position).getReplyList());
+//                    ReplyCommentDialog instance = ReplyCommentDialog.getInstance(bundle);
+//                    instance.show(replyCommentDialog.getChildFragmentManager(), instance.getClass().getSimpleName());
+                    replyCommentDialog.edtReply(position,commentList.get(position));
+                }
             });
         }
 
@@ -204,7 +202,7 @@ public class AllCommentViewAdapter extends AppBaseRecycleAdapter {
                 public void onClick(View view) {
                     Log.d(tag, "----reply click--");
                     if (!viewHolder.et_comment.getText().toString().isEmpty()) {
-                        allCommentActivity.replyToComment(position, commentList.get(position).getId().toString(), viewHolder.et_comment.getText().toString());
+                        replyCommentDialog.shareUserListViewMode.replyToComment(getContext(), commentList.get(position).getId().toString(), viewHolder.et_comment.getText().toString());
                         ll_edit_layer.setVisibility(View.GONE);
                         et_comment.setText("");
                     }

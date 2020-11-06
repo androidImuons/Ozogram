@@ -69,6 +69,7 @@ public class GalleryActivity extends BaseActivity {
     private ArrayList<ImageModel> al_images;
     private int selected_type;
     private int selected_folder;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class GalleryActivity extends BaseActivity {
                         }
 
                     }
-                }else if(selected_type==1){
+                } else if (selected_type == 1) {
                     uploadImagesDialogBox(postGalleryFrament.selectedImageList);
                 }
 
@@ -145,7 +146,7 @@ public class GalleryActivity extends BaseActivity {
 
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
 
-    private void fillterImage() throws Exception {
+    public void fillterImage() throws Exception {
         if (postGalleryFrament.is_crop) {
             Bitmap resultbitmap = postGalleryFrament.fragmentPostGalleryBinding.cropImageView.getCroppedImage();
             // postGalleryFrament.selected_file_url = bitmapToUriConverter(resultbitmap).toString();
@@ -223,8 +224,9 @@ public class GalleryActivity extends BaseActivity {
 
     private void checkPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED && permissionWrite!=PackageManager.PERMISSION_GRANTED) {
+        int permissionWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED && permissionWrite != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Contrants.REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
         } else {
@@ -239,16 +241,15 @@ int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.W
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults.length > 0 && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     getImages();
+                    adapter.addFragment(new PhotoFragment(), "PHOTO");
+                    adapter.addFragment(new VideoFragment(), "VIDEO");
+                    adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(GalleryActivity.this, "The app was not allowed to read or write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
                 }
             }
-
-//
-//            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-//
-//            }
         }
+
     }
 
 
@@ -279,10 +280,17 @@ int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.W
 //        galleryBinding.gallery.getTabAt(1);
 //        galleryBinding.gallery.getTabAt(2);
         postGalleryFrament = new PostGalleryFragment();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(postGalleryFrament, "GALLERY");
-        adapter.addFragment(new PhotoFragment(), "PHOTO");
-        adapter.addFragment(new VideoFragment(), "VIDEO");
+        int permissionCamer = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (permissionCamer == PackageManager.PERMISSION_GRANTED) {
+            adapter.addFragment(new PhotoFragment(), "PHOTO");
+            adapter.addFragment(new VideoFragment(), "VIDEO");
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, Contrants.REQUEST_CAMERA_PERMISSION);
+
+        }
+
 
         galleryBinding.galleryViewPager.setAdapter(adapter);
         galleryBinding.gallery.setupWithViewPager(galleryBinding.galleryViewPager);
@@ -328,7 +336,7 @@ int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.W
             String newFilePath = data.getStringExtra(ImageEditorIntentBuilder.OUTPUT_PATH);
             boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IS_IMAGE_EDITED, false);
             if (isImageEdit) {
-               // Toast.makeText(this, getString(R.string.save_path, newFilePath), Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, getString(R.string.save_path, newFilePath), Toast.LENGTH_LONG).show();
                 Log.d(tag, "----save edit image--" + getString(R.string.save_path, newFilePath));
 
                 HashMap<Integer, String> list = new HashMap<>();
@@ -361,7 +369,7 @@ int permissionWrite=ContextCompat.checkSelfPermission(this,Manifest.permission.W
             list_of_images_video.add(value);
         }
         Bundle bundle = new Bundle();
-        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle,GalleryActivity.this);
+        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle, GalleryActivity.this);
         bundle.putStringArrayList("list", list_of_images_video);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
 

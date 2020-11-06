@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,20 +24,23 @@ import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.view.adapter.AllCommentViewAdapter;
+import com.ozonetech.ozogram.view.dialog.ReplyCommentDialog;
 import com.ozonetech.ozogram.view.dialog.SendPostDialog;
 import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
 import com.ozonetech.ozogram.viewmodel.ViewAllCommentViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAllCommentActivity extends BaseActivity implements CommonResponseInterface, GetPostDataListener {
     ActivityViewAllCommentBinding commentBinding;
-    ViewAllCommentViewModel commentViewModel;
+    public ViewAllCommentViewModel commentViewModel;
     private GetPostRecordModel postDataObject = new GetPostRecordModel();
     private AllCommentViewAdapter allCommentViewAdapter;
     private String tag = "ViewAllCommentActivity";
     private int action_position;
+    private ReplyCommentDialog replyDialogInstance;
 
     @Override
 
@@ -115,6 +119,10 @@ public class ViewAllCommentActivity extends BaseActivity implements CommonRespon
         return (extras == null ? 0 : extras.getInt("post_id", 0));
     }
 
+    public void updatlist() {
+        commentViewModel.getPost(getApplicationContext(), getPostId().toString());
+    }
+
     @Override
     public void onCommoStarted() {
 
@@ -186,11 +194,17 @@ public class ViewAllCommentActivity extends BaseActivity implements CommonRespon
         setTopData(postDataObject);
         Log.d(tag, "---list size" + postDataObject.getComments().size());
         allCommentViewAdapter.update(postDataObject);
-        allCommentViewAdapter.updatePostion(action_position, postDataObject.getComments().get(action_position));
+       // allCommentViewAdapter.updatePostion(action_position, postDataObject.getComments().get(action_position));
+        if(replyDialogInstance!=null){
+            replyDialogInstance.updateReply(data.get(0).getComments().get(action_position),data.get(0).getComments().get(action_position).getReplyList());
+        }
+
     }
 
     private void setTopData(GetPostRecordModel postDataObject) {
         loadImage(getApplicationContext(), commentBinding.ivPostUserProfile, commentBinding.pbImage, postDataObject.getUser().getProfile_picture(), R.drawable.ic_profile);
+
+        commentBinding.txtUserName.setText(postDataObject.getUser().getFullname());
         if (postDataObject.getCaption().equals("")) {
             commentBinding.txtPostCaption.setText("No Story");
         } else {
@@ -219,7 +233,19 @@ public class ViewAllCommentActivity extends BaseActivity implements CommonRespon
     }
 
     public void replyToComment(int position, String id, String message) {
-      action_position=position;
-        commentViewModel.replyToComment(getApplicationContext(),id,message);
+        action_position = position;
+        commentViewModel.replyToComment(getApplicationContext(), id, message);
+    }
+
+    public void getallComment(CommentModel commentModel, int position) {
+        action_position = position;
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id", String.valueOf(commentModel.getId().toString()));
+        bundle.putParcelable("comment", commentModel);
+        bundle.putParcelableArrayList("reply", (ArrayList<? extends Parcelable>) commentModel.getReplyList());
+         replyDialogInstance = ReplyCommentDialog.getInstance(bundle, ViewAllCommentActivity.this);
+        replyDialogInstance.show(getSupportFragmentManager(), replyDialogInstance.getClass().getSimpleName());
+
     }
 }

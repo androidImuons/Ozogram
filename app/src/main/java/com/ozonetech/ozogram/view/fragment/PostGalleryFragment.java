@@ -163,12 +163,14 @@ public class PostGalleryFragment extends BaseFragment {
     public void setList(ArrayList<String> arrayList, int type) {
         selectedImageList.clear();
         this.arrayList = arrayList;
+        if(videoPlayerManager!=null){
+            videoPlayerManager.stopAnyPlayback();
+        }
         if (obj_adapter != null) {
             obj_adapter.update(arrayList, type);
         } else {
             Log.d(tag, "--post obj null-");
         }
-
 
     }
 

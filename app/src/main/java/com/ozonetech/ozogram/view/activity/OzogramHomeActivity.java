@@ -207,7 +207,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
             storyUserRecycleViewAdapter.updateList(post);
             postRecycelAdapter.updateList(post);
-            postRecycelAdapter.insert(action_position, post.get(action_position));
+           // postRecycelAdapter.insert(action_position, post.get(action_position));
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.VISIBLE);

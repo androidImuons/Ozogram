@@ -48,6 +48,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
     private ViewPager view_pager;
     private CircleIndicator circle;
     private String tag = "UploadImagesDialogBoxs";
+    private UpLoadImageVideoPagerAdapter postPagerAdapter;
 
 
     @Override
@@ -133,7 +134,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
 
     private void setData() {
 
-        UpLoadImageVideoPagerAdapter postPagerAdapter = new UpLoadImageVideoPagerAdapter((BaseActivity) getActivity(), getArraList(),
+         postPagerAdapter = new UpLoadImageVideoPagerAdapter((BaseActivity) getActivity(), getArraList(),
                 activity, getActivity());
         view_pager.setAdapter(postPagerAdapter);
         circle.setViewPager(view_pager);
@@ -167,6 +168,7 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     dismiss();
+                    postPagerAdapter.videoPlayerManager.stopAnyPlayback();
                 }
 
             }
@@ -220,5 +222,11 @@ public class UploadImagesDialogBoxs extends AppBaseDialog implements CommonRespo
         snackbar.setActionTextColor(Color.WHITE);
         snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
         snackbar.show();
+    }
+
+    @Override
+    public void dismiss() {
+        //super.dismiss();
+
     }
 }
