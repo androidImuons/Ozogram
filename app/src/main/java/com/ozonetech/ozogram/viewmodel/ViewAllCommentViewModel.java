@@ -40,7 +40,9 @@ public class ViewAllCommentViewModel extends ViewModel {
             postDataListener.onSuccess(getPosts = new GetPosts().GetPost(context,param));
         }
     }
+
     private LiveData<CommonResponse> commonResponseLiveData;
+
     public void likeComment(Context context, String post_id) {
         Map<String, String> likeparam = new HashMap<>();
         likeparam.put("comment_id", post_id);
@@ -72,7 +74,6 @@ public class ViewAllCommentViewModel extends ViewModel {
             commonResponseInterface.onCommonSuccess(commonResponseLiveData);
         }
     }
-
 
     public void replyToComment(Context context, String post_id, String message) {
 

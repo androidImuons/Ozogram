@@ -1,12 +1,61 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ozonetech.ozogram.view.fragment.PhotoFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="phot"
+            type="com.ozonetech.ozogram.viewmodel.PhotoViewModel" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:context="com.ozonetech.ozogram.view.fragment.PhotoFragment">
 
-</FrameLayout>
+        <FrameLayout
+            android:id="@+id/camer_layer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp20"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_camera_side"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp50"
+                android:background="@drawable/ic__camer_rear"
+                android:backgroundTint="@color/colorWhite">
+
+            </ImageView>
+
+            <Button
+                android:id="@+id/btn_take_photo"
+                android:layout_width="@dimen/dp60"
+                android:layout_height="@dimen/dp60"
+                android:backgroundTint="@color/colorWhite"
+                android:background="@drawable/ic_circle_100">
+
+            </Button>
+            <ImageView
+                android:id="@+id/iv_flash_on_off"
+                android:layout_width="@dimen/dp30"
+                android:layout_marginLeft="@dimen/dp50"
+                android:background="@drawable/ic__flash_on"
+                android:backgroundTint="@color/colorWhite"
+                android:layout_height="@dimen/dp30">
+
+            </ImageView>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

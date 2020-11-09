@@ -10,8 +10,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
-
-    public static String API_BASE_URL = "https://www.ozonetech.biz/ozonetech/api/ozogram/";
+    public static String API_BASE_URL = "https://www.ozonetech.biz/replica/ozonetech/api/ozogram/"; // replica
+   // public static String API_BASE_URL = "https://www.ozonetech.biz/ozonetech/api/ozogram/";// live
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS).

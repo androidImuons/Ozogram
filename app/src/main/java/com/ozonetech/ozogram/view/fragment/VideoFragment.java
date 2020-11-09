@@ -1,14 +1,21 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.databinding.FragmentVideoBinding;
+import com.ozonetech.ozogram.viewmodel.VideoFragmentViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +32,8 @@ public class VideoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+VideoFragmentViewModel videoFragmentViewModel;
+FragmentVideoBinding videoBinding;
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -60,7 +68,24 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false);
+        videoBinding= DataBindingUtil.inflate(inflater,R.layout.fragment_video,container,false);
+        videoFragmentViewModel= ViewModelProviders.of(getActivity()).get(VideoFragmentViewModel.class);
+        videoBinding.setVideo(videoFragmentViewModel);
+        View view=videoBinding.getRoot();
+        initUI();
+        return view;
+    }
+
+    private void initUI() {
+
+    }
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
     }
 }

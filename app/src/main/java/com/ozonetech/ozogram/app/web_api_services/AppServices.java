@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.app.web_api_services;
 
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.FollowingUserResponse;
+import com.ozonetech.ozogram.model.GetMessageResponse;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.GetUnfollowUserResponse;
 import com.ozonetech.ozogram.model.LoginResponseModel;
@@ -100,17 +101,23 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("like_comment")
     Call<CommonResponse> like_comment(@FieldMap Map<String, String> param);
-//1) post_id -> required
+
+    //1) post_id -> required
     @FormUrlEncoded
     @POST("save_post")
     Call<CommonResponse> savePost(@FieldMap Map<String, String> param);
 
-//
+    //
 //    1) comment_id -> required
 //2) comment -> required
     @FormUrlEncoded
     @POST("reply_to_comment")
     Call<CommonResponse> replyToComment(@FieldMap Map<String, String> param);
+
+    //[{"key":"to_user","value":"O3124533","description":"","type":"text","enabled":true}]
+    @FormUrlEncoded
+    @POST("get_messages")
+    Call<GetMessageResponse> get_message(@FieldMap Map<String, String> param);
 }
 
 

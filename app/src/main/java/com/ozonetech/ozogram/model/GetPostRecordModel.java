@@ -18,6 +18,18 @@ public class GetPostRecordModel {
     @SerializedName("caption")
     @Expose
     private String caption;
+
+    public Integer getSaved() {
+        return saved;
+    }
+
+    public void setSaved(Integer saved) {
+        this.saved = saved;
+    }
+
+    @SerializedName("saved")
+    @Expose
+    private Integer saved;
     @SerializedName("no_of_images")
     @Expose
     private Integer noOfImages;

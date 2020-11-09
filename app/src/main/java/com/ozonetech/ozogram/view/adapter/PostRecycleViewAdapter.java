@@ -130,7 +130,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                     txt_comment.setText(model.getComments().get(0).getComment() + " Comment by " + model.getComments().get(0).getFullname());
                     txt_t_comment.setText("View all " + model.getCommentsCount() + " Comments");
                 }
-
+                txt_comment.setVisibility(View.VISIBLE);
+                txt_t_comment.setVisibility(View.VISIBLE);
             } else {
                 txt_comment.setVisibility(View.GONE);
                 txt_t_comment.setVisibility(View.GONE);
@@ -165,6 +166,10 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 iv_heart.setTag(0);
             }
 
+            if (model.getSaved()==1){
+                iv_tag.setBackgroundResource(R.drawable.ic__saved);
+
+            }
             setClick(pos);
 
         }
@@ -228,7 +233,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ViewAllCommentActivity.class);
                     intent.putExtra("post_id", postDataModelList.get(pos).getId());
-                    //    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intent);
                 }
             });
