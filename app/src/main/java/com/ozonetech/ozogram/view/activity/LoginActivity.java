@@ -35,7 +35,6 @@ public class LoginActivity extends BaseActivity implements LoginListener {
         loginViewModel.loginListener = this;
         loginBinding.executePendingBindings();
         loginBinding.setLifecycleOwner(LoginActivity.this);
-
         session = new SessionManager(getApplicationContext());
 
     }
@@ -90,9 +89,7 @@ public class LoginActivity extends BaseActivity implements LoginListener {
 
     private void goToOzogramHomeActivity() {
         Intent intent = new Intent(LoginActivity.this,OzogramHomeActivity.class);
-        // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Add new Flag to start new Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

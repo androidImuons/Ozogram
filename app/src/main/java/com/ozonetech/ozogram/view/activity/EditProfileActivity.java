@@ -192,7 +192,6 @@ public class EditProfileActivity extends BaseActivity implements EditProfileList
 
     }
 
-
     private void updateProfile() {
         String website=editProfileViewModel.website.replace("\"","");
         showProgressDialog("Please wait...");

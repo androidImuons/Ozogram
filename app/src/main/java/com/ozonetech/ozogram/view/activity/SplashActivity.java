@@ -18,10 +18,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        session = new SessionManager(getApplicationContext());
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+            session = new SessionManager(getApplicationContext());
     }
 
     @Override
@@ -50,9 +50,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void goToLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
-        // Closing all the Activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Add new Flag to start new Activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
