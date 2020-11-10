@@ -1,5 +1,6 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.FragmentViewStoryBinding;
 import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
+import com.ozonetech.ozogram.view.activity.ViewPostActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
@@ -80,7 +82,12 @@ public class ViewStoryFragment extends BaseFragment implements PostsAdapter.Post
 
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath) {
-        showSnackbar(dataBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+        SessionManager session = new SessionManager(getActivity());
+        Map<String, String> userProfileMap = new HashMap<>();
+        //showSnackbar(dataBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+        Intent intent = new Intent(getContext(), ViewPostActivity.class);
+        intent.putExtra("user_id", session.getViewOtherUserDetails().get(SessionManager.KEY_VIEW_USERID));
+        startActivity(intent);
     }
 
     @Override
