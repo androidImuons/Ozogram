@@ -7,8 +7,13 @@
             name="toolbar"
             type="com.ozonetech.ozogram.viewmodel.HomeViewModel" />
     </data>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/ll_home_toolbar"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
         android:background="@drawable/action_bar_bg"
@@ -95,4 +100,43 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_with_back_button"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dp50"
+        android:background="@drawable/action_bar_bg"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_weight=".2">
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp20"
+                android:scaleType="center"
+                android:background="@drawable/ic_back"
+                android:layout_height="@dimen/dp20">
+            </ImageView>
+
+        </LinearLayout>
+
+        <com.ozonetech.ozogram.customeview.TypeTextView
+            android:layout_width="wrap_content"
+            android:fontFamily="@string/app_font_bold"
+            android:text="Posts"
+            android:textSize="@dimen/sp16"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+        </com.ozonetech.ozogram.customeview.TypeTextView>
+    </LinearLayout>
+</LinearLayout>
+
 </layout>

@@ -27,6 +27,7 @@ import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
 import com.ozonetech.ozogram.view.listeners.GetUserInterface;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
+import com.ozonetech.ozogram.view.listeners.UserProfileViewListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -165,8 +166,28 @@ public class HomeViewModel extends ViewModel {
         view.getContext().startActivity(intent);
     }
 
+
+
     public void onClickProfile(View view) {
         Intent intent = new Intent(view.getContext(), ProfileActivity.class);
         view.getContext().startActivity(intent);
+    }
+    private LiveData<UserProfileViewResponseModel> userProfileResponse;
+    UserProfileViewResponseModel userProfileResponseModel;
+    public UserProfileViewListener userProfileListener;
+    public void fetchUserProfileData(Context context,String u_id) {
+        SessionManager session = new SessionManager(context);
+        Map<String, String> userProfileMap = new HashMap<>();
+        userProfileMap.put("user_id", u_id);
+
+        if (userProfileResponse == null) {
+            userProfileResponse = new MutableLiveData<UserProfileViewResponseModel>();
+            //we will load it asynchronously from server in this method
+            userProfileResponse = new ProfileRepository().viewProfile(userProfileMap,context);
+            userProfileListener.onUserProfileSuccess(userProfileResponse);
+        }else{
+            userProfileResponse = new ProfileRepository().viewProfile(userProfileMap,context);
+            userProfileListener.onUserProfileSuccess(userProfileResponse);
+        }
     }
 }

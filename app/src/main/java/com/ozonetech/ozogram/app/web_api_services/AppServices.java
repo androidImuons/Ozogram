@@ -11,6 +11,7 @@ import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
 import com.ozonetech.ozogram.view.adapter.FollowingUserList;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileViewResponseModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,10 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("user_profile")
     Call<UserProfileResponseModel> userProfile(@FieldMap Map<String, String> userProfileMap);
+
+    @FormUrlEncoded
+    @POST("user_profile")
+    Call<UserProfileViewResponseModel> GetProfile(@FieldMap Map<String, String> userProfileMap);
 
     @POST("update_profile")
     Call<UpdateDataResponseModel> updateProfile(@Body RequestBody post);

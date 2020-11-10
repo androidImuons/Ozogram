@@ -15,6 +15,7 @@ import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
 import com.ozonetech.ozogram.viewmodel.UnfollowUsersResponseModel;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileViewResponseModel;
 
 import java.util.Map;
 
@@ -55,6 +56,7 @@ public class ProfileRepository {
             @Override
             public void onResponse(Call<UserProfileResponseModel> call, Response<UserProfileResponseModel> response) {
                 if (response.isSuccessful()) {
+                    Log.d("get"," user profile--on fail-"+response.body());
                     userProfileResponseModel = response.body();
                     userProfileResponse.setValue(userProfileResponseModel);
                 } else {
@@ -229,5 +231,34 @@ public class ProfileRepository {
             }
         });
         return followingResponse;
+    }
+
+    private MutableLiveData<UserProfileViewResponseModel> userProfileViewResponseModelMutableLiveData;
+    UserProfileViewResponseModel userProfileViewResponseModel;
+
+    public LiveData<UserProfileViewResponseModel> viewProfile(Map<String, String> userProfileMap,Context context) {
+
+        userProfileViewResponseModelMutableLiveData = new MutableLiveData<>();
+        SessionManager session = new SessionManager(context);
+        AppServices apiService = ServiceGenerator.createService(AppServices.class,session.getUserDetails().get(SessionManager.KEY_ACCESS_TOKEN));
+        apiService.GetProfile(userProfileMap).enqueue(new Callback<UserProfileViewResponseModel>() {
+            @Override
+            public void onResponse(Call<UserProfileViewResponseModel> call, Response<UserProfileViewResponseModel> response) {
+                if (response.isSuccessful()) {
+                    Log.d("get"," user profile--on fail-"+response.body());
+                    userProfileViewResponseModel = response.body();
+                    userProfileViewResponseModelMutableLiveData.setValue(userProfileViewResponseModel);
+                } else {
+                    userProfileViewResponseModel = response.body();
+                    userProfileViewResponseModelMutableLiveData.setValue(userProfileViewResponseModel);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserProfileViewResponseModel> call, Throwable t) {
+                //Toast.makeText(UserRepository.this.getClass(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return userProfileViewResponseModelMutableLiveData;
     }
 }

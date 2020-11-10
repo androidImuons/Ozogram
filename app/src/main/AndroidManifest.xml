@@ -39,6 +39,9 @@
         <activity
             android:name=".view.activity.OzogramHomeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ViewPostActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

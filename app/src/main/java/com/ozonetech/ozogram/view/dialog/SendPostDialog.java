@@ -71,7 +71,7 @@ public class SendPostDialog extends AppBaseDialog implements CommonResponseInter
     }
 
 
-    public static SendPostDialog getInstance(Bundle bundle, OzogramHomeActivity galleryActivity) {
+    public static SendPostDialog getInstance(Bundle bundle) {
         SendPostDialog dialog = new SendPostDialog();
         dialog.setArguments(bundle);
         return dialog;

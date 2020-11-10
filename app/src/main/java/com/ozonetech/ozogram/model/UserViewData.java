@@ -1,8 +1,10 @@
 package com.ozonetech.ozogram.model;
 
 import android.widget.ImageView;
+
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.ViewModel;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
@@ -11,10 +13,9 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.ozonetech.ozogram.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class UserData extends ViewModel {
+public class UserViewData extends ViewModel {
 
     @SerializedName("id")
     @Expose
@@ -48,7 +49,7 @@ public class UserData extends ViewModel {
     private String joiningDate;
     @SerializedName("posts")
     @Expose
-    private List<PostData> postData = null;
+    private List<GetPostRecordModel> postData = null;
 
 
 
@@ -66,7 +67,7 @@ public class UserData extends ViewModel {
     private Integer followingCount;
 
 
-    public UserData() {
+    public UserViewData() {
     }
 
     public String getUserId() {
@@ -163,11 +164,11 @@ public class UserData extends ViewModel {
         this.gender = gender;
     }
 
-    public List<PostData> getPostDat() {
+    public List<GetPostRecordModel> getPostDat() {
         return postData;
     }
 
-    public void setPostData(List<PostData> postData) {
+    public void setPostData(List<GetPostRecordModel> postData) {
         this.postData = postData;
     }
 

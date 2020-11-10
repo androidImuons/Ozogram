@@ -12,7 +12,7 @@ import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
 import com.ozonetech.ozogram.view.fragment.BaseFragment;
 
 public class PostMoreOptionDialog extends AppBaseFragment {
-    public static PostMoreOptionDialog getInstance(Bundle bundle, OzogramHomeActivity ozogramHomeActivity) {
+    public static PostMoreOptionDialog getInstance(Bundle bundle) {
         PostMoreOptionDialog messageDialog = new PostMoreOptionDialog();
         messageDialog.setArguments(bundle);
         return messageDialog;

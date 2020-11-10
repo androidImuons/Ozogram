@@ -59,7 +59,7 @@ import okhttp3.RequestBody;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener , EditProfileListener {
+public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener, EditProfileListener {
 
     ActivityProfileBinding activityProfileBinding;
     UserProfileResponseModel userProfileResponseModel;
@@ -130,14 +130,14 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
     private void renderProfile() {
 
         showProgressDialog("Please wait...");
-        userProfileResponseModel.fetchUserProfileData(ProfileActivity.this, userProfileResponseModel.userProfileListener=this);
+        userProfileResponseModel.fetchUserProfileData(ProfileActivity.this, userProfileResponseModel.userProfileListener = this);
     }
-
 
 
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath) {
-        Toast.makeText(getApplicationContext(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
+
+         Toast.makeText(getApplicationContext(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 hideProgressDialog();
                 try {
                     if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
-                      //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
                         Log.d("ProfileActivity", "Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
                         Log.d("ProfileActivity", "User Data" + userProfileResponseModel.getUser().getFullname());
 
@@ -181,14 +181,14 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                         activityProfileBinding.setHandlers(handlers);
 
 
-                        List<PostData> postDataArrayList=new ArrayList<>();
-                        postDataArrayList=userProfileResponseModel.getUser().getPostDat();
-                        if(postDataArrayList.size() != 0 ){
-                            List<PostGalleryPath> postGalleryPathsArraylist=new ArrayList<>();
-                            for(int i=0;i<postDataArrayList.size();i++){
-                                if(postDataArrayList.get(i).getPostGalleryPath().size() != 0){
+                        List<PostData> postDataArrayList = new ArrayList<>();
+                        postDataArrayList = userProfileResponseModel.getUser().getPostDat();
+                        if (postDataArrayList.size() != 0) {
+                            List<PostGalleryPath> postGalleryPathsArraylist = new ArrayList<>();
+                            for (int i = 0; i < postDataArrayList.size(); i++) {
+                                if (postDataArrayList.get(i).getPostGalleryPath().size() != 0) {
 
-                                    for (int j=0;j<postDataArrayList.get(i).getPostGalleryPath().size();j++){
+                                    for (int j = 0; j < postDataArrayList.get(i).getPostGalleryPath().size(); j++) {
                                         postGalleryPathsArraylist.add(postDataArrayList.get(i).getPostGalleryPath().get(j));
                                     }
 
@@ -218,7 +218,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
     private ArrayList<PostGalleryPath> getPosts(List<PostGalleryPath> postGalleryPathsArraylist) {
         ArrayList<PostGalleryPath> postGalleryPaths = new ArrayList<>();
-        for(int i=0;i<postGalleryPathsArraylist.size();i++){
+        for (int i = 0; i < postGalleryPathsArraylist.size(); i++) {
             PostGalleryPath postGalleryPath = new PostGalleryPath();
             postGalleryPath.setImageUrl(postGalleryPathsArraylist.get(i).getImageUrl());
             postGalleryPaths.add(postGalleryPath);
@@ -249,7 +249,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 try {
                     if (updateDataResponse.getValue().getCode() == 200 && updateDataResponse.getValue().getStatus().equalsIgnoreCase("OK")) {
                         showSnackbar(activityProfileBinding.llUserProfile, updateDataResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
-                       // sessionManager.setEditProfileData(editProfileViewModel.bio, editProfileViewModel.website, editProfileViewModel.gender);
+                        // sessionManager.setEditProfileData(editProfileViewModel.bio, editProfileViewModel.website, editProfileViewModel.gender);
                         Log.d("ProfileActivity", "Response : Code" + updateDataResponse.getValue().getCode() + "\n Status : " + updateDataResponse.getValue().getStatus() + "\n Message : " + updateDataResponse.getValue().getMessage());
                         renderProfile();
                     } else {
@@ -304,11 +304,11 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
             this.context = context;
         }
 
-        public void onEditProfileClick(View view){
+        public void onEditProfileClick(View view) {
             goToEditProfileActivity();
         }
 
-        public void onLogoutClicked(View view){
+        public void onLogoutClicked(View view) {
             goToLogout();
         }
 
@@ -338,13 +338,13 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         }
 
         public boolean onProfileImageLongPressed(View view) {
-           // Toast.makeText(getApplicationContext(), "Profile image long pressed!", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(), "Profile image long pressed!", Toast.LENGTH_LONG).show();
             return false;
         }
 
 
         public void onFollowersClicked(View view) {
-            if(!activityProfileBinding.tvTotalFollowersCount.getText().toString().equalsIgnoreCase("0")){
+            if (!activityProfileBinding.tvTotalFollowersCount.getText().toString().equalsIgnoreCase("0")) {
                 gotoFollowersNFollowingsActivity("followers");
             }
 
@@ -358,7 +358,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         }
 
         public void onPostsClicked(View view) {
-          //  showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
+            //  showSnackbar(activityProfileBinding.llUserProfile, "Coming soon!", Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -367,7 +367,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         alertDialog.setTitle("Confirm Logout...");
         alertDialog.setMessage("Are you sure you want to logout?");
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 session.logoutUser();
             }
         });
@@ -380,8 +380,8 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
     }
 
     private void gotoFollowersNFollowingsActivity(String type) {
-        Intent intent=new Intent(ProfileActivity.this,FollowersNFollowingsActivity.class);
-        intent.putExtra("type",type);
+        Intent intent = new Intent(ProfileActivity.this, FollowersNFollowingsActivity.class);
+        intent.putExtra("type", type);
         startActivity(intent);
         finish();
     }
@@ -410,7 +410,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                     String picturePath = cursor.getString(columnIndex);
                     imageFile = new File(picturePath);
                     activityProfileBinding.profileImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                   // showSnackbar(activityProfileBinding.llUserProfile,imageFile.getName().toString(),Snackbar.LENGTH_SHORT);
+                    // showSnackbar(activityProfileBinding.llUserProfile,imageFile.getName().toString(),Snackbar.LENGTH_SHORT);
                     //tvChooseFile.setText(imageFile.getName());
                     requestFile =
                             RequestBody.create(
@@ -431,7 +431,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         showProgressDialog("Please wait...");
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-        .addFormDataPart("user_id", session.getUserDetails().get(SessionManager.KEY_USERID) );
+                .addFormDataPart("user_id", session.getUserDetails().get(SessionManager.KEY_USERID));
         if (imageFile != null) {
             RequestBody requestFile =
                     RequestBody.create(
@@ -440,7 +440,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                     );
             builder.addFormDataPart("profile_picture", imageFile.getName(), requestFile);
             RequestBody requestBody = builder.build();
-            editProfileViewModel.onUpdateProfilePic(ProfileActivity.this,requestBody,editProfileViewModel.editProfileListener = this);
+            editProfileViewModel.onUpdateProfilePic(ProfileActivity.this, requestBody, editProfileViewModel.editProfileListener = this);
         }
     }
 
