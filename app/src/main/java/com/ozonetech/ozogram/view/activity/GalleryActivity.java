@@ -70,6 +70,7 @@ public class GalleryActivity extends BaseActivity {
     private int selected_type;
     private int selected_folder;
     private ViewPagerAdapter adapter;
+    private PhotoFragment photofragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,13 +281,15 @@ public class GalleryActivity extends BaseActivity {
 //        galleryBinding.gallery.getTabAt(1);
 //        galleryBinding.gallery.getTabAt(2);
         postGalleryFrament = new PostGalleryFragment();
-         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        photofragment = new PhotoFragment();
+        photofragment.passActivity(GalleryActivity.this);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(postGalleryFrament, "GALLERY");
         int permissionCamer = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (permissionCamer == PackageManager.PERMISSION_GRANTED) {
-            adapter.addFragment(new PhotoFragment(), "PHOTO");
-            adapter.addFragment(new VideoFragment(), "VIDEO");
-        }else{
+            adapter.addFragment(photofragment, "PHOTO/VIDEO");
+            //adapter.addFragment(new VideoFragment(), "VIDEO");
+        } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, Contrants.REQUEST_CAMERA_PERMISSION);
 
         }

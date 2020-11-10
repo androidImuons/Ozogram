@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
@@ -146,7 +148,7 @@ public class VideoFragment extends Fragment {
                     folder.mkdirs();
                 }
                 //capture image on callback
-              //  captureImageCallback();
+                //  captureImageCallback();
                 //
                 if (camera != null) {
                     Camera.CameraInfo info = new Camera.CameraInfo();
@@ -164,6 +166,7 @@ public class VideoFragment extends Fragment {
 
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (runTimePermission != null) {
@@ -172,6 +175,7 @@ public class VideoFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
+
     private void initControls(View view) {
 
         mediaRecorder = new MediaRecorder();
@@ -181,9 +185,218 @@ public class VideoFragment extends Fragment {
         videoBinding.camerLayer.addView(mPreview);
 
         activeCameraCapture();
+
+
+        videoBinding.ivFlashOnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        videoBinding.ivCameraSide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                releaseCamera();
+                chooseCamera();
+            }
+        });
+
+    }
+
+    int flashType = 1;
+
+    private void flashToggle() {
+
+        if (flashType == 1) {
+
+            flashType = 2;
+        } else if (flashType == 2) {
+
+            flashType = 3;
+        } else if (flashType == 3) {
+
+            flashType = 1;
+        }
+        refreshCamera();
+    }
+
+    public void refreshCamera() {
+
+        if (mPreview == null) {
+            return;
+        }
+        try {
+            camera.stopPreview();
+            Camera.Parameters param = camera.getParameters();
+
+            if (flag == 0) {
+                if (flashType == 1) {
+                    param.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+                    videoBinding.ivFlashOnOff.setImageResource(R.drawable.ic_flash_auto);
+                } else if (flashType == 2) {
+                    param.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                    Camera.Parameters params = null;
+                    if (camera != null) {
+                        params = camera.getParameters();
+
+                        if (params != null) {
+                            List<String> supportedFlashModes = params.getSupportedFlashModes();
+
+                            if (supportedFlashModes != null) {
+                                if (supportedFlashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
+                                    param.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                                } else if (supportedFlashModes.contains(Camera.Parameters.FLASH_MODE_ON)) {
+                                    param.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+                                }
+                            }
+                        }
+                    }
+                    videoBinding.ivFlashOnOff.setImageResource(R.drawable.ic_flash_on);
+                } else if (flashType == 3) {
+                    param.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    videoBinding.ivFlashOnOff.setImageResource(R.drawable.ic_flash_off);
+                }
+            }
+
+
+            refrechCameraPriview(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void refrechCameraPriview(Camera.Parameters param) {
+        try {
+            camera.setParameters(param);
+            setCameraDisplayOrientation(0);
+            mPreview.refreshCamera(camera);
+            //  camera.startPreview();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private boolean cameraFront;
+
+    public void chooseCamera() {
+        //if the camera preview is the front
+        if (cameraFront) {
+            int cameraId = findBackFacingCamera();
+            if (cameraId >= 0) {
+                //open the backFacingCamera
+                //set a picture callback
+                //refresh the preview
+
+                camera = Camera.open(cameraId);
+                setCameraDisplayOrientation(0);
+                mPreview.refreshCamera(camera);
+            }
+        } else {
+            int cameraId = findFrontFacingCamera();
+            if (cameraId >= 0) {
+                //open the backFacingCamera
+                //set a picture callback
+                //refresh the preview
+
+                camera = Camera.open(cameraId);
+                setCameraDisplayOrientation(0);
+                mPreview.refreshCamera(camera);
+            }
+        }
+    }
+
+    public void setCameraDisplayOrientation(int cameraId) {
+
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(cameraId, info);
+
+        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+
+        if (Build.MODEL.equalsIgnoreCase("Nexus 6") && flag == 1) {
+            rotation = Surface.ROTATION_180;
+        }
+        int degrees = 0;
+        switch (rotation) {
+
+            case Surface.ROTATION_0:
+
+                degrees = 0;
+                break;
+
+            case Surface.ROTATION_90:
+
+                degrees = 90;
+                break;
+
+            case Surface.ROTATION_180:
+
+                degrees = 180;
+                break;
+
+            case Surface.ROTATION_270:
+
+                degrees = 270;
+                break;
+
+        }
+
+        int result;
+
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360; // compensate the mirror
+
+        } else {
+            result = (info.orientation - degrees + 360) % 360;
+
+        }
+
+        camera.setDisplayOrientation(result);
+
+    }
+
+    private int findBackFacingCamera() {
+        int cameraId = -1;
+        //Search for the back facing camera
+        //get the number of cameras
+        int numberOfCameras = Camera.getNumberOfCameras();
+        //for every camera check
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                cameraId = i;
+                cameraFront = false;
+                videoBinding.ivCameraSide.setBackgroundResource(R.drawable.ic__camer_rear);
+                break;
+
+            }
+
+        }
+        return cameraId;
+    }
+
+    private int findFrontFacingCamera() {
+
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                cameraId = i;
+                cameraFront = true;
+                videoBinding.ivCameraSide.setBackgroundResource(R.drawable.ic__camer_back);
+                break;
+            }
+        }
+        return cameraId;
+
     }
 
     private int mPhotoAngle = 90;
+
     private void identifyOrientationEvents() {
 
         myOrientationEventListener = new OrientationEventListener(getActivity(), SensorManager.SENSOR_DELAY_NORMAL) {
@@ -215,6 +428,7 @@ public class VideoFragment extends Fragment {
         }
 
     }
+
     private int normalize(int degrees) {
         if (degrees > 315 || degrees <= 45) {
             return 0;
@@ -264,7 +478,7 @@ public class VideoFragment extends Fragment {
                             startTime = SystemClock.uptimeMillis();
                             customHandler.postDelayed(updateTimerThread, 0);
                         } else {
-                            Log.d(tag,"----prepare media false--");
+                            Log.d(tag, "----prepare media false--");
                             return false;
                         }
                     } catch (Exception e) {
@@ -302,8 +516,8 @@ public class VideoFragment extends Fragment {
         }
 
 
-
     }
+
     private void cancelSaveVideoTaskIfNeed() {
         if (saveVideoTask != null && saveVideoTask.getStatus() == AsyncTask.Status.RUNNING) {
             saveVideoTask.cancel(true);
@@ -369,6 +583,22 @@ public class VideoFragment extends Fragment {
     private File folder = null;
     private String mediaFileName = null;
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
+    private void releaseCamera() {
+        // stop and release camera
+        if (camera != null) {
+            camera.stopPreview();
+            camera.setPreviewCallback(null);
+            camera.release();
+            camera = null;
+        }
+    }
+
     public void generateVideoThmb(String srcFilePath, File destFile) {
         try {
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(srcFilePath, 120);
@@ -407,8 +637,8 @@ public class VideoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
-                        Log.d(tag," run redirect--"+videopath.toString());
-                        Log.d(tag,"-run file--"+thumbPath.toString());
+                        Log.d(tag, " run redirect--" + videopath.toString());
+                        Log.d(tag, "-run file--" + thumbPath.toString());
 //                        Intent mIntent = new Intent(getActivity(), PhotoVideoRedirectActivity.class);
 //                        mIntent.putExtra("PATH", videopath.toString());
 //                        mIntent.putExtra("THUMB", thumbPath.toString());
@@ -454,8 +684,8 @@ public class VideoFragment extends Fragment {
                     tempFile = new File(folder.getAbsolutePath() + "/" + mediaFileName + ".mp4");
                     thumbFilename = new File(folder.getAbsolutePath(), "t_" + mediaFileName + ".jpeg");
                     generateVideoThmb(tempFile.getPath(), thumbFilename);
-                    Log.d(tag,"-temp file--"+tempFile.getAbsolutePath());
-                    Log.d(tag,"-thum file--"+thumbFilename.getAbsolutePath());
+                    Log.d(tag, "-temp file--" + tempFile.getAbsolutePath());
+                    Log.d(tag, "-thum file--" + thumbFilename.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
