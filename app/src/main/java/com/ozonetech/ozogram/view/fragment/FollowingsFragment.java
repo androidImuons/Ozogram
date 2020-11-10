@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
+import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.FragmentFollowingsBinding;
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.Follower;
@@ -56,10 +57,11 @@ public class FollowingsFragment extends BaseFragment implements FollowerListener
     }
 
     private void renderFollowings() {
+        SessionManager session = new SessionManager(getActivity());
         dataBinding.rvFollowingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         Map<String, String> followingMap = new HashMap<>();
         followingMap.put("search", "");
-
+       // followingMap.put("search", session.getUserDetails().get(SessionManager.KEY_USERID));
         showProgressDialog("Please wait...");
         followerResponseModel.fetchFollowings(getActivity(),followerResponseModel.followerListener=this,followingMap);
     }

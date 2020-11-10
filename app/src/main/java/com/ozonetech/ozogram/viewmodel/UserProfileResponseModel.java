@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.viewmodel;
 
 import android.content.Context;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -83,4 +84,15 @@ public class UserProfileResponseModel extends ViewModel implements Serializable 
     }
 
 
+    public void fetchOtherUserProfileData(Context context, UserProfileListener userProfileListener, Map<String, String> userProfileMap) {
+        if (userProfileResponse == null) {
+            userProfileResponse = new MutableLiveData<UserProfileResponseModel>();
+            //we will load it asynchronously from server in this method
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(userProfileMap,context);
+            userProfileListener.onUserProfileSuccess(userProfileResponse);
+        }else{
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(userProfileMap,context);
+            userProfileListener.onUserProfileSuccess(userProfileResponse);
+        }
+    }
 }

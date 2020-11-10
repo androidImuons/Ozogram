@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -18,7 +19,7 @@
 
         <variable
             name="handlers"
-            type="com.ozonetech.ozogram.view.activity.ProfileActivity.MyClickHandlers" />
+            type="com.ozonetech.ozogram.view.activity.ViewProfileActivity.MyClickHandlers" />
     </data>
 
 
@@ -84,7 +85,6 @@
                         android:src="@drawable/profile_pic"
                         app:civ_border_color="#7e3c62"
                         app:civ_border_width="2dp"
-                        android:onLongClick="@{handlers::onProfileImageLongPressed}"
                         bind:profilePicture="@{user.profilePicture}"/>
 
 
@@ -210,7 +210,51 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
+            android:orientation="vertical">
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/tvProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/dp10"
+                android:gravity="center"
+                android:text="@{user.bio,default= About_Profile}"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp12"
+                app:custom_font="@string/app_font_bold" />
 
+
+        </LinearLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp15">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/profile_edit_btn"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
 </layout>

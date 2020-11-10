@@ -10,8 +10,21 @@ import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
 import java.util.HashMap;
 
 public class SessionManager {
+    public static final String KEY_VIEW_ID = "view_id";
+    public static final String KEY_VIEW_USERID ="view_user_id" ;
+    public static final String KEY_VIEW_FULL_NAME ="view_fullname" ;
+    public static final String KEY_VIEW_EMAIL ="view_email" ;
+    public static final String KEY_VIEW_MOBILE ="view_mobile" ;
+    public static final String KEY_VIEW_BIO = "view_bio";
+    public static final String KEY_VIEW_PROFILE_PICTURE = "view_profile_pic";
+    public static final String KEY_VIEW_WEBSITE = "view_website";
+    public static final String KEY_VIEW_GENDER ="view_gender" ;
+    public static final String KEY_VIEW_JOINING_DATE = "view_join_date";
+    public static final String KEY_VIEW_POST_COUNT = "view_post_count";
+    public static final String KEY_VIEW_FOLLOWERS_COUNT = "view_followers";
+    public static final String KEY_VIEW_FOLLOWINGS_COUNT ="view_followings" ;
     // LogCat tag
-    private static String TAG = SessionManager.class.getSimpleName();
+    public static String TAG = SessionManager.class.getSimpleName();
 
     // Shared Preferences
     SharedPreferences pref;
@@ -198,4 +211,50 @@ public class SessionManager {
         // commit changes
         editor.commit();
     }
+
+    public void saveOtherUserProfileData(Integer id, String userId, String fullname, String email, String mobile,
+                                         String bio, String profilePicture, String website, String gender, String joiningDate,
+                                         Integer postsCount, Integer followersCount, Integer followingCount) {
+
+        // Storing name in pref
+        editor.putString(KEY_VIEW_ID,String.valueOf(id));
+        editor.putString(KEY_VIEW_USERID, userId);
+        editor.putString(KEY_VIEW_FULL_NAME,fullname);
+        editor.putString(KEY_VIEW_EMAIL, email);
+        editor.putString(KEY_VIEW_MOBILE,mobile);
+        editor.putString(KEY_VIEW_BIO, bio);
+        editor.putString(KEY_VIEW_PROFILE_PICTURE,profilePicture);
+        editor.putString(KEY_VIEW_WEBSITE,website);
+        editor.putString(KEY_VIEW_GENDER,gender);
+        editor.putString(KEY_VIEW_JOINING_DATE, joiningDate);
+        editor.putString(KEY_VIEW_POST_COUNT, String.valueOf(postsCount));
+        editor.putString(KEY_VIEW_FOLLOWERS_COUNT, String.valueOf(followersCount));
+        editor.putString(KEY_VIEW_FOLLOWINGS_COUNT, String.valueOf(followingCount));
+        // commit changes
+        editor.commit();
+
+    }
+
+    public HashMap<String, String> getViewOtherUserDetails(){
+        HashMap<String, String> otherUser = new HashMap<String, String>();
+        // user name
+        otherUser.put(KEY_VIEW_ID,pref.getString(KEY_VIEW_ID,"0"));
+        otherUser.put(KEY_VIEW_USERID,pref.getString(KEY_VIEW_USERID,null));
+        //user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
+      //  otherUser.put(KEY_ACCESS_TOKEN,pref.getString(KEY_ACCESS_TOKEN,null));
+        otherUser.put(KEY_VIEW_FULL_NAME,pref.getString(KEY_VIEW_FULL_NAME,null));
+        otherUser.put(KEY_VIEW_EMAIL, pref.getString(KEY_VIEW_EMAIL, null));
+        otherUser.put(KEY_VIEW_MOBILE,pref.getString(KEY_VIEW_MOBILE,null));
+        otherUser.put(KEY_VIEW_BIO, pref.getString(KEY_VIEW_BIO, null));
+        otherUser.put(KEY_VIEW_PROFILE_PICTURE,pref.getString(KEY_VIEW_PROFILE_PICTURE,null));
+        otherUser.put(KEY_VIEW_WEBSITE,pref.getString(KEY_VIEW_WEBSITE,null));
+        otherUser.put(KEY_VIEW_GENDER,pref.getString(KEY_VIEW_GENDER,null));
+        otherUser.put(KEY_VIEW_JOINING_DATE,pref.getString(KEY_VIEW_JOINING_DATE,null));
+        otherUser.put(KEY_VIEW_POST_COUNT,pref.getString(KEY_VIEW_POST_COUNT,"0"));
+        otherUser.put(KEY_VIEW_FOLLOWERS_COUNT,pref.getString(KEY_VIEW_FOLLOWERS_COUNT,"0"));
+        otherUser.put(KEY_VIEW_FOLLOWINGS_COUNT,pref.getString(KEY_VIEW_FOLLOWINGS_COUNT,"0"));
+        // return user
+        return otherUser;
+    }
+
 }

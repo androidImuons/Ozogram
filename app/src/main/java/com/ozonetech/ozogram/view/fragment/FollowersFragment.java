@@ -65,13 +65,14 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
     }
 
     private void renderFollowers() {
+
+        SessionManager session = new SessionManager(getActivity());
         databinding.rvFollowersList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         Map<String, String> followerMap = new HashMap<>();
-        followerMap.put("search", "");
-
+        followerMap.put("search","");
+        // followerMap.put("search",session.getUserDetails().get(SessionManager.KEY_USERID));
         showProgressDialog("Please wait...");
         followerResponseModel.fetchFollowers(getActivity(), followerResponseModel.followerListener = this, followerMap);
-
     }
 
     @Override
