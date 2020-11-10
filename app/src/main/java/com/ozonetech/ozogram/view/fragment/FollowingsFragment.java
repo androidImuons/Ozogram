@@ -61,7 +61,7 @@ public class FollowingsFragment extends BaseFragment implements FollowerListener
         dataBinding.rvFollowingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         Map<String, String> followingMap = new HashMap<>();
         followingMap.put("search", "");
-       // followingMap.put("search", session.getUserDetails().get(SessionManager.KEY_USERID));
+        //followingMap.put("search", session.getUserDetails().get(SessionManager.KEY_USERID));
         showProgressDialog("Please wait...");
         followerResponseModel.fetchFollowings(getActivity(),followerResponseModel.followerListener=this,followingMap);
     }
