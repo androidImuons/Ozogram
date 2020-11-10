@@ -11,10 +11,11 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.ozonetech.ozogram.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserData extends ViewModel {
+public class UserData extends ViewModel implements Serializable {
 
     @SerializedName("id")
     @Expose

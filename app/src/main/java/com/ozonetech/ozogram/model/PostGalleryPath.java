@@ -9,7 +9,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ozonetech.ozogram.R;
 
-public class PostGalleryPath {
+import java.io.Serializable;
+
+public class PostGalleryPath implements Serializable
+{
 
     @SerializedName("path")
     @Expose

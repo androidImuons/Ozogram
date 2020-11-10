@@ -13,10 +13,11 @@ import com.ozonetech.ozogram.model.UserData;
 import com.ozonetech.ozogram.repository.ProfileRepository;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserProfileResponseModel extends ViewModel {
+public class UserProfileResponseModel extends ViewModel implements Serializable {
     @SerializedName("code")
     @Expose
     private Integer code;

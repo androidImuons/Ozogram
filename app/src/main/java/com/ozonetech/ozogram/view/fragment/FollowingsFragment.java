@@ -1,5 +1,6 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -19,10 +20,14 @@ import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.databinding.FragmentFollowingsBinding;
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.Follower;
+import com.ozonetech.ozogram.view.activity.ProfileActivity;
+import com.ozonetech.ozogram.view.activity.ViewProfileActivity;
 import com.ozonetech.ozogram.view.adapter.FollowingAdapter;
 import com.ozonetech.ozogram.view.listeners.FollowerListener;
 import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,6 +126,35 @@ public class FollowingsFragment extends BaseFragment implements FollowerListener
 
     }
 
+    @Override
+    public void onFollowerProfileSuccess(LiveData<UserProfileResponseModel> userProfileResponse) {
+        userProfileResponse.observe(getViewLifecycleOwner(), new Observer<UserProfileResponseModel>() {
+            @Override
+            public void onChanged(UserProfileResponseModel userProfileResponseModel) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
+                        //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("ProfileActivity", "-- Following Response : Code " + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
+                        Log.d("ProfileActivity", "--Following Data : " + userProfileResponseModel.getUser().getFullname());
+
+                        Intent intent=new Intent(getActivity(), ViewProfileActivity.class);
+                        intent.putExtra("data",userProfileResponseModel);
+                        getActivity().startActivity(intent);
+
+
+                    } else {
+                        showSnackbar(dataBinding.flFollowingFragment, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
+    }
+
     private void setRecyclerView(List<Follower> followingList) {
         followingAdapter=new FollowingAdapter(this,followingList);
         dataBinding.rvFollowingList.setAdapter(followingAdapter);
@@ -137,4 +171,17 @@ public class FollowingsFragment extends BaseFragment implements FollowerListener
 
        // showSnackbar(dataBinding.flFollowingFragment,"Clicked on UnFollow"+ follower.getFullname(), Snackbar.LENGTH_SHORT);
     }
+
+    @Override
+    public void onViewFollowingClick(Follower follower) {
+        showProgressDialog("Please wait...");
+
+        Map<String, String> followUnfollowMap = new HashMap<>();
+        followUnfollowMap.put("user_id", follower.getUserId());
+        Log.d("ProfileActivity", "--Following user_id : " + follower.getUserId());
+
+        followerResponseModel.getFollowingProfile(getActivity(), followUnfollowMap,followerResponseModel.followerListener=this);
+
+    }
+
 }

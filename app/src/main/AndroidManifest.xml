@@ -22,14 +22,15 @@
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.ViewAllCommentActivity"></activity>
+        <activity android:name=".view.activity.ViewProfileActivity"></activity>
+        <activity android:name=".view.activity.ViewAllCommentActivity" />
         <activity android:name=".view.activity.FollowersNFollowingsActivity" />
         <activity android:name=".view.activity.FindMorePeopleActivity" />
         <activity android:name=".view.activity.AddProfileActivity" />
         <activity android:name=".view.activity.EditProfileActivity" />
         <activity
             android:name=".view.activity.ProfileActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity android:name=".view.activity.GalleryActivity" />
         <activity
             android:name=".view.activity.LoginActivity"

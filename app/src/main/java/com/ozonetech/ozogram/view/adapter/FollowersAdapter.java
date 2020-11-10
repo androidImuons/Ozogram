@@ -36,6 +36,14 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.binding.setFollower(followerList.get(position));
+        holder.binding.llFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onFollowerClick(followerList.get(position));
+                }
+            }
+        });
         holder.binding.tvRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,5 +70,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
     public interface FollowersAdapterListener{
 
         void onRemoveFollowerClick(Follower follower);
+
+        void onFollowerClick(Follower follower);
     }
 }

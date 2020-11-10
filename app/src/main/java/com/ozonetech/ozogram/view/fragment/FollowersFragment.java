@@ -1,5 +1,6 @@
 package com.ozonetech.ozogram.view.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.FragmentFollowersBinding;
@@ -25,10 +27,14 @@ import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.FindMorePeopleActivity;
+import com.ozonetech.ozogram.view.activity.ProfileActivity;
+import com.ozonetech.ozogram.view.activity.ViewProfileActivity;
 import com.ozonetech.ozogram.view.adapter.FollowersAdapter;
 import com.ozonetech.ozogram.view.listeners.FollowerListener;
 import com.ozonetech.ozogram.viewmodel.FollowerResponseModel;
+import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +55,8 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        followerResponseModel= ViewModelProviders.of(getActivity()).get(FollowerResponseModel.class);
-        databinding=  DataBindingUtil.inflate(inflater, R.layout.fragment_followers, container, false);
+        followerResponseModel = ViewModelProviders.of(getActivity()).get(FollowerResponseModel.class);
+        databinding = DataBindingUtil.inflate(inflater, R.layout.fragment_followers, container, false);
         databinding.setFollowerModel(followerResponseModel);
         View view = databinding.getRoot();
         databinding.setLifecycleOwner(this);
@@ -64,7 +70,7 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
         followerMap.put("search", "");
 
         showProgressDialog("Please wait...");
-        followerResponseModel.fetchFollowers(getActivity(),followerResponseModel.followerListener=this,followerMap);
+        followerResponseModel.fetchFollowers(getActivity(), followerResponseModel.followerListener = this, followerMap);
 
     }
 
@@ -80,12 +86,12 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
                         //  showSnackbar(storyFragmentBinding.flStoryFragment, userProfileResponse.getValue().getMessage(), Snackbar.LENGTH_SHORT);
                         Log.d("followerResponseModel", "Response : Code" + followerResponseModel.getCode() + "\n Status : " + followerResponseModel.getStatus() + "\n Message : " + followerResponseModel.getMessage());
 
-                            if(followerResponseModel.getData()!=null){
-                                List<Follower> followerList=new ArrayList<>();
-                                followerList=followerResponseModel.getData();
-                                setRecyclerView(followerList);
-                            }else{
-                            showSnackbar(databinding.flFollowerFragment,"Nobody is your Follower", Snackbar.LENGTH_SHORT);
+                        if (followerResponseModel.getData() != null) {
+                            List<Follower> followerList = new ArrayList<>();
+                            followerList = followerResponseModel.getData();
+                            setRecyclerView(followerList);
+                        } else {
+                            showSnackbar(databinding.flFollowerFragment, "Nobody is your Follower", Snackbar.LENGTH_SHORT);
                         }
 
                     } else {
@@ -127,8 +133,43 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
         });
     }
 
+    @Override
+    public void onFollowerProfileSuccess(LiveData<UserProfileResponseModel> userProfileResponse) {
+        userProfileResponse.observe(getViewLifecycleOwner(), new Observer<UserProfileResponseModel>() {
+            @Override
+            public void onChanged(UserProfileResponseModel userProfileResponseModel) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
+                        //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                        Log.d("Followers", "-- Follower Response : Code " + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
+                        Log.d("Followers", "--Follower Data : " + userProfileResponseModel.getUser().getFullname());
+                        gotoViewProfileActivity(userProfileResponseModel);
+                    } else {
+                        showSnackbar(databinding.flFollowerFragment, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                    Log.d("Followers", e.getMessage());
+
+                } finally {
+                    hideProgressDialog();
+                }
+            }
+        });
+    }
+
+    private void gotoViewProfileActivity(UserProfileResponseModel userProfileResponseModel) {
+        Log.d("ProfileActivity", "--gotoViewProfileActivity : " + userProfileResponseModel.getUser().getFullname());
+
+        Intent intent=new Intent(getActivity(), ViewProfileActivity.class);
+        intent.putExtra("data",userProfileResponseModel);
+        getActivity().startActivity(intent);
+    }
+
+
     private void setRecyclerView(List<Follower> followerList) {
-        followersAdapter=new FollowersAdapter(followerList,this);
+        followersAdapter = new FollowersAdapter(followerList, this);
         databinding.rvFollowersList.setAdapter(followersAdapter);
     }
 
@@ -146,9 +187,20 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
         Map<String, String> followUnfollowMap = new HashMap<>();
         followUnfollowMap.put("user_id", follower.getUserId());
         followUnfollowMap.put("action", "unfollow");            //follow , unfollow
-        followerResponseModel.sendfollowUnFollow(getActivity(), followUnfollowMap,followerResponseModel.followerListener=this);
+        followerResponseModel.sendfollowUnFollow(getActivity(), followUnfollowMap, followerResponseModel.followerListener = this);
 
-      //  showSnackbar(databinding.flFollowerFragment, "clicked on remove "+follower.getFullname(), Snackbar.LENGTH_SHORT);
+        //  showSnackbar(databinding.flFollowerFragment, "clicked on remove "+follower.getFullname(), Snackbar.LENGTH_SHORT);
 
     }
+
+    @Override
+    public void onFollowerClick(Follower follower) {
+        showProgressDialog("Please wait...");
+        Map<String, String> followUnfollowMap = new HashMap<>();
+        followUnfollowMap.put("user_id", follower.getUserId());
+        Log.d("ProfileActivity", "--Follower user_id : " + follower.getUserId());
+
+        followerResponseModel.getFollowerProfile(getActivity(), followUnfollowMap, followerResponseModel.followerListener = this);
+    }
+
 }

@@ -40,6 +40,8 @@ import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
+import com.ozonetech.ozogram.view.fragment.FollowersFragment;
+import com.ozonetech.ozogram.view.fragment.FollowingsFragment;
 import com.ozonetech.ozogram.view.fragment.GalleryFragment;
 import com.ozonetech.ozogram.view.fragment.StoryFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -59,7 +61,7 @@ import okhttp3.RequestBody;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener , EditProfileListener {
+public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.ProfileStroyAdpterListener, UserProfileListener , EditProfileListener{
 
     ActivityProfileBinding activityProfileBinding;
     UserProfileResponseModel userProfileResponseModel;
@@ -100,6 +102,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         initRecyclerView();
 
     }
+
 
     private void initRecyclerView() {
         rv_profile_story = activityProfileBinding.rvProfileStory;
@@ -156,8 +159,8 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 try {
                     if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
                       //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
-                        Log.d("ProfileActivity", "Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
-                        Log.d("ProfileActivity", "User Data" + userProfileResponseModel.getUser().getFullname());
+                        Log.d("ProfileActivity", "--Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
+                        Log.d("ProfileActivity", "--User Data" + userProfileResponseModel.getUser().getFullname());
 
                         session.saveUserProfileData(
                                 userProfileResponseModel.getUser().getId(),
@@ -263,6 +266,7 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         });
 
     }
+
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

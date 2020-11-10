@@ -57,9 +57,13 @@ public class ProfileRepository {
                 if (response.isSuccessful()) {
                     userProfileResponseModel = response.body();
                     userProfileResponse.setValue(userProfileResponseModel);
+                    Log.d(tag,"--Profile200----"+new Gson().toJson(response.body()));
+
                 } else {
                     userProfileResponseModel = response.body();
                     userProfileResponse.setValue(userProfileResponseModel);
+                    Log.d(tag,"--Profile 200---"+new Gson().toJson(response.body()));
+
                 }
             }
 

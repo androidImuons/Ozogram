@@ -10,6 +10,7 @@
             type="com.ozonetech.ozogram.model.Follower" />
     </data>
     <LinearLayout
+        android:id="@+id/ll_followers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"

@@ -108,4 +108,32 @@ public class FollowerResponseModel extends ViewModel {
             commonResponse = new ProfileRepository().followUnFollow(followDataMap,context);
             followerListener.onGetFollowUnFollowUserResponse(commonResponse);        }
     }
+
+    private LiveData<UserProfileResponseModel> userProfileResponse;
+    public void getFollowerProfile(FragmentActivity context, Map<String, String> followUnfollowMap, FollowerListener followerListener) {
+
+        if (userProfileResponse == null) {
+            userProfileResponse = new MutableLiveData<UserProfileResponseModel>();
+            //we will load it asynchronously from server in this method
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(followUnfollowMap,context);
+            followerListener.onFollowerProfileSuccess(userProfileResponse);
+        }else{
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(followUnfollowMap,context);
+            followerListener.onFollowerProfileSuccess(userProfileResponse);
+        }
+    }
+
+    public void getFollowingProfile(FragmentActivity context, Map<String, String> followUnfollowMap, FollowerListener followerListener) {
+
+        if (userProfileResponse == null) {
+            userProfileResponse = new MutableLiveData<UserProfileResponseModel>();
+            //we will load it asynchronously from server in this method
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(followUnfollowMap,context);
+            followerListener.onFollowerProfileSuccess(userProfileResponse);
+        }else{
+            userProfileResponse = new ProfileRepository().fetchUserProfileData(followUnfollowMap,context);
+            followerListener.onFollowerProfileSuccess(userProfileResponse);
+        }
+
+    }
 }
