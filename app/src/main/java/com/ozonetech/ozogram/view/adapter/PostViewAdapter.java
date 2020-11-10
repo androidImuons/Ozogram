@@ -2,7 +2,6 @@ package com.ozonetech.ozogram.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -13,38 +12,34 @@ import androidx.viewpager.widget.ViewPager;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.base.AppBaseRecycleAdapter;
-import com.ozonetech.ozogram.base.BaseRecycleAdapter;
 import com.ozonetech.ozogram.customeview.ReadMoreTextView;
 import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.LikeUserModel;
-import com.ozonetech.ozogram.view.activity.BaseActivity;
 import com.ozonetech.ozogram.view.activity.OzogramHomeActivity;
 import com.ozonetech.ozogram.view.activity.ViewAllCommentActivity;
-import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
-import com.volokh.danylo.visibility_utils.calculator.DefaultSingleItemCalculatorCallback;
-import com.volokh.danylo.visibility_utils.calculator.SingleListViewItemActiveCalculator;
+import com.ozonetech.ozogram.view.activity.ViewPostActivity;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 
-public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
+public class PostViewAdapter extends AppBaseRecycleAdapter {
     Context context;
     List<GetPostRecordModel> postDataModelList;
     private boolean readMore;
-    OzogramHomeActivity activity;
+    ViewPostActivity activity;
     private SessionManager session;
     PostViewInterface postViewInterface;
     private String tag = "PostRecycleViewAdapter";
     private boolean is_like;
 
-    public PostRecycleViewAdapter(Context applicationContext, List<GetPostRecordModel> post, OzogramHomeActivity ozogramHomeActivity) {
+    public PostViewAdapter(Context applicationContext, List<GetPostRecordModel> post, ViewPostActivity ozogramHomeActivity) {
         context = applicationContext;
         postDataModelList = post;
         activity = ozogramHomeActivity;
         session = new SessionManager(context);
-        postViewInterface = (PostViewInterface) ozogramHomeActivity;
+        postViewInterface =  activity;
     }
 
     public int getViewHeight() {
@@ -52,7 +47,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
     }
 
     @Override
-    public BaseRecycleAdapter.BaseViewHolder getViewHolder() {
+    public BaseViewHolder getViewHolder() {
         return new StoryUserListView(inflateLayout(R.layout.view_post_view_list));
     }
 
@@ -68,7 +63,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
         notifyDataSetChanged();
     }
 
-    public class StoryUserListView extends BaseRecycleAdapter.BaseViewHolder implements ReadMoreTextView.ReadMoreTextViewListener {
+    public class StoryUserListView extends BaseViewHolder implements ReadMoreTextView.ReadMoreTextViewListener {
         CircleImageView iv_user_image;
         TextView txt_post_user_name;
         ImageView iv_more;
@@ -244,8 +239,8 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
 
     private void setViewPager(StoryUserListView viewmodel, int position) {
         GetPostRecordModel model = postDataModelList.get(position);
-        PostPagerAdapter postPagerAdapter = new PostPagerAdapter(context, postDataModelList.get(position).getPostGalleryPath(),
-                PostRecycleViewAdapter.this, activity);
+        PostViewPagerAdapter postPagerAdapter = new PostViewPagerAdapter(context, postDataModelList.get(position).getPostGalleryPath(),
+                PostViewAdapter.this, activity);
         viewmodel.view_pager.setAdapter(postPagerAdapter);
         viewmodel.circle.setViewPager(viewmodel.view_pager);
         viewmodel.view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

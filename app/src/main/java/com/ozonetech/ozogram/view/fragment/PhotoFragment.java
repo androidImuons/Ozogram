@@ -228,7 +228,7 @@ public class PhotoFragment extends Fragment implements Camera.PictureCallback {
                 //refresh the preview
 
                 camera = Camera.open(cameraId);
-               setCameraDisplayOrientation(90);
+               setCameraDisplayOrientation(0);
                 pictureCallback = getPictureCallback();
                 mPreview.refreshCamera(camera);
             }
@@ -240,7 +240,7 @@ public class PhotoFragment extends Fragment implements Camera.PictureCallback {
                 //refresh the preview
 
                 camera = Camera.open(cameraId);
-                setCameraDisplayOrientation(90);
+                setCameraDisplayOrientation(0);
                 pictureCallback = getPictureCallback();
                 mPreview.refreshCamera(camera);
             }

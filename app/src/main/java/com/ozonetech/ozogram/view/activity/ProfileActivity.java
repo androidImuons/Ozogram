@@ -40,8 +40,6 @@ import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.model.UpdateDataResponseModel;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
-import com.ozonetech.ozogram.view.fragment.FollowersFragment;
-import com.ozonetech.ozogram.view.fragment.FollowingsFragment;
 import com.ozonetech.ozogram.view.fragment.GalleryFragment;
 import com.ozonetech.ozogram.view.fragment.StoryFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -103,7 +101,6 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
 
     }
 
-
     private void initRecyclerView() {
         rv_profile_story = activityProfileBinding.rvProfileStory;
         rv_profile_story.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -159,8 +156,8 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
                 try {
                     if (userProfileResponseModel.getCode() == 200 && userProfileResponseModel.getStatus().equalsIgnoreCase("OK")) {
                       //  showSnackbar(activityProfileBinding.llUserProfile, userProfileResponseModel.getMessage(), Snackbar.LENGTH_SHORT);
-                        Log.d("ProfileActivity", "--Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
-                        Log.d("ProfileActivity", "--User Data" + userProfileResponseModel.getUser().getFullname());
+                        Log.d("ProfileActivity", "Response : Code" + userProfileResponseModel.getCode() + "\n Status : " + userProfileResponseModel.getStatus() + "\n Message : " + userProfileResponseModel.getMessage());
+                        Log.d("ProfileActivity", "User Data" + userProfileResponseModel.getUser().getFullname());
 
                         session.saveUserProfileData(
                                 userProfileResponseModel.getUser().getId(),
@@ -266,7 +263,6 @@ public class ProfileActivity extends BaseActivity implements ProfileStroyAdpter.
         });
 
     }
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

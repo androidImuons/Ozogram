@@ -1,21 +1,19 @@
 package com.ozonetech.ozogram.view.activity;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
-import com.ozonetech.ozogram.app.utils.ItemClickSupport;
 import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.ActivityOzogramHomeBinding;
 import com.ozonetech.ozogram.model.CommonResponse;
@@ -23,30 +21,26 @@ import com.ozonetech.ozogram.model.GetPostRecordModel;
 import com.ozonetech.ozogram.model.GetPostResponseModel;
 import com.ozonetech.ozogram.model.GetUnfollowUserResponse;
 import com.ozonetech.ozogram.model.UnfollowUserRecordDataModel;
-import com.ozonetech.ozogram.repository.PostUpload;
 import com.ozonetech.ozogram.view.adapter.PostRecycleViewAdapter;
+import com.ozonetech.ozogram.view.adapter.PostViewAdapter;
+import com.ozonetech.ozogram.view.adapter.PostViewUnFollowUserListAdapter;
 import com.ozonetech.ozogram.view.adapter.StoryUserRecycleViewAdapter;
-import com.ozonetech.ozogram.view.adapter.UnFollowUserListAdapter;
 import com.ozonetech.ozogram.view.dialog.EditCommentDialog;
 import com.ozonetech.ozogram.view.dialog.PostMoreOptionDialog;
 import com.ozonetech.ozogram.view.dialog.SendPostDialog;
 import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
 import com.ozonetech.ozogram.view.listeners.GetPostDataListener;
 import com.ozonetech.ozogram.view.listeners.GetUserInterface;
+import com.ozonetech.ozogram.view.listeners.UserProfileViewListener;
 import com.ozonetech.ozogram.viewmodel.HomeViewModel;
-import com.google.android.material.snackbar.Snackbar;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.ozonetech.ozogram.viewmodel.UserProfileViewResponseModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
-
-public class OzogramHomeActivity extends BaseActivity implements GetPostDataListener,
-        CommonResponseInterface, PostRecycleViewAdapter.PostViewInterface, EditCommentDialog.SendCallBack, GetUserInterface {
+public class ViewPostActivity extends BaseActivity implements GetPostDataListener,
+        CommonResponseInterface, PostRecycleViewAdapter.PostViewInterface, EditCommentDialog.SendCallBack, GetUserInterface, UserProfileViewListener, PostViewAdapter.PostViewInterface {
     // Session Manager Class
     SessionManager session;
     ActivityOzogramHomeBinding activityOzogramHomeBinding;
@@ -54,11 +48,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     //  BottomTabViewModel bottomTabViewModel;
     private List<GetPostRecordModel> post = new ArrayList<>();
     private StoryUserRecycleViewAdapter storyUserRecycleViewAdapter;
-    private PostRecycleViewAdapter postRecycelAdapter;
+    private PostViewAdapter postRecycelAdapter;
     private String tag = "OzogramHomeActivity";
     private List<UnfollowUserRecordDataModel> unFollowUserList = new ArrayList<>();
-    private UnFollowUserListAdapter unFollowUserAdapter;
+    private PostViewUnFollowUserListAdapter unFollowUserAdapter;
     private int action_position;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +62,22 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        homeViewModel = ViewModelProviders.of(OzogramHomeActivity.this).get(HomeViewModel.class);
+        homeViewModel = ViewModelProviders.of(ViewPostActivity.this).get(HomeViewModel.class);
         activityOzogramHomeBinding.setHome(homeViewModel);
-
-        homeViewModel.postDataListener = OzogramHomeActivity.this;
-        homeViewModel.commonResponseInterface = OzogramHomeActivity.this;
-        homeViewModel.getUserInterface = OzogramHomeActivity.this;
+        Bundle bundle = getIntent().getExtras();
+        user_id = bundle.getString("user_id");
+        homeViewModel.postDataListener = ViewPostActivity.this;
+        homeViewModel.commonResponseInterface = ViewPostActivity.this;
+        homeViewModel.getUserInterface = ViewPostActivity.this;
+        homeViewModel.userProfileListener = ViewPostActivity.this;
         // Session class instance
         session = new SessionManager(getApplicationContext());
         activityOzogramHomeBinding.executePendingBindings();
-        activityOzogramHomeBinding.setLifecycleOwner(OzogramHomeActivity.this);
+        activityOzogramHomeBinding.setLifecycleOwner(ViewPostActivity.this);
+        activityOzogramHomeBinding.toolbar.llHomeToolbar.setVisibility(View.GONE);
+        activityOzogramHomeBinding.toolbar.llWithBackButton.setVisibility(View.VISIBLE);
+        activityOzogramHomeBinding.llIncludeBottom.setVisibility(View.GONE);
+        activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.GONE);
         setupSwipLayout();
         init();
 //
@@ -94,14 +95,20 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.recycleStoryUser.setAdapter(storyUserRecycleViewAdapter);
 
 
-        postRecycelAdapter = new PostRecycleViewAdapter(getApplicationContext(), post, OzogramHomeActivity.this);
+        postRecycelAdapter = new PostViewAdapter(getApplicationContext(), post, ViewPostActivity.this);
         activityOzogramHomeBinding.recyclePostList.setHasFixedSize(true);
         activityOzogramHomeBinding.recyclePostList.setNestedScrollingEnabled(true);
         activityOzogramHomeBinding.recyclePostList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         activityOzogramHomeBinding.recyclePostList.setAdapter(postRecycelAdapter);
-
+        activityOzogramHomeBinding.toolbar.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
+
 
     private void setupSwipLayout() {
 
@@ -109,7 +116,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             @Override
             public void onRefresh() {
                 activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
-                homeViewModel.getPost(getApplicationContext());
+                homeViewModel.fetchUserProfileData(getApplicationContext(), user_id);
             }
         });
     }
@@ -118,12 +125,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     protected void onResume() {
         super.onResume();
         activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
-        homeViewModel.getPost(getApplicationContext());
+        homeViewModel.fetchUserProfileData(getApplicationContext(), user_id);
     }
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        finish();
     }
 
     @Override
@@ -131,9 +138,36 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         Log.d("Home", "On start");
     }
 
+
+    @Override
+    public void onUserProfileSuccess(LiveData<UserProfileViewResponseModel> userProfileResponse) {
+        userProfileResponse.observe(ViewPostActivity.this, new Observer<UserProfileViewResponseModel>() {
+            @Override
+            public void onChanged(UserProfileViewResponseModel responseModel) {
+                //save access token
+                hideProgressDialog();
+                try {
+                    if (responseModel.getCode() == 200 && responseModel.getStatus().equalsIgnoreCase("OK")) {
+                        Log.d("Home", "Response : Code" + responseModel.getCode());
+                        setPost(responseModel.getUser().getPostDat());
+                    } else {
+                        activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
+                        Log.d("Home", "Response fail: Code" + responseModel.getCode());
+                        showSnackbar(activityOzogramHomeBinding.nestedList, responseModel.getMessage(), Snackbar.LENGTH_SHORT);
+                    }
+                } catch (Exception e) {
+                } finally {
+                    activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
+                    hideProgressDialog();
+                }
+            }
+        });
+    }
+
+
     @Override
     public void onUserSuccess(LiveData<GetUnfollowUserResponse> getUnfollowUserResponseLiveData) {
-        getUnfollowUserResponseLiveData.observe(OzogramHomeActivity.this, new Observer<GetUnfollowUserResponse>() {
+        getUnfollowUserResponseLiveData.observe(ViewPostActivity.this, new Observer<GetUnfollowUserResponse>() {
             @Override
             public void onChanged(GetUnfollowUserResponse responseModel) {
                 try {
@@ -156,7 +190,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     private void setUser(List<UnfollowUserRecordDataModel> data) {
         unFollowUserList = data;
-        unFollowUserAdapter = new UnFollowUserListAdapter(getApplicationContext(), unFollowUserList, OzogramHomeActivity.this);
+        unFollowUserAdapter = new PostViewUnFollowUserListAdapter(getApplicationContext(), unFollowUserList, ViewPostActivity.this);
         activityOzogramHomeBinding.viewPagerForUser.setNestedScrollingEnabled(true);
         activityOzogramHomeBinding.viewPagerForUser.setAdapter(unFollowUserAdapter);
     }
@@ -164,7 +198,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     @Override
     public void onSuccess(LiveData<GetPostResponseModel> postResponse) {
-        postResponse.observe(OzogramHomeActivity.this, new Observer<GetPostResponseModel>() {
+        postResponse.observe(ViewPostActivity.this, new Observer<GetPostResponseModel>() {
             @Override
             public void onChanged(GetPostResponseModel responseModel) {
                 //save access token
@@ -207,7 +241,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
             storyUserRecycleViewAdapter.updateList(post);
             postRecycelAdapter.updateList(post);
-           // postRecycelAdapter.insert(action_position, post.get(action_position));
+            // postRecycelAdapter.insert(action_position, post.get(action_position));
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.VISIBLE);
@@ -227,14 +261,14 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 
     @Override
     public void onCommonSuccess(LiveData<CommonResponse> commonResponseLiveData) {
-        commonResponseLiveData.observe(OzogramHomeActivity.this, new Observer<CommonResponse>() {
+        commonResponseLiveData.observe(ViewPostActivity.this, new Observer<CommonResponse>() {
             @Override
             public void onChanged(CommonResponse responseModel) {
                 hideProgressDialog();
                 try {
                     if (responseModel.getCode() == 200 && responseModel.getStatus().equalsIgnoreCase("OK")) {
                         Log.d(tag, "like Response : Code" + responseModel.getCode());
-                        homeViewModel.getPost(getApplicationContext());
+                        homeViewModel.fetchUserProfileData(getApplicationContext(), user_id);
                     } else {
                         activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
                         Log.d(tag, "like Response fail: Code" + responseModel.getCode());
@@ -271,7 +305,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         bundle.putString("id", String.valueOf(post.get(pos).getId()));
         EditCommentDialog instance = EditCommentDialog.getInstance(bundle);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
-        instance.sendCallBack = (EditCommentDialog.SendCallBack) OzogramHomeActivity.this;
+        instance.sendCallBack = (EditCommentDialog.SendCallBack) ViewPostActivity.this;
 
     }
 
@@ -280,7 +314,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         action_position = pos;
         Bundle bundle = new Bundle();
         bundle.putString("id", String.valueOf(post.get(pos).getId()));
-        SendPostDialog instance = SendPostDialog.getInstance(bundle );
+        SendPostDialog instance = SendPostDialog.getInstance(bundle);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
     }
 
@@ -305,6 +339,11 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 //        bundle.putString("id", String.valueOf(post.get(pos).getId()));
         PostMoreOptionDialog instance = PostMoreOptionDialog.getInstance(bundle);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
 

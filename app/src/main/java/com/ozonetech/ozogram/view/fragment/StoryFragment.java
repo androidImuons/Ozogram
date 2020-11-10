@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.GridSpacingItemDecoration;
+import com.ozonetech.ozogram.app.utils.SessionManager;
 import com.ozonetech.ozogram.databinding.StoryFragmentBinding;
 import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
@@ -36,6 +37,7 @@ import com.ozonetech.ozogram.view.activity.AddProfileActivity;
 import com.ozonetech.ozogram.view.activity.EditProfileActivity;
 import com.ozonetech.ozogram.view.activity.FindMorePeopleActivity;
 import com.ozonetech.ozogram.view.activity.ProfileActivity;
+import com.ozonetech.ozogram.view.activity.ViewPostActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
 import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
@@ -52,7 +54,7 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
     RecyclerView rv_profile_story_gallery;
     private MyClickHandlers handlers;
     private PostsAdapter mAdapter;
-
+SessionManager sessionManager;
     public static StoryFragment newInstance() {
         return new StoryFragment();
     }
@@ -66,7 +68,7 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
         View view = storyFragmentBinding.getRoot();
         storyFragmentBinding.setLifecycleOwner(this);
         handlers = new MyClickHandlers(getActivity());
-
+sessionManager=new SessionManager(getContext());
         renderStroryFragment(view);
         return view;
 
@@ -121,8 +123,10 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
 
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath) {
-        showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
-
+       // showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+        Intent intent = new Intent(getContext(), ViewPostActivity.class);
+        intent.putExtra("user_id", sessionManager.getUserDetails().get(sessionManager.KEY_USERID));
+        startActivity(intent);
         //Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 
