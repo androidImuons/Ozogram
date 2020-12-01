@@ -40,6 +40,7 @@ public class ViewProfileActivity extends BaseActivity {
     ActivityViewProfileBinding dataBinding;
     UserProfileResponseModel userProfileResponseModel;
     public ViewProfileActivity.MyClickHandlers handler;
+    int type;
     SessionManager session;
     public TabLayout tabLayout;
     public ViewPager viewPager;
