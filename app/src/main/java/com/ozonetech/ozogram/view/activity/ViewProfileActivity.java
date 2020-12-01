@@ -47,26 +47,44 @@ public class ViewProfileActivity extends BaseActivity {
             R.drawable.story_icon,
             R.drawable.photo_icon
     };
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dataBinding=DataBindingUtil.setContentView(ViewProfileActivity.this, R.layout.activity_view_profile);
+        dataBinding = DataBindingUtil.setContentView(ViewProfileActivity.this, R.layout.activity_view_profile);
         userProfileResponseModel = ViewModelProviders.of(ViewProfileActivity.this).get(UserProfileResponseModel.class);
         dataBinding.setUserprofiel(userProfileResponseModel);
         dataBinding.executePendingBindings();
         dataBinding.setLifecycleOwner(this);
-        handler=new MyClickHandlers(this);
+        handler = new MyClickHandlers(this);
         session = new SessionManager(getApplicationContext());
-        userProfileResponseModel= (UserProfileResponseModel) getIntent().getSerializableExtra("data");
+        userProfileResponseModel = (UserProfileResponseModel) getIntent().getSerializableExtra("data");
+        type=getIntent().getExtras().getInt("type");
+        if (type==1){
+            dataBinding.txtMessage.setVisibility(View.VISIBLE);
+        }else{
+            dataBinding.txtMessage.setVisibility(View.GONE);
+        }
         renderProfile(userProfileResponseModel);
         initRecyclerView();
 
+        dataBinding.txtMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ActivityChatMessage.class);
+                intent.putExtra("id", session.getViewOtherUserDetails().get(session.KEY_VIEW_USERID));
+                intent.putExtra("bio",session.getViewOtherUserDetails().get(session.KEY_VIEW_BIO));
+                intent.putExtra("image",session.getViewOtherUserDetails().get(session.KEY_VIEW_PROFILE_PICTURE));
+                intent.putExtra("name",session.getViewOtherUserDetails().get(session.KEY_VIEW_FULL_NAME));
+               intent.putExtra("type",type);
+                startActivity(intent);
+            }
+        });
 
 
-
-        Log.i("Response::", "---ViewProfileActivity --"+new Gson().toJson(userProfileResponseModel));
+        Log.i("Response::", "---ViewProfileActivity --" + new Gson().toJson(userProfileResponseModel));
 
     }
 
@@ -172,7 +190,7 @@ public class ViewProfileActivity extends BaseActivity {
 
 
         public void onFollowersClicked(View view) {
-            if(!dataBinding.tvTotalFollowersCount.getText().toString().equalsIgnoreCase("0")){
+            if (!dataBinding.tvTotalFollowersCount.getText().toString().equalsIgnoreCase("0")) {
                 gotoFollowersNFollowingsActivity("followers");
             }
 
@@ -191,8 +209,8 @@ public class ViewProfileActivity extends BaseActivity {
     }
 
     private void gotoFollowersNFollowingsActivity(String type) {
-        Intent intent=new Intent(ViewProfileActivity.this,FollowersNFollowingsActivity.class);
-        intent.putExtra("type",type);
+        Intent intent = new Intent(ViewProfileActivity.this, FollowersNFollowingsActivity.class);
+        intent.putExtra("type", type);
         startActivity(intent);
         finish();
     }

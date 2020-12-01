@@ -13,10 +13,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -24,7 +22,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ozonetech.ozogram.R;
@@ -34,12 +31,9 @@ import com.ozonetech.ozogram.databinding.StoryFragmentBinding;
 import com.ozonetech.ozogram.model.PostData;
 import com.ozonetech.ozogram.model.PostGalleryPath;
 import com.ozonetech.ozogram.view.activity.AddProfileActivity;
-import com.ozonetech.ozogram.view.activity.EditProfileActivity;
 import com.ozonetech.ozogram.view.activity.FindMorePeopleActivity;
-import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.activity.ViewPostActivity;
 import com.ozonetech.ozogram.view.adapter.PostsAdapter;
-import com.ozonetech.ozogram.view.adapter.ProfileStroyAdpter;
 import com.ozonetech.ozogram.view.listeners.UserProfileListener;
 import com.ozonetech.ozogram.viewmodel.UserProfileResponseModel;
 
@@ -122,9 +116,10 @@ sessionManager=new SessionManager(getContext());
     }
 
     @Override
-    public void onPostClicked(PostGalleryPath postGalleryPath) {
+    public void onPostClicked(PostGalleryPath postGalleryPath, int position) {
        // showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
         Intent intent = new Intent(getContext(), ViewPostActivity.class);
+        intent.putExtra("position",position);
         intent.putExtra("user_id", sessionManager.getUserDetails().get(sessionManager.KEY_USERID));
         startActivity(intent);
         //Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();

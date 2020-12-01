@@ -52,7 +52,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.onPostClicked(postGalleryPathList.get(position));
+                    listener.onPostClicked(postGalleryPathList.get(position),position);
                 }
             }
         });
@@ -64,6 +64,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
     }
 
     public interface PostsAdapterListener {
-        void onPostClicked(PostGalleryPath postGalleryPath);
+        void onPostClicked(PostGalleryPath postGalleryPath, int position);
     }
 }

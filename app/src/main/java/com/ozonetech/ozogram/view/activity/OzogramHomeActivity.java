@@ -300,10 +300,12 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     }
 
 
-    public void moreaction() {
+    public void moreaction(GetPostRecordModel getPostRecordModel) {
         Bundle bundle = new Bundle();
-//        bundle.putString("id", String.valueOf(post.get(pos).getId()));
+        bundle.putString("id", String.valueOf(getPostRecordModel.getId()));
+        bundle.putString("u_id",getPostRecordModel.getUser().getUserId());
         PostMoreOptionDialog instance = PostMoreOptionDialog.getInstance(bundle);
+       // instance.unfollowUser=(PostMoreOptionDialog.UnfollowUser)OzogramHomeActivity.this;
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
     }
 }

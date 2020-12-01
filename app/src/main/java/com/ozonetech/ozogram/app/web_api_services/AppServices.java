@@ -123,6 +123,25 @@ public interface AppServices {
     @FormUrlEncoded
     @POST("get_messages")
     Call<GetMessageResponse> get_message(@FieldMap Map<String, String> param);
+
+    // send_message
+
+//    Header Authorization:Bearer<token>
+//    Parameters :
+//            1)to_user ->
+//
+//    required(User id)
+//2)message ->
+//
+//    optional(Required if no attachment)
+//3)files[] ->
+//
+//    optional(Required if no message)
+
+    @Multipart
+    @POST("send_message")
+    Call<CommonResponse> send_message(@Header("Authorization") String authHeader, @PartMap() HashMap<String, RequestBody> param,
+                                      @Part List<MultipartBody.Part> file);
 }
 
 

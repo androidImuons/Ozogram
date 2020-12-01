@@ -1,5 +1,7 @@
 package com.ozonetech.ozogram.app.web_api_services;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Interceptor;
@@ -53,6 +55,7 @@ public class ServiceGenerator {
         }
         OkHttpClient client = httpClient.build();
         Retrofit retrofit = builder.client(client).build();
+        Log.d("token","-----"+"Bearer " + authToken);
         return retrofit.create(serviceClass);
     }
     private static final long HTTP_TIMEOUT = TimeUnit.SECONDS.toMillis(60);

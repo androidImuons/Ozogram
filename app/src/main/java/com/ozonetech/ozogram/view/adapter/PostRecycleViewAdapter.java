@@ -225,7 +225,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
             iv_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    activity.moreaction();
+                    activity.moreaction(postDataModelList.get(pos));
                 }
             });
             txt_t_comment.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +233,7 @@ public class PostRecycleViewAdapter extends AppBaseRecycleAdapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ViewAllCommentActivity.class);
                     intent.putExtra("post_id", postDataModelList.get(pos).getId());
-                   // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             });

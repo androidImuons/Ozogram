@@ -21,6 +21,7 @@ import com.ozonetech.ozogram.repository.LikePost;
 import com.ozonetech.ozogram.repository.LoginRepository;
 import com.ozonetech.ozogram.repository.ProfileRepository;
 import com.ozonetech.ozogram.repository.SharePost;
+import com.ozonetech.ozogram.view.activity.FollowersNFollowingsActivity;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.activity.ProfileActivity;
 import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
@@ -166,7 +167,11 @@ public class HomeViewModel extends ViewModel {
         view.getContext().startActivity(intent);
     }
 
-
+    public void onClickSend(View view){
+        Intent intent=new Intent(view.getContext(), FollowersNFollowingsActivity.class);
+        intent.putExtra("type","followings");
+       view.getContext().startActivity(intent);
+    }
 
     public void onClickProfile(View view) {
         Intent intent = new Intent(view.getContext(), ProfileActivity.class);

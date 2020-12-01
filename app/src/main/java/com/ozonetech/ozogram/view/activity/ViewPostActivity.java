@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -54,6 +55,8 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
     private PostViewUnFollowUserListAdapter unFollowUserAdapter;
     private int action_position;
     private String user_id;
+    private int position;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
         activityOzogramHomeBinding.setHome(homeViewModel);
         Bundle bundle = getIntent().getExtras();
         user_id = bundle.getString("user_id");
+        position = bundle.getInt("position");
         homeViewModel.postDataListener = ViewPostActivity.this;
         homeViewModel.commonResponseInterface = ViewPostActivity.this;
         homeViewModel.getUserInterface = ViewPostActivity.this;
@@ -94,7 +98,7 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
         activityOzogramHomeBinding.recycleStoryUser.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         activityOzogramHomeBinding.recycleStoryUser.setAdapter(storyUserRecycleViewAdapter);
 
-
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         postRecycelAdapter = new PostViewAdapter(getApplicationContext(), post, ViewPostActivity.this);
         activityOzogramHomeBinding.recyclePostList.setHasFixedSize(true);
         activityOzogramHomeBinding.recyclePostList.setNestedScrollingEnabled(true);
@@ -241,6 +245,11 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
             storyUserRecycleViewAdapter.updateList(post);
             postRecycelAdapter.updateList(post);
+            Log.d(tag,"----pos--"+position);
+              activityOzogramHomeBinding.recyclePostList.scrollToPosition(position);
+           // activityOzogramHomeBinding.nestedList.scrollTo(0, position);
+//            staggeredGridLayoutManager.scrollToPosition(position);
+//            activityOzogramHomeBinding.recyclePostList.setLayoutManager(staggeredGridLayoutManager);
             // postRecycelAdapter.insert(action_position, post.get(action_position));
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);

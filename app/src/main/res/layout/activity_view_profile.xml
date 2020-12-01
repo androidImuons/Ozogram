@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -85,7 +84,7 @@
                         android:src="@drawable/profile_pic"
                         app:civ_border_color="#7e3c62"
                         app:civ_border_width="2dp"
-                        bind:profilePicture="@{user.profilePicture}"/>
+                        bind:profilePicture="@{user.profilePicture}" />
 
 
                 </FrameLayout>
@@ -147,8 +146,8 @@
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/dp2"
                         android:gravity="center"
-                        android:textColor="@color/colorBlack"
                         android:text="@{BindingUtils.convertToSuffix(user.followersCount),default=0}"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/sp14"
                         android:textStyle="bold"
                         app:custom_font="@string/app_font_bold" />
@@ -210,25 +209,39 @@
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp40"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp15"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:weightSum="1">
+
             <com.ozonetech.ozogram.customeview.TypeTextView
                 android:id="@+id/tvProfileName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/dp10"
-                android:gravity="center"
+                android:layout_weight=".5"
+                android:gravity="center_vertical"
                 android:text="@{user.bio,default= About_Profile}"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp12"
                 app:custom_font="@string/app_font_bold" />
 
-
+            <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/txt_message"
+                android:layout_width="0dp"
+                android:background="@drawable/ll_white_round_10"
+                android:layout_height="match_parent"
+                android:text="Message"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp16"
+                android:layout_weight="0.5"></com.ozonetech.ozogram.customeview.TypeTextView>
         </LinearLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

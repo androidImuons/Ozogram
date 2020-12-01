@@ -51,6 +51,7 @@ import android.widget.Toast;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.RunTimePermission;
 import com.ozonetech.ozogram.databinding.FragmentPhotoBinding;
+import com.ozonetech.ozogram.view.activity.ChatGalleryActivity;
 import com.ozonetech.ozogram.view.activity.GalleryActivity;
 import com.ozonetech.ozogram.view.dialog.UploadImagesDialogBoxs;
 import com.ozonetech.ozogram.viewmodel.PhotoViewModel;
@@ -79,7 +80,7 @@ import static com.ozonetech.ozogram.view.activity.GalleryActivity.ACTION_REQUEST
  * Use the {@link PhotoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhotoFragment extends Fragment implements View.OnClickListener,SurfaceHolder.Callback {
+public class PhotoFragment extends Fragment implements View.OnClickListener, SurfaceHolder.Callback {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,7 +92,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,Surf
     private String mParam2;
     private View view;
     private String tag = "PhotoFragment";
-  //  private CameraPreview mPreview;
+    //  private CameraPreview mPreview;
     private Camera camera;
     private boolean cameraFront;
     private Camera.PictureCallback pictureCallback;
@@ -112,6 +113,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,Surf
     private RunTimePermission runTimePermission;
     private TextView textCounter;
     private TextView hintTextView;
+    private ChatGalleryActivity chatActivity;
 
     public PhotoFragment() {
         // Required empty public constructor
@@ -418,10 +420,10 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,Surf
 //    public static final int ACTION_REQUEST_EDITIMAGE = 9;
 //
     public void fillterImage(String path, File file) throws Exception {
-        Log.d(tag,"----filter photo--"+file.getAbsolutePath());
+        Log.d(tag, "----filter photo--" + file.getAbsolutePath());
 
 
-        Intent intent = new ImageEditorIntentBuilder(getContext(),file.getAbsolutePath(),file.getAbsolutePath())
+        Intent intent = new ImageEditorIntentBuilder(getContext(), file.getAbsolutePath(), file.getAbsolutePath())
                 .withAddText()
                 .withFilterFeature()
                 .withRotateFeature()
@@ -437,7 +439,8 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,Surf
         //  .withPaintFeature()
         EditImageActivity.start(getActivity(), intent, ACTION_REQUEST_EDITIMAGE);
     }
-//
+
+    //
 //
 //    public Camera.PictureCallback getPictureCallback() {
 //        Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
@@ -674,11 +677,14 @@ public class PhotoFragment extends Fragment implements View.OnClickListener,Surf
     }
 
     private SavePicTask savePicTask;
-GalleryActivity activity;
-    public void passActivity(GalleryActivity galleryActivity) {
-        activity=galleryActivity;
-    }
+    GalleryActivity activity;
 
+    public void passActivity(GalleryActivity galleryActivity) {
+        activity = galleryActivity;
+    }
+    public void passChatActivity(ChatGalleryActivity galleryActivity) {
+        chatActivity = galleryActivity;
+    }
 
     private class SavePicTask extends AsyncTask<Void, Void, String> {
         private byte[] data;
@@ -715,7 +721,7 @@ GalleryActivity activity;
                 @Override
                 public void run() {
                     try {
-                        fillterImage( tempFile.toString(),tempFile);
+                        fillterImage(tempFile.toString(), tempFile);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1362,9 +1368,14 @@ GalleryActivity activity;
                         ArrayList<String> list_of_images_video = new ArrayList<>();
                         list_of_images_video.add(videopath);
                         Bundle bundle = new Bundle();
-                        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle, activity);
-                        bundle.putStringArrayList("list", list_of_images_video);
-                        instance.show(getChildFragmentManager(), instance.getClass().getSimpleName());
+                        if(activity!=null){
+                            UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle, activity);
+                            bundle.putStringArrayList("list", list_of_images_video);
+                            instance.show(getChildFragmentManager(), instance.getClass().getSimpleName());
+                        }else{
+
+                        }
+
                     }
                 }
             }
