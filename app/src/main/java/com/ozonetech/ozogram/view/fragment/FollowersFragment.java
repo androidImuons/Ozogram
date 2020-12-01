@@ -165,6 +165,7 @@ public class FollowersFragment extends BaseFragment implements FollowerListener,
 
         Intent intent=new Intent(getActivity(), ViewProfileActivity.class);
         intent.putExtra("data",userProfileResponseModel);
+        intent.putExtra("type",0);
         getActivity().startActivity(intent);
     }
 

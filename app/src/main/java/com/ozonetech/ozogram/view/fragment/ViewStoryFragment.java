@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -81,11 +80,12 @@ public class ViewStoryFragment extends BaseFragment implements PostsAdapter.Post
     }
 
     @Override
-    public void onPostClicked(PostGalleryPath postGalleryPath) {
+    public void onPostClicked(PostGalleryPath postGalleryPath, int position) {
         SessionManager session = new SessionManager(getActivity());
         Map<String, String> userProfileMap = new HashMap<>();
         //showSnackbar(dataBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
         Intent intent = new Intent(getContext(), ViewPostActivity.class);
+        intent.putExtra("position",position);
         intent.putExtra("user_id", session.getViewOtherUserDetails().get(SessionManager.KEY_VIEW_USERID));
         startActivity(intent);
     }

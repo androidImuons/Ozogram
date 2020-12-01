@@ -1,16 +1,5 @@
 package com.ozonetech.ozogram.view.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +13,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +32,7 @@ import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.Contrants;
 import com.ozonetech.ozogram.app.utils.Gallery;
 import com.ozonetech.ozogram.databinding.ActivityGalleryBinding;
+import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.ImageModel;
 import com.ozonetech.ozogram.view.adapter.GirdViewAdapter;
 import com.ozonetech.ozogram.view.adapter.SpinnerBaseAdapter;
@@ -38,9 +40,10 @@ import com.ozonetech.ozogram.view.dialog.UploadImagesDialogBoxs;
 import com.ozonetech.ozogram.view.fragment.PhotoFragment;
 import com.ozonetech.ozogram.view.fragment.PostGalleryFragment;
 import com.ozonetech.ozogram.view.fragment.VideoFragment;
+import com.ozonetech.ozogram.view.listeners.CommonResponseInterface;
+import com.ozonetech.ozogram.viewmodel.ChatMessageViewModel;
 import com.ozonetech.ozogram.viewmodel.GalleryViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,7 +58,7 @@ import iamutkarshtiwari.github.io.ananas.editimage.ImageEditorIntentBuilder;
 import static com.ozonetech.ozogram.app.utils.Contrants.REQUEST_READ_EXTERNAL_STORAGE_PERMISSION;
 
 //https://deepshikhapuri.wordpress.com/2017/03/29/get-all-videos-from-gallery-in-android/
-public class GalleryActivity extends BaseActivity {
+public class ChatGalleryActivity extends BaseActivity implements CommonResponseInterface {
     ActivityGalleryBinding galleryBinding;
     GalleryViewModel galleryViewModel;
     private String tag = "GalleryActivity";
@@ -71,6 +74,8 @@ public class GalleryActivity extends BaseActivity {
     private int selected_folder;
     private ViewPagerAdapter adapter;
     private PhotoFragment photofragment;
+    private String to_user_id;
+    ChatMessageViewModel chatMessageViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +84,13 @@ public class GalleryActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        galleryViewModel = ViewModelProviders.of(GalleryActivity.this).get(GalleryViewModel.class);
+        to_user_id = getIntent().getExtras().getString("id");
+        galleryViewModel = ViewModelProviders.of(ChatGalleryActivity.this).get(GalleryViewModel.class);
         galleryBinding.setGallery(galleryViewModel);
         galleryBinding.executePendingBindings();
-        galleryBinding.setLifecycleOwner(GalleryActivity.this);
+        galleryBinding.setLifecycleOwner(ChatGalleryActivity.this);
+        chatMessageViewModel = new ChatMessageViewModel();
+        chatMessageViewModel.commonResponseInterface = (CommonResponseInterface) ChatGalleryActivity.this;
         setupViewPager();
         checkPermission();
 
@@ -246,7 +254,7 @@ public class GalleryActivity extends BaseActivity {
                     adapter.addFragment(new VideoFragment(), "VIDEO");
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(GalleryActivity.this, "The app was not allowed to read or write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatGalleryActivity.this, "The app was not allowed to read or write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -282,7 +290,7 @@ public class GalleryActivity extends BaseActivity {
 //        galleryBinding.gallery.getTabAt(2);
         postGalleryFrament = new PostGalleryFragment();
         photofragment = new PhotoFragment();
-        photofragment.passActivity(GalleryActivity.this);
+        photofragment.passChatActivity(ChatGalleryActivity.this);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(postGalleryFrament, "GALLERY");
         int permissionCamer = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -298,6 +306,28 @@ public class GalleryActivity extends BaseActivity {
         galleryBinding.galleryViewPager.setAdapter(adapter);
         galleryBinding.gallery.setupWithViewPager(galleryBinding.galleryViewPager);
 
+
+    }
+
+    @Override
+    public void onCommoStarted() {
+
+    }
+
+    @Override
+    public void onCommonSuccess(LiveData<CommonResponse> userProfileResponse) {
+        userProfileResponse.observe(ChatGalleryActivity.this, new Observer<CommonResponse>() {
+            @Override
+            public void onChanged(CommonResponse commonResponse) {
+                if (commonResponse.getCode() == 200) {
+                    finish();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onCommonFailure(String message) {
 
     }
 
@@ -371,10 +401,12 @@ public class GalleryActivity extends BaseActivity {
         for (String value : newFilePath.values()) {
             list_of_images_video.add(value);
         }
+
+        chatMessageViewModel.sedMessage(getApplicationContext(), to_user_id, "", list_of_images_video);
         Bundle bundle = new Bundle();
-        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle, GalleryActivity.this);
-        bundle.putStringArrayList("list", list_of_images_video);
-        instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
+//        UploadImagesDialogBoxs instance = UploadImagesDialogBoxs.getInstance(bundle, ChatGalleryActivity.this);
+//        bundle.putStringArrayList("list", list_of_images_video);
+//        instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
 
     }
 }

@@ -76,7 +76,7 @@ public class GalleryFragment extends Fragment implements PostsAdapter.PostsAdapt
     }
 
     @Override
-    public void onPostClicked(PostGalleryPath postGalleryPath) {
+    public void onPostClicked(PostGalleryPath postGalleryPath, int position) {
         Toast.makeText(getActivity(), "Post clicked! " + postGalleryPath.getImageUrl(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -93,6 +93,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_marginRight="@dimen/dp5"
+                    android:onClick="@{toolbar.onClickSend}"
                     android:background="@drawable/ic_rocket"
                     android:layout_height="25dp">
 

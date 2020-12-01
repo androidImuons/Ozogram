@@ -54,6 +54,7 @@
 
             </com.ozonetech.ozogram.customeview.TypeTextView>
             <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/txt_share_to"
                 android:layout_width="match_parent"
                 android:text="Share to..."
                 android:textStyle="normal"
@@ -65,6 +66,7 @@
 
             </com.ozonetech.ozogram.customeview.TypeTextView>
             <com.ozonetech.ozogram.customeview.TypeTextView
+                android:id="@+id/txt_unfollow"
                 android:layout_width="match_parent"
                 android:text="Unfollow"
                 android:textStyle="normal"

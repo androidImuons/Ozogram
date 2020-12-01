@@ -1,11 +1,13 @@
 package com.ozonetech.ozogram.model;
 
+import androidx.lifecycle.ViewModel;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GetMessageResponse {
+public class GetMessageResponse  extends ViewModel {
     @SerializedName("code")
     @Expose
     private Integer code;
