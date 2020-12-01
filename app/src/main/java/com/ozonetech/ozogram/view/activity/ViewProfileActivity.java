@@ -60,6 +60,12 @@ public class ViewProfileActivity extends BaseActivity {
         handler=new MyClickHandlers(this);
         session = new SessionManager(getApplicationContext());
         userProfileResponseModel= (UserProfileResponseModel) getIntent().getSerializableExtra("data");
+        dataBinding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         renderProfile(userProfileResponseModel);
         initRecyclerView();
 

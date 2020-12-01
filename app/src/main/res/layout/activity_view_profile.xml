@@ -40,8 +40,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="@dimen/dp10"
-                android:layout_height="@dimen/dp10"
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp5"
                 android:background="@drawable/back" />
@@ -51,12 +52,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp5"
+                android:layout_margin="@dimen/dp10"
                 android:layout_weight="1"
                 android:gravity="center|start"
                 android:text="@{user.fullname,default=ProfileName}"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/sp12"
+                android:textSize="@dimen/sp14"
                 app:custom_font="@string/app_font_bold" />
 
 
