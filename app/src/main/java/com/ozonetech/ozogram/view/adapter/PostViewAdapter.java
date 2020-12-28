@@ -61,6 +61,7 @@ public class PostViewAdapter extends AppBaseRecycleAdapter {
         postDataModelList = post;
         is_like = false;
         notifyDataSetChanged();
+
     }
 
     public class StoryUserListView extends BaseViewHolder implements ReadMoreTextView.ReadMoreTextViewListener {
@@ -235,8 +236,6 @@ public class PostViewAdapter extends AppBaseRecycleAdapter {
         }
 
     }
-
-
     private void setViewPager(StoryUserListView viewmodel, int position) {
         GetPostRecordModel model = postDataModelList.get(position);
         PostViewPagerAdapter postPagerAdapter = new PostViewPagerAdapter(context, postDataModelList.get(position).getPostGalleryPath(),

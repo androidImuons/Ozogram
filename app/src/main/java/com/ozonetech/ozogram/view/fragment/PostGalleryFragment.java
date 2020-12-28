@@ -163,7 +163,7 @@ public class PostGalleryFragment extends BaseFragment {
     public void setList(ArrayList<String> arrayList, int type) {
         selectedImageList.clear();
         this.arrayList = arrayList;
-        if(videoPlayerManager!=null){
+        if (videoPlayerManager != null) {
             videoPlayerManager.stopAnyPlayback();
         }
         if (obj_adapter != null) {
@@ -192,13 +192,13 @@ public class PostGalleryFragment extends BaseFragment {
         if (selected_position != position) {
             selected_position = position;
         }
-        if (file.endsWith("mp4")){
+        if (file.endsWith("mp4")) {
             fragmentPostGalleryBinding.videoPlayer.onVideoStoppedMainThread();
 
             fragmentPostGalleryBinding.videoPlayer.setVisibility(View.VISIBLE);
             videoLayer(url);
-            videoPlayerManager.playNewVideo(null, fragmentPostGalleryBinding.videoPlayer,url );
-        }else{
+            videoPlayerManager.playNewVideo(null, fragmentPostGalleryBinding.videoPlayer, url);
+        } else {
             fragmentPostGalleryBinding.videoPlayer.onVideoStoppedMainThread();
             fragmentPostGalleryBinding.videoPlayer.setVisibility(View.GONE);
         }
@@ -227,15 +227,15 @@ public class PostGalleryFragment extends BaseFragment {
 
     }
 
-    private void videoLayer(String url){
-Log.d(tag,"----video player--");
+    private void videoLayer(String url) {
+        Log.d(tag, "----video player--");
         RequestOptions requestOptions = RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC);
         Glide.with(getActivity()).load(url)
                 .skipMemoryCache(false)
                 .apply(requestOptions)
                 .into(fragmentPostGalleryBinding.ivImage);
 
-        fragmentPostGalleryBinding.videoPlayer.addMediaPlayerListener(new SimpleMainThreadMediaPlayerListener(){
+        fragmentPostGalleryBinding.videoPlayer.addMediaPlayerListener(new SimpleMainThreadMediaPlayerListener() {
             @Override
             public void onVideoPreparedMainThread() {
                 // We hide the cover when video is prepared. Playback is about to start
@@ -257,7 +257,7 @@ Log.d(tag,"----video player--");
 
     }
 
-    VideoPlayerManager videoPlayerManager=new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+    VideoPlayerManager videoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
         @Override
         public void onPlayerItemChanged(MetaData currentItemMetaData) {
 

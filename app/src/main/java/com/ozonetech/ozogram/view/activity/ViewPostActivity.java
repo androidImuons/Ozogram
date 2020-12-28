@@ -2,6 +2,7 @@ package com.ozonetech.ozogram.view.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
     private List<GetPostRecordModel> post = new ArrayList<>();
     private StoryUserRecycleViewAdapter storyUserRecycleViewAdapter;
     private PostViewAdapter postRecycelAdapter;
-    private String tag = "OzogramHomeActivity";
+    private String tag = "ViewPostActivity";
     private List<UnfollowUserRecordDataModel> unFollowUserList = new ArrayList<>();
     private PostViewUnFollowUserListAdapter unFollowUserAdapter;
     private int action_position;
@@ -243,14 +244,12 @@ public class ViewPostActivity extends BaseActivity implements GetPostDataListene
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.VISIBLE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.GONE);
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
-            storyUserRecycleViewAdapter.updateList(post);
+
+            post.add(0,post.remove(position-1));
+
             postRecycelAdapter.updateList(post);
             Log.d(tag,"----pos--"+position);
-              activityOzogramHomeBinding.recyclePostList.scrollToPosition(position);
-           // activityOzogramHomeBinding.nestedList.scrollTo(0, position);
-//            staggeredGridLayoutManager.scrollToPosition(position);
-//            activityOzogramHomeBinding.recyclePostList.setLayoutManager(staggeredGridLayoutManager);
-            // postRecycelAdapter.insert(action_position, post.get(action_position));
+
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.VISIBLE);

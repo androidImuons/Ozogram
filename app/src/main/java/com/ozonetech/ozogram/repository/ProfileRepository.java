@@ -231,7 +231,7 @@ public class ProfileRepository {
 
             @Override
             public void onFailure(Call<FollowerResponseModel> call, Throwable t) {
-                Log.d(tag,"----"+t.getMessage());
+                Log.d(tag,"--get following--"+t.getMessage());
             }
         });
         return followingResponse;

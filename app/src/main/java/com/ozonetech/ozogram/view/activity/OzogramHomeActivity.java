@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import com.ozonetech.ozogram.R;
 import com.ozonetech.ozogram.app.utils.ItemClickSupport;
 import com.ozonetech.ozogram.app.utils.SessionManager;
+import com.ozonetech.ozogram.appupdate.AppUpdateChecker;
+import com.ozonetech.ozogram.appupdate.AppVersionModel;
 import com.ozonetech.ozogram.databinding.ActivityOzogramHomeBinding;
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.GetPostRecordModel;
@@ -27,6 +29,7 @@ import com.ozonetech.ozogram.repository.PostUpload;
 import com.ozonetech.ozogram.view.adapter.PostRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.StoryUserRecycleViewAdapter;
 import com.ozonetech.ozogram.view.adapter.UnFollowUserListAdapter;
+import com.ozonetech.ozogram.view.dialog.DialogAppUpdater;
 import com.ozonetech.ozogram.view.dialog.EditCommentDialog;
 import com.ozonetech.ozogram.view.dialog.PostMoreOptionDialog;
 import com.ozonetech.ozogram.view.dialog.SendPostDialog;
@@ -79,11 +82,48 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         activityOzogramHomeBinding.setLifecycleOwner(OzogramHomeActivity.this);
         setupSwipLayout();
         init();
+        checkUpdate();
 //
 
+    }
+    DialogAppUpdater dialogAppUpdater;
+    AppVersionModel appVersionModel;
+    private void checkUpdate() {
+        new AppUpdateChecker(this, new AppUpdateChecker.AppUpdateAvailableListener() {
+            @Override
+            public void appUpdateAvailable(LiveData<AppVersionModel> appUpdatemodal) {
 
+                appUpdatemodal.observe(OzogramHomeActivity.this, new Observer<AppVersionModel>() {
+                    @Override
+                    public void onChanged(AppVersionModel appVersionModel) {
+                        if (appVersionModel!=null){
+                            OzogramHomeActivity.this.appVersionModel =appVersionModel;
+                            if (appVersionModel.getCode()==200){
+                                if (isFinishing()) return;
+                                callupdatedialog();
+                            }
+
+                        }
+                    }
+                });
+
+
+
+            }
+        }).checkForUpdate();
     }
 
+    private void callupdatedialog() {
+        try {
+            if (dialogAppUpdater != null && dialogAppUpdater.isShowing()) {
+                dialogAppUpdater.dismiss();
+            }
+            dialogAppUpdater = new DialogAppUpdater(OzogramHomeActivity.this, appVersionModel);
+            dialogAppUpdater.show();
+        } catch (Exception e) {
+            Log.d(tag,"--exception-"+e.getMessage());
+        }
+    }
 
     private void init() {
 
@@ -119,6 +159,13 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         super.onResume();
         activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
         homeViewModel.getPost(getApplicationContext());
+        if (appVersionModel!=null){
+            if (appVersionModel.getCode()==200){
+                if (isFinishing()) return;
+                callupdatedialog();
+            }
+
+        }
     }
 
     @Override
