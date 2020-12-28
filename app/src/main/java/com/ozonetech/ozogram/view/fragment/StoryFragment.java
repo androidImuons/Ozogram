@@ -49,6 +49,8 @@ public class StoryFragment extends BaseFragment implements PostsAdapter.PostsAda
     private MyClickHandlers handlers;
     private PostsAdapter mAdapter;
 SessionManager sessionManager;
+    private String tag="StoryFragment";
+
     public static StoryFragment newInstance() {
         return new StoryFragment();
     }
@@ -118,6 +120,7 @@ sessionManager=new SessionManager(getContext());
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath, int position) {
        // showSnackbar(storyFragmentBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
+        Log.d(tag,"--on postclick-"+position);
         Intent intent = new Intent(getContext(), ViewPostActivity.class);
         intent.putExtra("position",position);
         intent.putExtra("user_id", sessionManager.getUserDetails().get(sessionManager.KEY_USERID));

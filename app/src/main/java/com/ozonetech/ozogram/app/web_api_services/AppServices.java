@@ -1,5 +1,6 @@
 package com.ozonetech.ozogram.app.web_api_services;
 
+import com.ozonetech.ozogram.appupdate.AppVersionModel;
 import com.ozonetech.ozogram.model.CommonResponse;
 import com.ozonetech.ozogram.model.FollowingUserResponse;
 import com.ozonetech.ozogram.model.GetMessageResponse;
@@ -142,6 +143,11 @@ public interface AppServices {
     @POST("send_message")
     Call<CommonResponse> send_message(@Header("Authorization") String authHeader, @PartMap() HashMap<String, RequestBody> param,
                                       @Part List<MultipartBody.Part> file);
+
+
+    @FormUrlEncoded
+    @POST("check_app_version")
+    Call<AppVersionModel> updateApp(@FieldMap Map<String, String> groupMap);
 }
 
 

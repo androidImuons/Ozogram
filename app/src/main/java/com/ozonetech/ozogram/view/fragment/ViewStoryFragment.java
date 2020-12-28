@@ -40,6 +40,7 @@ public class ViewStoryFragment extends BaseFragment implements PostsAdapter.Post
     FragmentViewStoryBinding dataBinding;
     UserProfileResponseModel userProfileResponseModel;
     private PostsAdapter mAdapter;
+    private String tag="ViewStory";
 
 
     @Override
@@ -81,6 +82,7 @@ public class ViewStoryFragment extends BaseFragment implements PostsAdapter.Post
 
     @Override
     public void onPostClicked(PostGalleryPath postGalleryPath, int position) {
+        Log.d(tag,"-85-on postclick-"+position);
         SessionManager session = new SessionManager(getActivity());
         Map<String, String> userProfileMap = new HashMap<>();
         //showSnackbar(dataBinding.flStoryFragment, "Coming soon!", Snackbar.LENGTH_SHORT);
