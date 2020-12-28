@@ -40,6 +40,7 @@ public class ViewProfileActivity extends BaseActivity {
     ActivityViewProfileBinding dataBinding;
     UserProfileResponseModel userProfileResponseModel;
     public ViewProfileActivity.MyClickHandlers handler;
+    int type;
     SessionManager session;
     public TabLayout tabLayout;
     public ViewPager viewPager;
@@ -47,7 +48,6 @@ public class ViewProfileActivity extends BaseActivity {
             R.drawable.story_icon,
             R.drawable.photo_icon
     };
-    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,13 @@ public class ViewProfileActivity extends BaseActivity {
         }else{
             dataBinding.txtMessage.setVisibility(View.GONE);
         }
+        userProfileResponseModel= (UserProfileResponseModel) getIntent().getSerializableExtra("data");
+        dataBinding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         renderProfile(userProfileResponseModel);
         initRecyclerView();
 
