@@ -275,7 +275,6 @@ public class ChatGalleryActivity extends BaseActivity implements CommonResponseI
             selected_type = al_images.get(0).getType();
             postGalleryFrament.setList(al_images.get(0).getAl_imagepath(), al_images.get(0).getType());
         }
-
     }
 
     ArrayList<String> selected_image = new ArrayList<>();

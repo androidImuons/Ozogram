@@ -86,8 +86,10 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
 //
 
     }
+
     DialogAppUpdater dialogAppUpdater;
     AppVersionModel appVersionModel;
+
     private void checkUpdate() {
         new AppUpdateChecker(this, new AppUpdateChecker.AppUpdateAvailableListener() {
             @Override
@@ -96,9 +98,9 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
                 appUpdatemodal.observe(OzogramHomeActivity.this, new Observer<AppVersionModel>() {
                     @Override
                     public void onChanged(AppVersionModel appVersionModel) {
-                        if (appVersionModel!=null){
-                            OzogramHomeActivity.this.appVersionModel =appVersionModel;
-                            if (appVersionModel.getCode()==200){
+                        if (appVersionModel != null) {
+                            OzogramHomeActivity.this.appVersionModel = appVersionModel;
+                            if (appVersionModel.getCode() == 200) {
                                 if (isFinishing()) return;
                                 callupdatedialog();
                             }
@@ -106,7 +108,6 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
                         }
                     }
                 });
-
 
 
             }
@@ -121,7 +122,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             dialogAppUpdater = new DialogAppUpdater(OzogramHomeActivity.this, appVersionModel);
             dialogAppUpdater.show();
         } catch (Exception e) {
-            Log.d(tag,"--exception-"+e.getMessage());
+            Log.d(tag, "--exception-" + e.getMessage());
         }
     }
 
@@ -159,8 +160,8 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         super.onResume();
         activityOzogramHomeBinding.swipeLayout.setRefreshing(true);
         homeViewModel.getPost(getApplicationContext());
-        if (appVersionModel!=null){
-            if (appVersionModel.getCode()==200){
+        if (appVersionModel != null) {
+            if (appVersionModel.getCode() == 200) {
                 if (isFinishing()) return;
                 callupdatedialog();
             }
@@ -254,7 +255,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
             activityOzogramHomeBinding.swipeLayout.setRefreshing(false);
             storyUserRecycleViewAdapter.updateList(post);
             postRecycelAdapter.updateList(post);
-           // postRecycelAdapter.insert(action_position, post.get(action_position));
+            // postRecycelAdapter.insert(action_position, post.get(action_position));
         } else {
             activityOzogramHomeBinding.recyclePostList.setVisibility(View.GONE);
             activityOzogramHomeBinding.llFollowLayerj.setVisibility(View.VISIBLE);
@@ -327,7 +328,7 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
         action_position = pos;
         Bundle bundle = new Bundle();
         bundle.putString("id", String.valueOf(post.get(pos).getId()));
-        SendPostDialog instance = SendPostDialog.getInstance(bundle );
+        SendPostDialog instance = SendPostDialog.getInstance(bundle);
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
     }
 
@@ -350,9 +351,9 @@ public class OzogramHomeActivity extends BaseActivity implements GetPostDataList
     public void moreaction(GetPostRecordModel getPostRecordModel) {
         Bundle bundle = new Bundle();
         bundle.putString("id", String.valueOf(getPostRecordModel.getId()));
-        bundle.putString("u_id",getPostRecordModel.getUser().getUserId());
+        bundle.putString("u_id", getPostRecordModel.getUser().getUserId());
         PostMoreOptionDialog instance = PostMoreOptionDialog.getInstance(bundle);
-       // instance.unfollowUser=(PostMoreOptionDialog.UnfollowUser)OzogramHomeActivity.this;
+        // instance.unfollowUser=(PostMoreOptionDialog.UnfollowUser)OzogramHomeActivity.this;
         instance.show(getSupportFragmentManager(), instance.getClass().getSimpleName());
     }
 }

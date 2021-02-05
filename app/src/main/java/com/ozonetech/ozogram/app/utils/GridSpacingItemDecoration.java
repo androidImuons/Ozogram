@@ -22,7 +22,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
         int position = parent.getChildAdapterPosition(view);
         int column = position % spanCount;
        /* outRect.left=2;
-        outRect.right=2;
+        outRect.right=2;]=
         outRect.top=2;
         outRect.bottom=2;*/
         if (includeEdge) {
